@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ApiCall from '../../config';
+import ApiCall, { baseUrl } from '../../config';
 import './Models.css';
 import Header from '../header/Header';
 
@@ -8,9 +8,8 @@ function Models() {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [zoomPhoto, setZoomPhoto] = useState(null);
 
-    // строим URL для фото (относительный путь к твоему бэку)
-    const buildFileUrl = (id) => `/api/v1/file/download/${id}`;
 
     const calcAge = (birthday) => {
         if (!birthday) return null;
@@ -25,20 +24,27 @@ function Models() {
             return null;
         }
     };
+    useEffect(() => {
+        if (open) document.body.style.overflow = 'hidden';
+        else document.body.style.overflow = '';
+        return () => (document.body.style.overflow = '');
+    }, [open]);
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('Loading cards...');
                 const res = await ApiCall('/api/v1/casting-user', 'GET');
-                console.log('Fetched models:', res);
+                console.log(res.data);
+                
+                const list = Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [];
 
-                const mapped = (res || []).map((u) => {
+                const mapped = list.map((u) => {
                     const photos = Array.isArray(u.photos) ? u.photos : [];
                     const photoUrls = photos
-                        .map((p) => (typeof p === 'string' ? p : p?.id))
+                        .map((p) => p?.id)
                         .filter(Boolean)
-                        .map((id) => `/api/v1/file/download/${id}`);
+                        .map((id) => `${baseUrl}/api/v1/file/getFile/${id}`);
 
                     return {
                         ...u,
@@ -56,8 +62,7 @@ function Models() {
         };
 
         fetchData();
-    }, []); // ← зависимости пустые
-
+    }, []);
 
     const openModal = (item) => {
         setCurrent(item);
@@ -86,6 +91,7 @@ function Models() {
                             const avatar =
                                 (m.photoUrls && m.photoUrls.length > 0 && m.photoUrls[0]) ||
                                 'https://via.placeholder.com/600x800?text=No+Photo';
+
                             return (
                                 <div
                                     key={m.id}
@@ -108,105 +114,61 @@ function Models() {
             </section>
 
             {open && current && (
-                <div className="modal-backdrop" onClick={closeModal}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()}>
-                        <button className="modal-close" onClick={closeModal}>
-                            ✕
-                        </button>
+                <div className="cast-backdrop" onClick={closeModal}>
+                    <div className="cast-modal" onClick={(e) => e.stopPropagation()}>
+                        <button className="cast-modal-close" onClick={closeModal}>✕</button>
 
-                        <div className="modal-header">
-                            <h2>{fmt(current.name)}</h2>
-                            <p className="muted">
-                                {fmt(current.castingType)} • {fmt(current.gender)} • {fmt(current.age)} yosh
-                            </p>
-                        </div>
-
-                        {/* Галерея */}
-                        <div className="gallery">
-                            {(current.photoUrls || []).map((url, idx) => (
-                                <div className="gallery-item" key={idx}>
-                                    <img src={url} alt={`${current.name}-${idx}`} loading="lazy" />
-                                </div>
-                            ))}
-                            {(!current.photoUrls || current.photoUrls.length === 0) && (
-                                <div className="gallery-empty">Foto topilmadi</div>
-                            )}
-                        </div>
-
-                        {/* Подробная таблица */}
-                        <div className="details">
-                            <div className="detail-col">
-                                <dl>
-                                    <dt>Ism familiya</dt>
-                                    <dd>{fmt(current.name)}</dd>
-
-                                    <dt>Yosh</dt>
-                                    <dd>{fmt(current.age)}</dd>
-
-                                    <dt>Tug‘ilgan sana</dt>
-                                    <dd>{fmt(current.birthday)}</dd>
-
-                                    <dt>Jinsi</dt>
-                                    <dd>{fmt(current.gender)}</dd>
-
-                                    <dt>Hudud</dt>
-                                    <dd>{fmt(current.region)}</dd>
-
-                                    <dt>Millati</dt>
-                                    <dd>{fmt(current.nationality)}</dd>
-
-                                    <dt>Soha</dt>
-                                    <dd>{fmt(current.castingType)}</dd>
-
-                                    <dt>Holat (status)</dt>
-                                    <dd>{fmt(current.status)}</dd>
-                                </dl>
+                        <div className="cast-modal-body">
+                            {/* Левая колонка — главное фото */}
+                            <div className="profile-photo">
+                                <img
+                                    src={current.photoUrls?.[0] || 'https://via.placeholder.com/400x500?text=No+Photo'}
+                                    alt={current.name}
+                                />
                             </div>
 
-                            <div className="detail-col">
+                            {/* Правая колонка — данные */}
+                            <div className="profile-info">
+                                <h2 className="profile-name">{fmt(current.name)}</h2>
+                                <p>Пол: {fmt(current.gender)}</p>
                                 <dl>
-                                    <dt>Bo‘yi</dt>
-                                    <dd>{fmt(current.height)}</dd>
-
-                                    <dt>Soch rangi</dt>
-                                    <dd>{fmt(current.hairColor)}</dd>
-
-                                    <dt>Ko‘z rangi</dt>
-                                    <dd>{fmt(current.eyeColor)}</dd>
-
-                                    <dt>Kiyim o‘lchami</dt>
-                                    <dd>{fmt(current.clothSize)}</dd>
-
-                                    <dt>Oyoq о‘lchami</dt>
-                                    <dd>{fmt(current.shoeSize)}</dd>
-
-                                    <dt>Narx</dt>
-                                    <dd>{fmt(current.price)}</dd>
+                                    <dt>Возраст</dt><dd>{fmt(current.age)} лет</dd>
+                                    <dt>Гражданство</dt><dd>{fmt(current.nationality)}</dd>
+                                    <dt>Город проживания</dt><dd>{fmt(current.region)}</dd>
+                                    <dt>Рост</dt><dd>{fmt(current.height)} см</dd>
+                                    <dt>Вес</dt><dd>{fmt(current.weight) || '—'}</dd>
+                                    <dt>Тип внешности</dt><dd>{fmt(current.castingType)}</dd>
+                                    <dt>Телосложение</dt><dd>{fmt(current.bodyType) || '—'}</dd>
+                                    <dt>Цвет волос</dt><dd>{fmt(current.hairColor) || '—'}</dd>
+                                    <dt>Цвет глаз</dt><dd>{fmt(current.eyeColor) || '—'}</dd>
                                 </dl>
                             </div>
+                        </div>
 
-                            <div className="detail-col">
-                                <dl>
-                                    <dt>Email</dt>
-                                    <dd>{fmt(current.email)}</dd>
-
-                                    <dt>Telefon</dt>
-                                    <dd>{fmt(current.phone)}</dd>
-
-                                    <dt>Telegram</dt>
-                                    <dd>{fmt(current.telegram)}</dd>
-
-                                    <dt>Facebook</dt>
-                                    <dd>{fmt(current.facebook)}</dd>
-
-                                    <dt>Instagram</dt>
-                                    <dd>{fmt(current.instagram)}</dd>
-                                </dl>
+                        {/* Галерея фото */}
+                        <div className="profile-gallery">
+                            <h3>ФОТО ({current.photoUrls?.length || 0})</h3>
+                            <div className="gallery-row">
+                                {(current.photoUrls || []).map((url, idx) => (
+                                    <img
+                                        key={idx}
+                                        src={url}
+                                        alt={`${current.name}-${idx}`}
+                                        onClick={() => setZoomPhoto(url)}
+                                    />
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+            {zoomPhoto && (
+                <div className="lightbox" onClick={() => setZoomPhoto(null)}>
+                    <img src={zoomPhoto} alt="zoom" />
+                </div>
+            )}
+
+
         </div>
     );
 }
