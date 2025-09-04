@@ -50,7 +50,7 @@ function Home() {
     const loadMore = () => setVisibleItems((prev) => prev + 4);
 
     const goApplicant = () => navigate(`/data-form`);
-    const goClient = () => navigate(`/hire`);
+    const goClient = () => navigate(`/models`);
 
     // безопасный выбор заголовка/описания по текущему языку
     const getNewsTitle = (n) => {

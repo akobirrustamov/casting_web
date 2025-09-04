@@ -14,6 +14,7 @@ import Appeal from "./pages/appeal/Appeal";
 import CastingUser from "./admin/admin/CastingUser";
 import CastingUserDetail from "./admin/admin/CastingUserDetail";
 import CastingUserAccepted from "./admin/admin/CastingUserAccepted";
+import Models from "./pages/models/Models";
 
 
 
@@ -64,10 +65,11 @@ function App() {
 
         {/*  app user */}
         <Route path={"/"} element={<Home />} />
-        <Route path={"/"} element={<Home />} />
+        {/* <Route path={"/"} element={<Home />} /> */}
         <Route path={"/data-form/"} element={<DataForm />} />
         <Route path={"/history/"} element={<History />} />
         <Route path={"/appeal/"} element={<Appeal />} />
+        <Route path={"/models/"} element={<Models />} />
 
 
 
