@@ -25,7 +25,7 @@ function Home() {
 
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     const goApplicant = () => navigate(`/data-form`);
-    const goClient = () => navigate(`/hire`);
+    const goClient = () => navigate(`/models`);
 
     // безопасный выбор заголовка/описания по текущему языку
     const getNewsTitle = (n) => {
@@ -263,16 +263,36 @@ function Home() {
                 <p className="clips-note">{t("showcase.clips.more")}</p>
             </section>
 
-
+            {/* ===== NEWS (опционально; показывает новости, если есть) ===== */}
 
             {/* Floating button */}
             <button
                 onClick={() => navigate(`/data-form`)}
-                className="fixed-navigate-btn"
-                aria-label="Pastga o'tish"
+                className="fixed-navigate-btn circle-marquee"
+                aria-label="Ro'yhatdan o'tish"
             >
-                <FaArrowDown className="animate-bounce text-white text-3xl" />
+                {/* Кольцевая бегущая строка */}
+                <svg className="marquee-svg" viewBox="0 0 100 100" aria-hidden="true">
+                    <defs>
+                        <path
+                            id="textcircle"
+                            d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"
+                        />
+                    </defs>
+                    <text className="circle-text">
+                        <textPath href="#textcircle" startOffset="0%">
+                            {"ro'yhatdan o'tish • ro'yhatdan o'tish • ro'yhatdan o'tish • ro'yhatdan o'tish • "}
+                        </textPath>
+                    </text>
+                </svg>
+
+                {/* Центральная стрелка без фона — строго по центру */}
+                <span className="circle-center">
+                    <FaArrowDown className="arrow-bounce" aria-hidden="true" />
+                </span>
             </button>
+
+
         </div>
     );
 }

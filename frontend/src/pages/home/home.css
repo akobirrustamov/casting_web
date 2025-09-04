@@ -645,6 +645,94 @@ body.dark-mode .register-btn:hover {
   background-color: #1d4ed8;
 }
 
+/* Кнопка-кольцо с бегущим по кругу текстом */
+/* Базовая плавающая кнопка уже есть (.fixed-navigate-btn).
+   Делаем из неё «бублик» с бегущим текстом и стрелкой по центру. */
+.circle-marquee {
+  width: 90px;
+  height: 90px;
+  padding: 0;
+  border-radius: 9999px;
+  position: fixed;
+  /* в твоём css уже так и есть */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* свой фон для кнопки-кольца */
+  background: radial-gradient(60% 60% at 50% 50%, rgba(55, 48, 163), rgba(67, 56, 202)),
+    var(--accent-color);
+  overflow: hidden;
+}
+
+/* Вращающийся по кругу текст */
+.marquee-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* клик ловит кнопка */
+  animation: text-rotate 10s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.circle-text {
+  font-size: 7px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  fill: #fff;
+}
+
+/* Центральная область — без фона, только иконка по центру */
+.circle-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60px;
+  /* диаметр внутренней «дырки» для клика/визуала */
+  height: 60px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  /* убрали фон полностью */
+  border: none;
+  /* и рамку тоже */
+  pointer-events: none;
+  /* чтобы не мешать клику по кнопке */
+}
+
+/* Прыгающая стрелка */
+.arrow-bounce {
+  font-size: 28px;
+  color: #fff;
+  animation: bounce 1.5s infinite;
+}
+
+/* Пауза анимации текста при наведении (по желанию) */
+.circle-marquee:hover .marquee-svg {
+  animation-play-state: paused;
+}
+
+/* Кручение текста */
+@keyframes text-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* (bounce у тебя уже есть; оставляем текущий @keyframes bounce) */
+
+
+/* Анимация кругового «ползания» текста */
+@keyframes text-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
 .animate-bounce {
   animation: bounce 1.5s infinite;
 }
@@ -721,6 +809,7 @@ body.dark-mode .register-btn:hover {
   }
 }
 
+
 .director-media img {
   width: 100%;
   height: auto;
@@ -770,6 +859,31 @@ body.dark-mode .register-btn:hover {
   .showcase-grid {
     grid-template-columns: 1fr;
     /* на мобилке всё в колонку */
+  }
+}
+
+@media (max-width: 768px) {
+
+  .circle-marquee {
+    width: 65px;
+    height: 65px;
+    padding: 0;
+    border-radius: 9999px;
+    position: fixed;
+    /* в твоём css уже так и есть */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* свой фон для кнопки-кольца */
+    background: radial-gradient(60% 60% at 50% 50%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+      var(--accent-color);
+    overflow: hidden;
+  }
+
+  .arrow-bounce {
+    font-size: 15px;
+    color: #fff;
+    animation: bounce 1.5s infinite;
   }
 }
 
