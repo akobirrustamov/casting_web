@@ -1,236 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import logo from "./logo.jpg";
-import './header.css';
-import { FaInstagram, FaTelegramPlane } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
+import './Header.css';
 
-function Header({ activeTab }) {
-    const { userId } = useParams();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const [language, setLanguage] = useState('uz');
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+function Header() {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
-        const savedLanguage = localStorage.getItem('selectedLanguage') || 'uz';
-        setLanguage(savedLanguage);
-
         const handleScroll = () => {
-            setScrolled(window.scrollY > 10);
-        };
-
-        const handleResize = () => {
-            const mobile = window.innerWidth < 768;
-            setIsMobile(mobile);
-            if (!mobile) {
-                setIsMenuOpen(false);
-                document.body.style.overflow = 'auto';
-            }
+            setIsScrolled(window.scrollY > 10);
         };
 
         window.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleResize);
-        };
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const toggleMenu = () => {
-        const newState = !isMenuOpen;
-        setIsMenuOpen(newState);
-        document.body.style.overflow = newState ? 'hidden' : 'auto';
-    };
-
-    const closeMenu = () => {
-        setIsMenuOpen(false);
-        document.body.style.overflow = 'auto';
-    };
-
-    const changeLanguage = (lang) => {
-        setLanguage(lang);
-        localStorage.setItem('selectedLanguage', lang);
-        window.location.reload();
-    };
-
-    const translations = {
-        uz: {
-            home: "Bosh Sahifa",
-            casting: "Casting",
-            my: "Tarix",
-            language: "Til",
-            uzbek: "UZ",
-            russian: "RU"
-        },
-        ru: {
-            home: "Главная",
-            casting: "Кастинг",
-            my: "История",
-            language: "Язык",
-            uzbek: "УЗ",
-            russian: "РУ"
+    // 🚀 page o‘zgarsa menyu yopilsin
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            setIsMobileMenuOpen(false);
         }
+    }, [location.pathname]);
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
     return (
         <>
-            <header className={`header-container ${scrolled ? 'scrolled' : ''}`}>
-                <div className="header-content">
-                    <Link to={`/${userId}`} className="logo" onClick={closeMenu}>
-                        <img src={logo} alt="Logo" className="logo-image" />
-                    </Link>
-
-                    <div className="header-right">
-                        {!isMobile && (
-                            <div className="social-icons">
-                                <a
-                                    href="https://www.instagram.com/uzcasting?igsh=c2M2ZHVoMWI1YzVi"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Instagram"
-                                >
-                                    <FaInstagram className="social-icon" />
-                                </a>
-                                <a
-                                    href="https://t.me/Uzcastinguz"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Telegram"
-                                >
-                                    <FaTelegramPlane className="social-icon" />
-                                </a>
-                            </div>
-                        )}
-
-                        {isMobile && (
-                            <div className='for_flex'>
-                                <div class="select-wrapper">
-                                    <select
-                                        value={language}
-                                        onChange={(e) => changeLanguage(e.target.value)}
-                                        className="language-dropdown"
-                                        aria-label={translations[language].language}
-                                    >
-                                        <option value="uz">{translations[language].uzbek}</option>
-                                        <option value="ru">{translations[language].russian}</option>
-                                    </select>
-                                </div>
-
-                                <button
-                                    className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}
-                                    onClick={toggleMenu}
-                                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                                >
-                                    <span className="menu-line"></span>
-                                    <span className="menu-line"></span>
-                                    <span className="menu-line"></span>
-                                </button>
-                            </div>
-                        )}
+            <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+                <div className="header-container">
+                    <div className="logo">
+                        <Link to="/">
+                            <img src="/logo.jpg" alt="Logo" />
+                            <span>Fashion Models</span>
+                        </Link>
                     </div>
 
-                    {!isMobile && (
-                        <nav className="desktop-navigation">
-                            <ul className="nav-list">
-                                <li className="nav-item">
-                                    <Link
-                                        to={`/${userId}`}
-                                        className={`nav-link ${activeTab === '' ? 'active' : ''}`}
-                                    >
-                                        {translations[language].home}
-                                        <span className="link-underline"></span>
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        to={`/data-form/${userId}`}
-                                        className={`nav-link ${activeTab === 'data-form' ? 'active' : ''}`}
-                                    >
-                                        {translations[language].casting}
-                                        <span className="link-underline"></span>
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link
-                                        to={`/history/${userId}`}
-                                        className={`nav-link ${activeTab === 'history' ? 'active' : ''}`}
-                                    >
-                                        {translations[language].my}
-                                        <span className="link-underline"></span>
-                                    </Link>
-                                </li>
-                            </ul>
-                            <div className="language-selector">
-                                <select
-                                    value={language}
-                                    onChange={(e) => changeLanguage(e.target.value)}
-                                    className="language-dropdown"
-                                    aria-label={translations[language].language}
-                                >
-                                    <option value="uz">{translations[language].uzbek}</option>
-                                    <option value="ru">{translations[language].russian}</option>
-                                </select>
-                            </div>
-                        </nav>
-                    )}
-                </div>
-            </header>
-
-            {/* Mobile Navigation Overlay */}
-            {isMobile && (
-                <div className={`mobile-nav-overlay ${isMenuOpen ? 'active' : ''}`}>
-                    <nav className="mobile-navigation">
-                        <ul className="mobile-nav-list">
-                            <li className="nav-item" onClick={closeMenu}>
-                                <Link
-                                    to={`/${userId}`}
-                                    className={`nav-link ${activeTab === '' ? 'active' : ''}`}
-                                >
-                                    {translations[language].home}
+                    <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''}`}>
+                        <ul>
+                            <li>
+                                <Link to="/" className="nav-link">
+                                    <span>Bosh sahifa</span>
+                                    <div className="link-underline"></div>
                                 </Link>
                             </li>
-                            <li className="nav-item" onClick={closeMenu}>
-                                <Link
-                                    to={`/data-form/${userId}`}
-                                    className={`nav-link ${activeTab === 'data-form' ? 'active' : ''}`}
-                                >
-                                    {translations[language].casting}
+                            <li>
+                                <Link to="/models" className="nav-link">
+                                    <span>Modellar</span>
+                                    <div className="link-underline"></div>
                                 </Link>
                             </li>
-                            <li className="nav-item" onClick={closeMenu}>
-                                <Link
-                                    to={`/history/${userId}`}
-                                    className={`nav-link ${activeTab === 'history' ? 'active' : ''}`}
-                                >
-                                    {translations[language].my}
+                            <li>
+                                <Link to="/news" className="nav-link">
+                                    <span>Yangiliklar</span>
+                                    <div className="link-underline"></div>
                                 </Link>
-                            </li>
-                            <li className="nav-item social-icons-mobile">
-                                <a
-                                    href="https://www.instagram.com/uzcasting?igsh=c2M2ZHVoMWI1YzVi"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Instagram"
-                                    onClick={closeMenu}
-                                >
-                                    <FaInstagram className="social-icon" />
-                                    <span>Instagram</span>
-                                </a>
-                                <a
-                                    href="https://t.me/Uzcastinguz"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label="Telegram"
-                                    onClick={closeMenu}
-                                >
-                                    <FaTelegramPlane className="social-icon" />
-                                    <span>Telegram</span>
-                                </a>
                             </li>
                         </ul>
                     </nav>
+
+                    <div className="auth-buttons">
+                        <Link to="/data-form" className="register-btn">
+                            Ro'yxatdan o'tish
+                        </Link>
+                    </div>
+
+                    <button
+                        className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
+                        onClick={toggleMobileMenu}
+                        aria-label="Toggle menu"
+                    >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </div>
-            )}
+            </header>
+            <div className="header-spacer"></div>
         </>
     );
 }
