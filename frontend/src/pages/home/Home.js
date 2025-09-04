@@ -7,6 +7,8 @@ import "./home.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import bg from "../../images/bg.jpg"
+import ImageWithLightAnimation from "./ImageWithLightAnimation"
 
 function Home() {
     const navigate = useNavigate();
@@ -43,8 +45,11 @@ function Home() {
 
     return (
         <div className="home-container">
-            <Header props={""} />
+            <Header />
 
+            {/* <ImageWithLightAnimation src={bg} alt="Background image"
+                className="w-full h-1/2" enableAutoAnimation={true} /> */}
+            <img src={bg} className="h-1/2 w-full" />
             {/* ===== HERO / FULL-WIDTH ===== */}
             <section className="hero">
                 <div className="hero-content">

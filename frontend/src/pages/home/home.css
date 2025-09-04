@@ -659,7 +659,11 @@ body.dark-mode .register-btn:hover {
   align-items: center;
   justify-content: center;
   /* свой фон для кнопки-кольца */
-  background: radial-gradient(60% 60% at 50% 50%, rgba(55, 48, 163), rgba(67, 56, 202)),
+  background: radial-gradient(
+      60% 60% at 50% 50%,
+      rgba(55, 48, 163),
+      rgba(67, 56, 202)
+    ),
     var(--accent-color);
   overflow: hidden;
 }
@@ -724,14 +728,12 @@ body.dark-mode .register-btn:hover {
 
 /* (bounce у тебя уже есть; оставляем текущий @keyframes bounce) */
 
-
 /* Анимация кругового «ползания» текста */
 @keyframes text-rotate {
   to {
     transform: rotate(360deg);
   }
 }
-
 
 .animate-bounce {
   animation: bounce 1.5s infinite;
@@ -809,7 +811,6 @@ body.dark-mode .register-btn:hover {
   }
 }
 
-
 .director-media img {
   width: 100%;
   height: auto;
@@ -863,7 +864,6 @@ body.dark-mode .register-btn:hover {
 }
 
 @media (max-width: 768px) {
-
   .circle-marquee {
     width: 65px;
     height: 65px;
@@ -875,7 +875,11 @@ body.dark-mode .register-btn:hover {
     align-items: center;
     justify-content: center;
     /* свой фон для кнопки-кольца */
-    background: radial-gradient(60% 60% at 50% 50%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    background: radial-gradient(
+        60% 60% at 50% 50%,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.02)
+      ),
       var(--accent-color);
     overflow: hidden;
   }
