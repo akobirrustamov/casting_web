@@ -9,22 +9,14 @@ import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
 function Home() {
-    const { userId } = useParams();
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
-
-    const [newsList, setNewsList] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [visibleItems, setVisibleItems] = useState(4);
     const [isMobile, setIsMobile] = useState(false);
-
     useEffect(() => {
         const savedLanguage = localStorage.getItem("selectedLanguage") || "uz";
         if (savedLanguage !== i18n.language) i18n.changeLanguage(savedLanguage);
 
         checkMobile();
-        fetchNews();
 
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
@@ -32,23 +24,6 @@ function Home() {
     }, []);
 
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-
-    const fetchNews = async () => {
-        setLoading(true);
-        try {
-            const response = await ApiCall("/api/v1/news", "GET");
-            if (response.error) setError(response.data);
-            else setNewsList(response.data || []);
-        } catch (e) {
-            console.error("Error fetching news:", e);
-            setError("Failed to fetch news");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const loadMore = () => setVisibleItems((prev) => prev + 4);
-
     const goApplicant = () => navigate(`/data-form`);
     const goClient = () => navigate(`/hire`);
 
@@ -288,80 +263,7 @@ function Home() {
                 <p className="clips-note">{t("showcase.clips.more")}</p>
             </section>
 
-            {/* ===== NEWS (опционально; показывает новости, если есть) ===== */}
-            <main className="news-main">
-                {loading ? (
-                    <div className="loading-container">
-                        <div className="loading-spinner"></div>
-                        <p>{t("common.loading")}</p>
-                    </div>
-                ) : error ? (
-                    <div className="error-message">
-                        {t("common.error")}: {String(error)}
-                    </div>
-                ) : newsList.length > 0 ? (
-                    <>
-                        <div className="news-grid">
-                            {newsList.slice(0, visibleItems).map((news) => (
-                                <article key={news.id} className="news-card">
-                                    {news.mainPhoto && (
-                                        <div className="news-main-image">
-                                            <img
-                                                src={`${baseUrl}/api/v1/file/getFile/${news.mainPhoto.id}`}
-                                                alt={getNewsTitle(news)}
-                                                className="news-image"
-                                                loading="lazy"
-                                            />
-                                        </div>
-                                    )}
 
-                                    <div className="news-content">
-                                        <h2 className="news-title">{getNewsTitle(news)}</h2>
-                                        <div className="news-description">
-                                            <p style={{ whiteSpace: "pre-line" }}>{getNewsDesc(news)}</p>
-                                        </div>
-
-                                        {news.link && (
-                                            <div className="news-video">
-                                                <div
-                                                    className="video-container"
-                                                    dangerouslySetInnerHTML={{ __html: news.link }}
-                                                />
-                                            </div>
-                                        )}
-
-                                        {news.photos && news.photos.length > 0 && (
-                                            <div className="news-gallery">
-                                                <h4 className="gallery-title">{t("common.gallery")}</h4>
-                                                <div className="gallery-grid1 responsive">
-                                                    {news.photos.map((photo) => (
-                                                        <div key={photo.id} className="gallery-item">
-                                                            <img
-                                                                src={`${baseUrl}/api/v1/file/getFile/${photo.id}`}
-                                                                alt={t("common.gallery")}
-                                                                className="gallery-image"
-                                                                loading="lazy"
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
-
-                        {visibleItems < newsList.length && (
-                            <div className="load-more-container">
-                                <button onClick={loadMore} className="load-more-btn">
-                                    {t("common.loadMore")}
-                                </button>
-                            </div>
-                        )}
-                    </>
-                ) : null}
-            </main>
 
             {/* Floating button */}
             <button

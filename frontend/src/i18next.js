@@ -8,11 +8,10 @@ const resources = {
     uz: {
         translation: {
             header: {
-                siteTitle: 'Fashion Modellari',
+                siteTitle: 'Jasmaxstar',
                 home: 'Bosh sahifa',
                 models: 'Modellar',
-                news: 'Yangiliklar',
-                register: 'Ro\'yxatdan o\'tish'
+                register: 'Nomzodlik bildirish'
             },
             common: {
                 loading: "Yuklanmoqda...",
@@ -72,11 +71,10 @@ const resources = {
     ru: {
         translation: {
             header: {
-                siteTitle: 'Модели Моды',
+                siteTitle: 'Jasmaxstar',
                 home: 'Главная',
                 models: 'Модели',
-                news: 'Новости',
-                register: 'Регистрация'
+                register: 'Подать заявку'
             },
             common: {
                 loading: "Загрузка...",
@@ -136,11 +134,10 @@ const resources = {
     en: {
         translation: {
             header: {
-                siteTitle: 'Fashion Models',
+                siteTitle: 'Jasmaxstar',
                 home: 'Home',
                 models: 'Models',
-                news: 'News',
-                register: 'Register'
+                register: 'Submit Application'
             },
             common: {
                 loading: "Loading...",
