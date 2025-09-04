@@ -101,10 +101,10 @@ function Home() {
                     </div>
 
                     <div className="cta-buttons" role="group" aria-label="Casting choices">
-                        <button className="cta-btn primary" onClick={goApplicant}>
+                        <button className="register-btn" onClick={goApplicant}>
                             {t("hero.btnApplicant")}
                         </button>
-                        <button className="cta-btn ghost" onClick={goClient}>
+                        <button className="register-btn" onClick={goClient}>
                             {t("hero.btnClient")}
                         </button>
                     </div>

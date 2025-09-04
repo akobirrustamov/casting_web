@@ -5,6 +5,169 @@
   box-sizing: border-box;
 }
 
+/* Til selektori uchun uslublar */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.language-selector {
+  position: relative;
+}
+
+.language-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.language-toggle:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.language-toggle svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.language-selector:hover .language-toggle svg {
+  transform: rotate(180deg);
+}
+
+.language-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  min-width: 80px;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease;
+}
+
+.language-menu button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.language-menu button:hover {
+  background: #f3f4f6;
+  color: #2563eb;
+}
+
+.language-menu button.active {
+  background: #2563eb;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header-right {
+    display: none;
+  }
+
+  .mobile-language-selector {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .mobile-language-selector button {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .mobile-language-selector button.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+  }
+}
+
+/* Dark mode */
+body.dark-mode .language-toggle {
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+body.dark-mode .language-toggle:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+body.dark-mode .language-menu {
+  background: #1f2937;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .language-menu button {
+  color: #f3f4f6;
+}
+
+body.dark-mode .language-menu button:hover {
+  background: #374151;
+  color: #93c5fd;
+}
+
+body.dark-mode .language-menu button.active {
+  background: #3b82f6;
+  color: white;
+}
+
+body.dark-mode .mobile-language-selector {
+  border-top: 1px solid #374151;
+}
+
+body.dark-mode .mobile-language-selector button {
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+body.dark-mode .mobile-language-selector button.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
 .header {
   position: fixed;
   top: 0;
@@ -152,12 +315,13 @@
 }
 
 .register-btn {
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
   color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 1.05rem;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   border: none;
   cursor: pointer;
@@ -165,6 +329,9 @@
   position: relative;
   overflow: hidden;
   z-index: 1;
+  animation: pulseAnimation 2.5s infinite, colorShift 8s infinite alternate;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .register-btn::before {
@@ -177,26 +344,113 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.4),
     transparent
   );
   transition: left 0.7s ease;
   z-index: -1;
+  animation: shineEffect 3s infinite;
 }
 
 .register-btn:hover::before {
   left: 100%;
+  animation: none;
 }
 
 .register-btn:hover {
-  background: #1d4ed8;
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3),
-    0 6px 6px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.6),
+    0 8px 10px rgba(37, 99, 235, 0.4);
+  animation: none;
 }
 
 .register-btn:active {
   transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.5);
+}
+
+/* Pulsatsiya animatsiyasi */
+@keyframes pulseAnimation {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Yorqinlik animatsiyasi */
+@keyframes shineEffect {
+  0% {
+    left: -100%;
+  }
+  20% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Rang o'zgarishi animatsiyasi */
+@keyframes colorShift {
+  0% {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+  }
+  25% {
+    background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    box-shadow: 0 4px 15px rgba(29, 78, 216, 0.5);
+  }
+  50% {
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+    box-shadow: 0 4px 15px rgba(67, 56, 202, 0.5);
+  }
+  75% {
+    background: linear-gradient(135deg, #3730a3, #4338ca);
+    box-shadow: 0 4px 15px rgba(55, 48, 163, 0.5);
+  }
+  100% {
+    background: linear-gradient(135deg, #312e81, #3730a3);
+    box-shadow: 0 4px 15px rgba(49, 46, 129, 0.5);
+  }
+}
+
+/* Dark mode uchun moslamalar */
+body.dark-mode .register-btn {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  animation: pulseAnimation 2.5s infinite, colorShiftDark 8s infinite alternate;
+}
+
+body.dark-mode .register-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+@keyframes colorShiftDark {
+  0% {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.6);
+  }
+  25% {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.6);
+  }
+  50% {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.6);
+  }
+  75% {
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+    box-shadow: 0 4px 15px rgba(67, 56, 202, 0.6);
+  }
+  100% {
+    background: linear-gradient(135deg, #3730a3, #4338ca);
+    box-shadow: 0 4px 15px rgba(55, 48, 163, 0.6);
+  }
 }
 
 .mobile-menu-toggle {
