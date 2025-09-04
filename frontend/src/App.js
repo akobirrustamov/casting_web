@@ -63,11 +63,11 @@ function App() {
 
 
         {/*  app user */}
-        <Route path={"/:userId"} element={<Home />} />
         <Route path={"/"} element={<Home />} />
-        <Route path={"/data-form/:userId"} element={<DataForm />} />
-        <Route path={"/history/:userId"} element={<History />} />
-        <Route path={"/appeal/:appealId"} element={<Appeal />} />
+        <Route path={"/"} element={<Home />} />
+        <Route path={"/data-form/"} element={<DataForm />} />
+        <Route path={"/history/"} element={<History />} />
+        <Route path={"/appeal/"} element={<Appeal />} />
 
 
 
