@@ -7,6 +7,13 @@ const savedLng = localStorage.getItem("selectedLanguage") || "uz";
 const resources = {
     uz: {
         translation: {
+            header: {
+                siteTitle: 'Fashion Modellari',
+                home: 'Bosh sahifa',
+                models: 'Modellar',
+                news: 'Yangiliklar',
+                register: 'Ro\'yxatdan o\'tish'
+            },
             common: {
                 loading: "Yuklanmoqda...",
                 error: "Yangiliklar yuklanmadi",
@@ -64,6 +71,13 @@ const resources = {
     },
     ru: {
         translation: {
+            header: {
+                siteTitle: 'Модели Моды',
+                home: 'Главная',
+                models: 'Модели',
+                news: 'Новости',
+                register: 'Регистрация'
+            },
             common: {
                 loading: "Загрузка...",
                 error: "Новости не загружены",
@@ -121,6 +135,13 @@ const resources = {
     },
     en: {
         translation: {
+            header: {
+                siteTitle: 'Fashion Models',
+                home: 'Home',
+                models: 'Models',
+                news: 'News',
+                register: 'Register'
+            },
             common: {
                 loading: "Loading...",
                 error: "Failed to load news",
