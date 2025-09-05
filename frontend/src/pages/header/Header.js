@@ -55,7 +55,7 @@ function Header() {
                         </Link>
                     </div>
 
-                    <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''}`}>
+                    <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>
                         <ul>
                             <li>
                                 <Link to="/" className="nav-link">
