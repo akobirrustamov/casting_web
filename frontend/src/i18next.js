@@ -14,6 +14,8 @@ const resources = {
             },
             common: {
                 loading: "Yuklanmoqda...",
+                emptyTitle: "Mos keladigan model topilmadi",
+                emptySubtitle: "Filtrlarni o‘zgartiring yoki boshqa so‘rov kiriting",
                 error: "Yangiliklar yuklanmadi",
                 gallery: "Galereya",
                 loadMore: "Ko'proq ko'rish",
@@ -128,6 +130,8 @@ const resources = {
                 register: 'Подать заявку'
             },
             common: {
+                emptySubtitle: "Измените фильтры или попробуйте другой запрос",
+                emptyTitle: "Подходящих моделей не найдено",
                 loading: "Загрузка...",
                 error: "Новости не загружены",
                 gallery: "Галерея",
@@ -245,6 +249,8 @@ const resources = {
                 error: "Failed to load news",
                 gallery: "Gallery",
                 loadMore: "Load more",
+                emptyTitle: "No matching models found",
+                emptySubtitle: "Adjust filters or try a different query",
             },
             hero: {
                 title: "Uzcasting — where talent meets opportunity",

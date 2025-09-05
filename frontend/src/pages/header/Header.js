@@ -55,89 +55,91 @@ function Header() {
                         </Link>
                     </div>
 
-                    <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>
-                        <ul>
-                            <li>
-                                <Link to="/" className="nav-link">
-                                    <span>{t('header.home')}</span>
-                                    <div className="link-underline"></div>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/models" className="nav-link">
-                                    <span>{t('header.models')}</span>
-                                    <div className="link-underline"></div>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/data-form" style={{
-                                    display: window.innerWidth >= 769 ? "none" : "block"
-                                }} className="nav-link">
-                                    {t('header.register')}
-                                </Link>
-                            </li>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+                        <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>
+                            <ul>
+                                <li>
+                                    <Link to="/" className="nav-link">
+                                        <span>{t('header.home')}</span>
+                                        <div className="link-underline"></div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/models" className="nav-link">
+                                        <span>{t('header.models')}</span>
+                                        <div className="link-underline"></div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/data-form" style={{
+                                        display: window.innerWidth >= 769 ? "none" : "block"
+                                    }} className="nav-link">
+                                        {t('header.register')}
+                                    </Link>
+                                </li>
 
-                        </ul>
-                    </nav>
+                            </ul>
+                        </nav>
 
-                    {/* ...внутри .header-right */}
-                    <div className="header-right">
-                        <div className="language-selector only-desktop">
+                        {/* ...внутри .header-right */}
+                        <div className="header-right">
+                            <div className="language-selector only-desktop">
+                                <button
+                                    className="language-toggle"
+                                    onClick={toggleLanguageMenu}
+                                    aria-label="Change language"
+                                >
+                                    {currentLanguage.toUpperCase()}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                {isLanguageOpen && (
+                                    <div className="language-menu">
+                                        <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
+                                        <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
+                                        <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="auth-buttons">
+                                <Link to="/data-form" className="register-btn">{t('header.register')}</Link>
+                            </div>
+                        </div>
+
+                        {/* мобильный блок */}
+                        <div className="mobile-actions">
+                            <div className="language-selector only-mobile">
+                                <button
+                                    className="language-toggle"
+                                    onClick={toggleLanguageMenu}
+                                    aria-label="Change language"
+                                >
+                                    {currentLanguage.toUpperCase()}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                {isLanguageOpen && (
+                                    <div className="language-menu">
+                                        <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
+                                        <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
+                                        <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
+                                    </div>
+                                )}
+                            </div>
+
                             <button
-                                className="language-toggle"
-                                onClick={toggleLanguageMenu}
-                                aria-label="Change language"
+                                className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
+                                onClick={toggleMobileMenu}
+                                aria-label="Toggle menu"
                             >
-                                {currentLanguage.toUpperCase()}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                </svg>
+                                <span></span><span></span><span></span>
                             </button>
-
-                            {isLanguageOpen && (
-                                <div className="language-menu">
-                                    <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
-                                    <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
-                                    <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
-                                </div>
-                            )}
                         </div>
-
-                        <div className="auth-buttons">
-                            <Link to="/data-form" className="register-btn">{t('header.register')}</Link>
-                        </div>
-                    </div>
-
-                    {/* мобильный блок */}
-                    <div className="mobile-actions">
-                        <div className="language-selector only-mobile">
-                            <button
-                                className="language-toggle"
-                                onClick={toggleLanguageMenu}
-                                aria-label="Change language"
-                            >
-                                {currentLanguage.toUpperCase()}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                                </svg>
-                            </button>
-
-                            {isLanguageOpen && (
-                                <div className="language-menu">
-                                    <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
-                                    <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
-                                    <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
-                                </div>
-                            )}
-                        </div>
-
-                        <button
-                            className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
-                            onClick={toggleMobileMenu}
-                            aria-label="Toggle menu"
-                        >
-                            <span></span><span></span><span></span>
-                        </button>
                     </div>
 
                 </div>
