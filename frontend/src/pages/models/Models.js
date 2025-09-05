@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import ApiCall, { baseUrl } from '../../config';
 import './Models.css';
 import Header from '../header/Header';
 
 function Models() {
+    const { t } = useTranslation();
+
     const [items, setItems] = useState([]);
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState(null);
@@ -13,9 +16,12 @@ function Models() {
     // --- Фильтры ---
     const [query, setQuery] = useState('');
     const [gender, setGender] = useState('all'); // all | male | female
-    const [minAge, setMinAge] = useState(18);
-    const [maxAge, setMaxAge] = useState(100);
+    const [minAge, setMinAge] = useState(0);
+    const [maxAge, setMaxAge] = useState(100); // <-- фикс: максимум всегда 100
     const [heightFrom, setHeightFrom] = useState('');
+
+    // Telegram username получателя (без @)
+    const TELEGRAM_USERNAME = 'diyorceek_15'; // <-- замени при необходимости
 
     const calcAge = (birthday) => {
         if (!birthday) return null;
@@ -31,7 +37,7 @@ function Models() {
         }
     };
 
-    // блокируем скролл боди при открытой модалке
+    // Блокируем скролл body при открытой модалке
     useEffect(() => {
         if (open) document.body.style.overflow = 'hidden';
         else document.body.style.overflow = '';
@@ -42,8 +48,6 @@ function Models() {
         const fetchData = async () => {
             try {
                 const res = await ApiCall('/api/v1/casting-user', 'GET');
-                console.log(res.data);
-                
                 const list = Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [];
 
                 const mapped = list.map((u) => {
@@ -53,15 +57,22 @@ function Models() {
                         .filter(Boolean)
                         .map((id) => `${baseUrl}/api/v1/file/getFile/${id}`);
 
-                    const age = u.age ?? calcAge(u.birthday);
+                    // <-- фикс: кэпим возраст в диапазон 0..100
+                    const ageRaw = u.age ?? calcAge(u.birthday);
+                    const ageNum = Number(ageRaw);
+                    const age =
+                        Number.isFinite(ageNum)
+                            ? Math.max(0, Math.min(100, ageNum))
+                            : null;
 
                     return { ...u, photoUrls, age };
                 });
 
                 setItems(mapped);
 
-                const maxAgeInData = Math.max(...(mapped.map(i => i.age || 0)), 60);
-                setMaxAge(isFinite(maxAgeInData) ? maxAgeInData : 60);
+                // <-- УДАЛЕНО: больше не подстраиваем maxAge по данным
+                // const maxAgeInData = Math.max(...(mapped.map(i => i.age || 0)), 60);
+                // setMaxAge(isFinite(maxAgeInData) ? maxAgeInData : 60);
             } catch (e) {
                 console.error('Failed to load cards', e);
             } finally {
@@ -84,6 +95,7 @@ function Models() {
 
     const fmt = (v) => (v === null || v === undefined || v === '' ? '—' : v);
 
+    // список роста (145–220) шагом 5
     const heightOptions = useMemo(() => {
         const minH = 145, maxH = 220;
         const list = [];
@@ -112,20 +124,42 @@ function Models() {
         });
     }, [items, query, gender, minAge, maxAge, heightFrom]);
 
-    const maxAgePossible = useMemo(() => {
-        const m = Math.max(...(items.map(i => i.age || 0)), 60);
-        return isFinite(m) ? m : 60;
-    }, [items]);
-
     // helpers for dual slider visuals
-    const rangeMin = 18;
+    const rangeMin = 0;
     const rangeMax = 100;
+    const clampAge = (v) => Math.max(rangeMin, Math.min(rangeMax, Number(v) || 0)); // <-- кэпер
+
     const pct = (val) => ((val - rangeMin) * 100) / (rangeMax - rangeMin);
 
-    // ensure minAge <= maxAge
+    // ensure minAge <= maxAge + кэпим в 0..100 на случай внешних апдейтов
     useEffect(() => {
-        if (Number(minAge) > Number(maxAge)) setMinAge(maxAge);
-    }, [maxAge, minAge]);
+        const minC = clampAge(minAge);
+        const maxC = clampAge(maxAge);
+        if (minC !== minAge) setMinAge(minC);
+        if (maxC !== maxAge) setMaxAge(maxC);
+        if (minC > maxC) setMinAge(maxC);
+    }, [maxAge, minAge]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Текст для Telegram
+    const buildContactMessage = (m) => {
+        const lblRequest = t('models.contact.requestTitle', 'Заявка на модель');
+        const lblId = t('models.contact.id', 'ID');
+        const lblName = t('models.contact.name', 'Имя');
+
+        return [
+            lblRequest,
+            `${lblId}: ${m.id}`,
+            `${lblName}: ${(m.name || '').trim()}`
+        ].filter(Boolean).join('\n');
+    };
+
+    const handleContact = async () => {
+        if (!current) return;
+        const msg = buildContactMessage(current);
+        const encoded = encodeURIComponent(msg);
+        const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}`;
+        window.open(tgUrl, '_blank', 'noopener,noreferrer');
+    };
 
     return (
         <div className="models-page">
@@ -133,36 +167,35 @@ function Models() {
 
             <section className="container">
                 <div className="toolbar">
-                    <h1 className="title">Models / Actors</h1>
+                    <h1 className="title">
+                        {t('models.title', 'Models / Actors')}
+                    </h1>
 
                     <div className="filters">
                         <div className="filter-item">
-                            <label>Поиск</label>
+                            <label>{t('filters.search', 'Поиск')}</label>
                             <input
                                 type="text"
-                                placeholder="Имя, фамилия…"
+                                placeholder={t('filters.searchPlaceholder', 'Имя, фамилия…')}
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                             />
                         </div>
 
                         <div className="filter-item">
-                            <label>Пол</label>
+                            <label>{t('filters.gender', 'Пол')}</label>
                             <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                                <option value="all">Любой</option>
-                                <option value="male">Мужской</option>
-                                <option value="female">Женский</option>
+                                <option value="all">{t('filters.genderAny', 'Любой')}</option>
+                                <option value="male">{t('filters.genderMale', 'Мужской')}</option>
+                                <option value="female">{t('filters.genderFemale', 'Женский')}</option>
                             </select>
                         </div>
 
-                        {/* ЕДИНЫЙ ДВУРУЧНЫЙ СЛАЙДЕР ВОЗРАСТА */}
+                        {/* Двуручный слайдер возраста */}
                         <div className="filter-item age-block">
-                            <label>Возраст</label>
+                            <label>{t('filters.age', 'Возраст')}</label>
 
-
-                            {/* двуручный слайдер */}
                             <div className="dual-range">
-                                {/* трек с подсветкой между ручками */}
                                 <div
                                     className="dual-range__track"
                                     style={{
@@ -175,35 +208,35 @@ function Models() {
                       var(--range-bg) 100%)`,
                                     }}
                                 />
-                                {/* левая ручка */}
                                 <input
                                     type="range"
                                     min={rangeMin}
                                     max={rangeMax}
                                     value={minAge}
-                                    onChange={(e) => setMinAge(Math.min(Number(e.target.value), maxAge))}
+                                    onChange={(e) => {
+                                        const next = clampAge(e.target.value);
+                                        setMinAge(Math.min(next, maxAge));
+                                    }}
                                 />
-                                {/* правая ручка */}
                                 <input
                                     type="range"
                                     min={rangeMin}
                                     max={rangeMax}
                                     value={maxAge}
-                                    onChange={(e) => setMaxAge(Math.max(Number(e.target.value), minAge))}
+                                    onChange={(e) => {
+                                        const next = clampAge(e.target.value);
+                                        setMaxAge(Math.max(next, minAge));
+                                    }}
                                 />
-
-                                {/* бейджи значений над ручками */}
                                 <span className="dual-range__badge" style={{ left: `calc(${pct(minAge)}% - 12px)` }}>
                                     {minAge}
                                 </span>
                                 <span className="dual-range__badge dual-range__badge--right" style={{ left: `calc(${pct(maxAge)}% - 12px)` }}>
                                     {maxAge}
                                 </span>
-
-                                {/* подписи рисок (0—25—50—75—100 условно) можно скрыть/настроить */}
                                 <div className="dual-range__ticks">
-                                    {[0, 25, 50, 75, 100].map(t => (
-                                        <span key={t} style={{ left: `${t}%` }}>{t}</span>
+                                    {[0, 25, 50, 75, 100].map((tick) => (
+                                        <span key={tick} style={{ left: `${tick}%` }}>{tick}</span>
                                     ))}
                                 </div>
                             </div>
@@ -211,14 +244,14 @@ function Models() {
 
                         {/* Рост от … и выше */}
                         <div className="filter-item">
-                            <label>Рост от</label>
+                            <label>{t('filters.heightFrom', 'Рост от')}</label>
                             <select
                                 value={heightFrom}
                                 onChange={(e) => setHeightFrom(e.target.value)}
                             >
-                                <option value="">Любой</option>
+                                <option value="">{t('filters.any', 'Любой')}</option>
                                 {heightOptions.map((h) => (
-                                    <option key={h} value={h}>{h} см</option>
+                                    <option key={h} value={h}>{h} {t('units.cm', 'см')}</option>
                                 ))}
                             </select>
                         </div>
@@ -236,18 +269,18 @@ function Models() {
                                     setHeightFrom('');
                                 }}
                             >
-                                Сбросить
+                                {t('actions.reset', 'Сбросить')}
                             </button>
                         </div>
                     </div>
 
                     <div className="result-count">
-                        Найдено: {filtered.length}
+                        {t('models.found', 'Найдено')}: {filtered.length}
                     </div>
                 </div>
 
                 {loading ? (
-                    <div className="loading">Yuklanmoqda...</div>
+                    <div className="loading">{t('common.loading', 'Loading...')}</div>
                 ) : (
                     <div className="grid">
                         {filtered.map((m) => {
@@ -267,7 +300,9 @@ function Models() {
                                     </div>
                                     <div className="card-body">
                                         <div className="card-name">{(m.name || '').trim()}</div>
-                                        <div className="card-sub">{fmt(m.age)} yosh</div>
+                                        <div className="card-sub">
+                                            {t('units.years', { count: m.age ?? 0 })}
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -292,21 +327,38 @@ function Models() {
                             <div className="profile-info">
                                 <h2 className="profile-name">{fmt(current.name)}</h2>
                                 <dl>
-                                    <dt>Возраст</dt><dd>{fmt(current.age)} лет</dd>
-                                    <dt>Гражданство</dt><dd>{fmt(current.nationality)}</dd>
-                                    <dt>Город проживания</dt><dd>{fmt(current.region)}</dd>
-                                    <dt>Рост</dt><dd>{fmt(current.height)} см</dd>
-                                    <dt>Тип внешности</dt><dd>{fmt(current.castingType)}</dd>
-                                    <dt>Телосложение</dt><dd>{fmt(current.bodyType) || '—'}</dd>
-                                    <dt>Цвет волос</dt><dd>{fmt(current.hairColor) || '—'}</dd>
-                                    <dt>Цвет глаз</dt><dd>{fmt(current.eyeColor) || '—'}</dd>
-                                    <dt>Пол</dt><dd>{fmt(current.gender)}</dd>
+                                    <dt>{t('modal.age', 'Возраст')}</dt>
+                                    <dd>{t('units.years', { count: current.age ?? 0 })}</dd>
+
+                                    <dt>{t('modal.nationality', 'Гражданство')}</dt>
+                                    <dd>{fmt(current.nationality)}</dd>
+
+                                    <dt>{t('modal.region', 'Город проживания')}</dt>
+                                    <dd>{fmt(current.region)}</dd>
+
+                                    <dt>{t('modal.height', 'Рост')}</dt>
+                                    <dd>{fmt(current.height)} {t('units.cm', 'см')}</dd>
+
+                                    <dt>{t('modal.appearanceType', 'Тип внешности')}</dt>
+                                    <dd>{fmt(current.castingType)}</dd>
+
+                                    <dt>{t('modal.bodyType', 'Телосложение')}</dt>
+                                    <dd>{fmt(current.bodyType) || '—'}</dd>
+
+                                    <dt>{t('modal.hairColor', 'Цвет волос')}</dt>
+                                    <dd>{fmt(current.hairColor) || '—'}</dd>
+
+                                    <dt>{t('modal.eyeColor', 'Цвет глаз')}</dt>
+                                    <dd>{fmt(current.eyeColor) || '—'}</dd>
+
+                                    <dt>{t('modal.gender', 'Пол')}</dt>
+                                    <dd>{fmt(current.gender)}</dd>
                                 </dl>
                             </div>
                         </div>
 
                         <div className="profile-gallery">
-                            <h3>ФОТО ({current.photoUrls?.length || 0})</h3>
+                            <h3>{t('models.photos', 'ФОТО')} ({current.photoUrls?.length || 0})</h3>
                             <div className="gallery-row">
                                 {(current.photoUrls || []).map((url, idx) => (
                                     <img
@@ -316,6 +368,12 @@ function Models() {
                                         onClick={() => setZoomPhoto(url)}
                                     />
                                 ))}
+                            </div>
+
+                            <div className="contact-row">
+                                <button type="button" className="btn-primary" onClick={handleContact}>
+                                    {t('actions.contact', 'Связаться')}
+                                </button>
                             </div>
                         </div>
                     </div>

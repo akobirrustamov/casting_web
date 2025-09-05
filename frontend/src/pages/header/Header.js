@@ -80,8 +80,9 @@ function Header() {
                         </ul>
                     </nav>
 
+                    {/* ...внутри .header-right */}
                     <div className="header-right">
-                        <div className="language-selector">
+                        <div className="language-selector only-desktop">
                             <button
                                 className="language-toggle"
                                 onClick={toggleLanguageMenu}
@@ -95,36 +96,21 @@ function Header() {
 
                             {isLanguageOpen && (
                                 <div className="language-menu">
-                                    <button
-                                        className={currentLanguage === 'uz' ? 'active' : ''}
-                                        onClick={() => changeLanguage('uz')}
-                                    >
-                                        O'Z
-                                    </button>
-                                    <button
-                                        className={currentLanguage === 'ru' ? 'active' : ''}
-                                        onClick={() => changeLanguage('ru')}
-                                    >
-                                        RU
-                                    </button>
-                                    <button
-                                        className={currentLanguage === 'en' ? 'active' : ''}
-                                        onClick={() => changeLanguage('en')}
-                                    >
-                                        EN
-                                    </button>
+                                    <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
+                                    <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
+                                    <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
                                 </div>
                             )}
                         </div>
 
                         <div className="auth-buttons">
-                            <Link to="/data-form" className="register-btn">
-                                {t('header.register')}
-                            </Link>
+                            <Link to="/data-form" className="register-btn">{t('header.register')}</Link>
                         </div>
                     </div>
-                    <div className='flex items-center gap-4 [@media(min-width:769px)]:hidden'>
-                        <div className="language-selector">
+
+                    {/* мобильный блок */}
+                    <div className="mobile-actions">
+                        <div className="language-selector only-mobile">
                             <button
                                 className="language-toggle"
                                 onClick={toggleLanguageMenu}
@@ -138,37 +124,22 @@ function Header() {
 
                             {isLanguageOpen && (
                                 <div className="language-menu">
-                                    <button
-                                        className={currentLanguage === 'uz' ? 'active' : ''}
-                                        onClick={() => changeLanguage('uz')}
-                                    >
-                                        O'Z
-                                    </button>
-                                    <button
-                                        className={currentLanguage === 'ru' ? 'active' : ''}
-                                        onClick={() => changeLanguage('ru')}
-                                    >
-                                        RU
-                                    </button>
-                                    <button
-                                        className={currentLanguage === 'en' ? 'active' : ''}
-                                        onClick={() => changeLanguage('en')}
-                                    >
-                                        EN
-                                    </button>
+                                    <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
+                                    <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
+                                    <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
                                 </div>
                             )}
                         </div>
+
                         <button
                             className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
                             onClick={toggleMobileMenu}
                             aria-label="Toggle menu"
                         >
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            <span></span><span></span><span></span>
                         </button>
                     </div>
+
                 </div>
             </header>
             <div className="header-spacer"></div>

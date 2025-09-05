@@ -1,8 +1,7 @@
-// src/i18n.js
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
-const savedLng = localStorage.getItem("selectedLanguage") || "uz";
+const savedLng = localStorage.getItem('selectedLanguage') || 'uz';
 
 const resources = {
     uz: {
@@ -66,6 +65,46 @@ const resources = {
                     more: "...va boshqa ajoyib kliplar",
                 },
             },
+            models: {
+                title: "Modellar / Aktyorlar",
+                found: "Topildi",
+                photos: "FOTO",
+                contact: {
+                    requestTitle: "Model uchun so‘rov",
+                    id: "ID",
+                    name: "Ism"
+                }
+            },
+            filters: {
+                search: "Qidirish",
+                searchPlaceholder: "Ism, familiya…",
+                gender: "Jins",
+                genderAny: "Har qanday",
+                genderMale: "Erkak",
+                genderFemale: "Ayol",
+                age: "Yosh",
+                heightFrom: "Bo‘y",
+                any: "Har qanday"
+            },
+            modal: {
+                age: "Yosh",
+                nationality: "Fuqaroligi",
+                region: "Yashash shahri",
+                height: "Bo‘y",
+                appearanceType: "Ko‘rinish turi",
+                bodyType: "Tana tuzilishi",
+                hairColor: "Soch rangi",
+                eyeColor: "Ko‘z rangi",
+                gender: "Jins"
+            },
+            actions: {
+                reset: "Tozalash",
+                contact: "Bog‘lanish"
+            },
+            units: {
+                years: "{{count}} yosh",
+                cm: "sm"
+            }
         },
     },
     ru: {
@@ -129,6 +168,44 @@ const resources = {
                     more: "...и другие классные клипы",
                 },
             },
+            models: {
+                title: 'Models / Actors',
+                found: 'Найдено',
+                photos: 'ФОТО',
+                contact: { requestTitle: 'Заявка на модель', id: 'ID', name: 'Имя' }
+            },
+            filters: {
+                search: 'Поиск',
+                searchPlaceholder: 'Имя, фамилия…',
+                gender: 'Пол',
+                genderAny: 'Любой',
+                genderMale: 'Мужской',
+                genderFemale: 'Женский',
+                age: 'Возраст',
+                heightFrom: 'Рост от',
+                any: 'Любой'
+            },
+            modal: {
+                age: 'Возраст',
+                nationality: 'Гражданство',
+                region: 'Город проживания',
+                height: 'Рост',
+                appearanceType: 'Тип внешности',
+                bodyType: 'Телосложение',
+                hairColor: 'Цвет волос',
+                eyeColor: 'Цвет глаз',
+                gender: 'Пол'
+            },
+            actions: { reset: 'Сбросить', contact: 'Связаться' },
+            units: {
+                years_one: "{{count}} год",
+                years_few: "{{count}} года",
+                years_many: "{{count}} лет",
+                years_other: "{{count}} лет",
+                cm: "см"
+            }
+
+
         },
     },
     en: {
@@ -192,6 +269,47 @@ const resources = {
                     more: "...and many other great clips",
                 },
             },
+            models: {
+                title: "Models / Actors",
+                found: "Found",
+                photos: "PHOTOS",
+                contact: {
+                    requestTitle: "Model request",
+                    id: "ID",
+                    name: "Name"
+                }
+            },
+            filters: {
+                search: "Search",
+                searchPlaceholder: "First or last name…",
+                gender: "Gender",
+                genderAny: "Any",
+                genderMale: "Male",
+                genderFemale: "Female",
+                age: "Age",
+                heightFrom: "Height from",
+                any: "Any"
+            },
+            modal: {
+                age: "Age",
+                nationality: "Nationality",
+                region: "City of residence",
+                height: "Height",
+                appearanceType: "Appearance type",
+                bodyType: "Body type",
+                hairColor: "Hair color",
+                eyeColor: "Eye color",
+                gender: "Gender"
+            },
+            actions: {
+                reset: "Reset",
+                contact: "Contact"
+            },
+            units: {
+                years_one: "{{count}} year",
+                years_other: "{{count}} years",
+                cm: "cm"
+            }
         },
     },
 };
