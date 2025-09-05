@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Header from "./Header";
+import Header from "./HeaderAdmin";
 import "react-responsive-modal/styles.css";
 import ApiCall, { baseUrl } from '../../config/index';
 import { useParams, useNavigate } from "react-router-dom";
@@ -10,6 +10,17 @@ import { FaArrowLeft, FaCheck, FaTimes, FaDollarSign } from 'react-icons/fa';
 function CastingUserDetail() {
     const { castingUserId } = useParams();
     const navigate = useNavigate();
+    const accessToken = localStorage.getItem("access_token");
+    const checkSecurity = () => {
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!accessToken) {
+            navigate("/admin/login");
+        }
+    };
+    useEffect(() => {
+        checkSecurity()
+    }, []);
 
     const [casting, setCasting] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -229,7 +240,7 @@ function CastingUserDetail() {
                             </div>
                         )}
                         {
-                            (casting.status===1 && casting.secondChan==0) &&
+                            (casting.status === 1 && casting.secondChan == 0) &&
                             <button
                                 className="action-btn accept-btn my-1"
                                 onClick={hasPayment}
@@ -239,7 +250,7 @@ function CastingUserDetail() {
                             </button>
                         }
                         {
-                            casting.status===0&&
+                            casting.status === 0 &&
                             <div className="action-buttons">
                                 <button
                                     className="action-btn accept-btn"
@@ -328,4 +339,3 @@ function CastingUserDetail() {
 
 export default CastingUserDetail;
 
-                        

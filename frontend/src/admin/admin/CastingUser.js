@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ApiCall from "../../config";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header";
+import Header from "./HeaderAdmin";
 import { FaUser, FaPhone, FaEnvelope, FaTelegram } from 'react-icons/fa';
 import './CastingUser.css';
 
@@ -12,6 +12,17 @@ const CastingUser = () => {
     const [error, setError] = useState(null);
     const [statusFilter, setStatusFilter] = useState("all");
     const navigate = useNavigate();
+    const accessToken = localStorage.getItem("access_token");
+    const checkSecurity = () => {
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!accessToken) {
+            navigate("/admin/login");
+        }
+    };
+    useEffect(() => {
+        checkSecurity()
+    }, []);
 
     useEffect(() => {
         fetchCastingUsers();

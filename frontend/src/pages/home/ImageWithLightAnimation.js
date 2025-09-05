@@ -3,71 +3,141 @@ import React, { useState, useEffect } from 'react';
 const ImageWithLightAnimation = ({
     src,
     alt = "Image with light animation",
-    className = "w-full h-64 object-cover rounded-lg",
-    enableAutoAnimation = true,
-    animationSpeed = 4000
+    animationSpeed = 1000 // Har bir yo'nalish 3 soniya davom etadi
 }) => {
-    const [isAnimating, setIsAnimating] = useState(enableAutoAnimation);
     const [animationPhase, setAnimationPhase] = useState(0);
 
     useEffect(() => {
-        if (!isAnimating) {
-            setAnimationPhase(0);
-            return;
-        }
-
         const interval = setInterval(() => {
             setAnimationPhase(prev => (prev + 1) % 4);
-        }, animationSpeed / 4);
+        }, animationSpeed);
 
         return () => clearInterval(interval);
-    }, [isAnimating, animationSpeed]);
+    }, [animationSpeed]);
 
     return (
-        <div className="relative overflow-hidden rounded-lg shadow-xl bg-gray-900">
+        <div
+            className=" w-full h-1/2 relative overflow-hidden rounded-lg shadow-xl bg-gray-900"
+        >
             {/* Asosiy rasm */}
             <img
                 src={src}
                 alt={alt}
-                className={`${className} transition-opacity duration-700 ${isAnimating ? 'opacity-90' : 'opacity-100'}`}
+                className={`w-full h-full opacity-90`}
             />
 
-            {/* Yorug'lik effektlari */}
-            <div className="absolute inset-0">
-                {/* Yuqori tomondan yorug'lik */}
+            {/* Aylana shaklidagi yorug'lik effektlari */}
+            <div className="absolute inset-0 pointer-events-none">
+                {/* 1. Yuqori chap - aylana */}
                 <div
-                    className={`absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white/60 to-transparent transition-opacity duration-1000 ${isAnimating && animationPhase === 0 ? 'opacity-100' : 'opacity-0'}`}
+                    className={`absolute top-14 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
                 />
 
-                {/* O'ng tomondan yorug'lik */}
+                {/* 2. Yuqori markaz - aylana */}
                 <div
-                    className={`absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-white/60 to-transparent transition-opacity duration-1000 ${isAnimating && animationPhase === 1 ? 'opacity-100' : 'opacity-0'}`}
+                    className={`absolute top-14 left-1/2 transform -translate-x-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
                 />
 
-                {/* Pastki tomondan yorug'lik */}
+                {/* 3. Yuqori o'ng - aylana */}
                 <div
-                    className={`absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white/60 to-transparent transition-opacity duration-1000 ${isAnimating && animationPhase === 2 ? 'opacity-100' : 'opacity-0'}`}
+                    className={`absolute top-14 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
                 />
 
-                {/* Chap tomondan yorug'lik */}
+                {/* 4. O'ng yuqori - aylana */}
                 <div
-                    className={`absolute top-0 left-0 bottom-0 w-8 bg-gradient-to-r from-white/60 to-transparent transition-opacity duration-1000 ${isAnimating && animationPhase === 3 ? 'opacity-100' : 'opacity-0'}`}
+                    className={`absolute top-1/4 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 5. O'ng markaz - aylana */}
+                <div
+                    className={`absolute top-1/2 right-14 transform -translate-y-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 6. O'ng past - aylana */}
+                <div
+                    className={`absolute bottom-1/4 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 7. Pastki o'ng - aylana */}
+                <div
+                    className={`absolute bottom-14 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 8. Pastki markaz - aylana */}
+                <div
+                    className={`absolute bottom-14 left-1/2 transform -translate-x-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 9. Pastki chap - aylana */}
+                <div
+                    className={`absolute bottom-14 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 10. Chap past - aylana */}
+                <div
+                    className={`absolute bottom-1/4 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 11. Chap markaz - aylana */}
+                <div
+                    className={`absolute top-1/2 left-14 transform -translate-y-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
+                />
+
+                {/* 12. Chap yuqori - aylana */}
+                <div
+                    className={`absolute top-1/4 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                    style={{
+                        filter: 'blur(30px)',
+                        borderRadius: '50%'
+                    }}
                 />
             </div>
 
-            {/* Animatsiyani boshqarish tugmasi */}
-            <button
-                className="absolute bottom-4 right-4 bg-black/80 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg hover:bg-black/90 transition-colors z-10"
-                onClick={() => setIsAnimating(!isAnimating)}
-            >
-                {isAnimating ? "Animatsiyani oʻchirish" : "Animatsiyani yoqish"}
-            </button>
-
-            {/* Holatni ko'rsatuvchi indikator */}
-            <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-md text-xs z-10">
-                {isAnimating ? "Yorug'lik effektlari yoqilgan" : "Animatsiya o'chirilgan"}
-            </div>
-        </div>
+        </div >
     );
 };
 
