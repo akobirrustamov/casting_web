@@ -72,7 +72,7 @@ function Header() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/data-form" style={{
+                                    <Link to="https://t.me/uzcastingbot" style={{
                                         display: window.innerWidth >= 769 ? "none" : "block"
                                     }} className="nav-link">
                                         {t('header.register')}
@@ -106,7 +106,7 @@ function Header() {
                             </div>
 
                             <div className="auth-buttons">
-                                <Link to="/data-form" className="register-btn">{t('header.register')}</Link>
+                                <Link to="https://t.me/uzcastingbot" className="register-btn">{t('header.register')}</Link>
                             </div>
                         </div>
 
