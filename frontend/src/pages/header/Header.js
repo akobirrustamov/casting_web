@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import './Header.css';
+import './header.css';
 import logo from "./logo.jpg"
 
 function Header() {
