@@ -9,6 +9,8 @@ import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import bg from "../../images/bg.jpg"
 import ImageWithLightAnimation from "./ImageWithLightAnimation"
+import face from "../../images/bashara.png"
+import banner from "../../images/banner.jpg"
 
 function Home() {
     const navigate = useNavigate();
@@ -101,7 +103,7 @@ function Home() {
                     <div className="director-media">
                         {/* заменишь src на свой backend-URL при необходимости */}
                         <img
-                            src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=900&auto=format&fit=crop"
+                            src={face}
                             alt="Sattorov Jasur — Producer / Director"
                         />
                     </div>
@@ -123,7 +125,7 @@ function Home() {
                     <div className="showcase-media">
                         <div className="showcase-img">
                             <img
-                                src="https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?q=80&w=1200&auto=format&fit=crop"
+                                src={banner}
                                 alt="Maxsus Bo‘lim — poster"
                             />
                             <figcaption>{t("showcase.films.posterCaption")}</figcaption>

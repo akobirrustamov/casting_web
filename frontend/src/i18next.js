@@ -34,20 +34,20 @@ const resources = {
             director: {
                 heading: "Producer va Direktor",
                 about:
-                    "Sattorov Jasur – 5 yillik tajribaga ega producer, aktyor, casting direktori. Tajriba davomida Moskva, Sankt-Peterburg, Malayziya, Istanbulda faoliyat yurgan. 20–30 ga yaqin kliplar produceri.",
+                    "Sattorov Jasur – kino va san’at sohasida 5 yildan ortiq tajribaga ega bo‘lgan professional producer, aktyor va casting direktori. U o‘z faoliyati davomida nafaqat O‘zbekistonda, balki xorijiy mamlakatlarda ham muvaffaqiyatli ishlagan. Jasur Moskva, Sankt-Peterburg, Malayziya va Istanbul kabi yirik madaniy markazlarda turli xil ijodiy loyihalarda ishtirok etib, katta tajriba orttirgan. Uning faoliyati davomida 20–30 dan ortiq musiqiy kliplarning produceri sifatida ishlagani san’at sohasida o‘zining puxta bilim va tajribasini namoyon qiladi. Sattorov Jasur loyihalarda ijodiy yondashuvi, professional tashkiliy qobiliyati va xalqaro tajribasini uyg‘unlashtirib, har bir ishda yuqori sifatni ta’minlashga intiladi.",
             },
             showcase: {
                 films: {
                     title: "Faoliyatimizdan namunalar (Film va serialar)",
                     posterCaption: "«Maxsus Bo‘lim» — detektiv / triller",
-                    ftitle: "🎬 Фильм номи:",
-                    fname: "Mахсус бўлим (Maxsus Bo‘lim)",
-                    genre: "📽 Жанр:",
+                    ftitle: "🎬 Film nomi:",
+                    fname: "Maxsus bo‘lim (Maxsus Bo‘lim)",
+                    genre: "📽 Janr:",
                     genreVal: "Detektiv, triller, siri to‘la drama",
-                    producer: "🎬 Продюсер:",
+                    producer: "🎬 Produser:",
                     producerVal:
-                        "Сатторов Жасур — “Uzcasting” раҳбари, продюсер, шоу-бизнесда “Jas Max Star” номи билан танилган",
-                    places: "🌍 Суратга олиш жойлари:",
+                        "Sattorov Jasur — “Uzcasting” rahbari, produser, shou-biznesda “Jas Max Star” nomi bilan tanilgan",
+                    places: "🌍 Suratga olish joylari:",
                     placesVal:
                         "• 🇺🇿 O‘zbekiston (Toshkent, Samarqand)\n• 🇷🇺 Rossiya (Moskva, Sankt-Peterburg)\n• 🇹🇷 Turkiya (Istanbul, Kappadokiya)\n• 🇦🇪 Dubay (BAA)",
                     synopsis: "🧩 Qisqacha mavzusi:",
@@ -137,7 +137,11 @@ const resources = {
             director: {
                 heading: "Продюсер и Режиссёр",
                 about:
-                    "Саттаров Жасур — продюсер, актёр, кастинг-директор с 5-летним опытом. Работал в Москве, Санкт-Петербурге, Малайзии, Стамбуле. Продюсер 20–30 клипов.",
+                    `Сатторов Жасур – профессиональный продюсер, актер и кастинг-директор с более чем 5-летним опытом работы в сфере кино и искусства. В течение своей деятельности он успешно реализовал проекты не только в Узбекистане, но и за рубежом. Жасур принимал участие в различных творческих проектах в таких крупных культурных центрах, как Москва, Санкт-Петербург, Малайзия и Стамбул, накопив значительный опыт.
+
+За время своей карьеры он выступил продюсером более чем 20–30 музыкальных клипов, что демонстрирует его глубокие знания и практический опыт в сфере искусства. Сатторов Жасур в каждом проекте сочетает творческий подход, профессиональные организаторские навыки и международный опыт, стремясь обеспечить высокое качество выполняемой работы.
+
+`,
             },
             showcase: {
                 films: {
@@ -238,7 +242,10 @@ const resources = {
             director: {
                 heading: "Producer & Director",
                 about:
-                    "Sattorov Jasur — producer, actor, and casting director with 5 years’ experience. Worked in Moscow, St. Petersburg, Malaysia, Istanbul. Producer of ~20–30 music videos.",
+                    `Sattorov Jasur is a professional producer, actor, and casting director with more than 5 years of experience in the field of cinema and art. Throughout his career, he has successfully worked not only in Uzbekistan but also abroad. Jasur has taken part in various creative projects in major cultural centers such as Moscow, Saint Petersburg, Malaysia, and Istanbul, gaining significant experience.
+
+During his professional journey, he has produced over 20–30 music videos, which highlights his solid knowledge and expertise in the art industry. In every project, Sattorov Jasur combines a creative approach, strong organizational skills, and international experience, striving to ensure the highest quality in his work.
+`,
             },
             showcase: {
                 films: {

@@ -56,7 +56,7 @@ function App() {
         {/*  app admin */}
         <Route path={"/admin/login"} element={<LoginPage />} />
         <Route path={"/admin/home"} element={<AdminHome />} />
-        <Route path={"/admin/news"} element={<AdminNews />} />
+        {/* <Route path={"/admin/news"} element={<AdminNews />} /> */}
         <Route path={"/admin/casting-users"} element={<CastingUser />} />
         <Route path={"/admin/accepted"} element={<CastingUserAccepted />} />
         <Route path={"/admin/casting-users/:castingUserId"} element={<CastingUserDetail />} />

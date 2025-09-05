@@ -5,7 +5,30 @@ import ApiCall, { baseUrl } from '../../config/index';
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
 import './CastingUserDetail.css';
-import { FaArrowLeft, FaCheck, FaTimes, FaDollarSign } from 'react-icons/fa';
+import {
+    FaArrowLeft,
+    FaCheck,
+    FaTimes,
+    FaDollarSign,
+    FaTrash,
+    FaUser,
+    FaRulerVertical,
+    FaPalette,
+    FaEye,
+    FaTshirt,  // Using FaTshirt instead of FaShirt
+    FaShoePrints,
+    FaMapMarkerAlt,
+    FaGlobe,
+    FaBirthdayCake,
+    FaPhone,
+    FaEnvelope,
+    FaPaperPlane,
+    FaFacebook,
+    FaInstagram,
+    FaImages,
+    FaMoneyBillWave,
+    FaClock
+} from 'react-icons/fa';
 
 function CastingUserDetail() {
     const { castingUserId } = useParams();
@@ -77,6 +100,12 @@ function CastingUserDetail() {
         return statusClasses[status] || "";
     };
 
+    const getStatusIcon = (status) => {
+        if (status === 0) return <FaClock className="status-icon" />;
+        if (status === 1) return <FaCheck className="status-icon" />;
+        return <FaTimes className="status-icon" />;
+    };
+
     const openImageModal = (imageUrl) => {
         setSelectedImage(imageUrl);
         setIsModalOpen(true);
@@ -125,14 +154,15 @@ function CastingUserDetail() {
             setLoading(false);
         }
     };
+
     const handleDelete = async () => {
-        if (!window.confirm("Ushbu foydalanuvchini butunlay o‘chirmoqchimisiz?")) return;
+        if (!window.confirm("Ushbu foydalanuvchini butunlay o'chirmoqchimisiz?")) return;
 
         setLoading(true);
         try {
             await ApiCall(`/api/v1/casting-user/${castingUserId}`, 'DELETE');
-            alert("Foydalanuvchi muvaffaqiyatli o‘chirildi.");
-            navigate(-1); // Or navigate('/casting') if you want to go to a specific page
+            alert("Foydalanuvchi muvaffaqiyatli o'chirildi.");
+            navigate(-1);
         } catch (error) {
             console.error("O'chirishda xatolik:", error);
             setError("O'chirishda xatolik yuz berdi");
@@ -140,19 +170,19 @@ function CastingUserDetail() {
             setLoading(false);
         }
     };
+
     const hasPayment = async () => {
-        if (!window.confirm("Ushbu foydalanuvchini rosttan ham to'lov qildimi")) return;
+        if (!window.confirm("Ushbu foydalanuvchini rosttan ham to'lov qildimi?")) return;
         setLoading(true);
         try {
             await ApiCall(`/api/v1/casting-user/payed/${castingUserId}`, 'GET');
             navigate(-1);
         } catch (error) {
-            setError("O'chirishda xatolik yuz berdi");
+            setError("To'lovni tasdiqlashda xatolik yuz berdi");
         } finally {
             setLoading(false);
         }
     };
-
 
     return (
         <div className="casting-detail-dark">
@@ -160,176 +190,370 @@ function CastingUserDetail() {
 
             <div className="casting-detail-content">
                 <button className="back-button" onClick={() => navigate(-1)}>
-                    <FaArrowLeft className="mr-2" /> Orqaga
+                    <FaArrowLeft className="button-icon" /> Orqaga
                 </button>
 
                 {loading && !casting ? (
                     <div className="loading-container">
                         <div className="loading-spinner"></div>
-                        <p>Yuklanmoqda...</p>
+                        <p className="loading-text">Yuklanmoqda...</p>
                     </div>
                 ) : error ? (
                     <div className="error-message">
-                        Xatolik: {error}
+                        <div className="error-icon">⚠️</div>
+                        <div className="error-content">
+                            <h3>Xatolik yuz berdi</h3>
+                            <p>{error}</p>
+                        </div>
                     </div>
                 ) : casting === null ? (
                     <div className="error-message">
-                        Ma'lumotlar topilmadi
+                        <div className="error-icon">🔍</div>
+                        <div className="error-content">
+                            <h3>Ma'lumotlar topilmadi</h3>
+                            <p>So'ralgan foydalanuvchi ma'lumotlari topilmadi</p>
+                        </div>
                     </div>
                 ) : (
                     <>
-                        <div className="casting-card">
-                            <h2 className="section-title">Asosiy ma'lumotlar</h2>
-                            <div className="info-grid">
-                                <div className="info-item"><b>Ism:</b> {casting.name}</div>
-                                <div className="info-item"><b>Casting turi:</b> {casting.castingType}</div>
-                                <div className="info-item"><b>Jins:</b> {casting.gender}</div>
-                                <div className="info-item"><b>Hudud:</b> {casting.region}</div>
-                                <div className="info-item"><b>Millat:</b> {casting.nationality}</div>
-                                <div className="info-item"><b>Tug'ilgan sana:</b> {formatDate(casting.birthday)}</div>
-                                <div className="info-item">
-                                    <b>Holat:</b>
+                        <div className="user-profile-header">
+                            <div className="profile-avatar">
+                                {casting.photos && casting.photos.length > 0 ? (
+                                    <img
+                                        src={`${baseUrl}/api/v1/file/getFile/${casting.photos[0].id}`}
+                                        alt={casting.name}
+                                    />
+                                ) : (
+                                    <div className="avatar-placeholder">
+                                        <FaUser />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="profile-info">
+                                <h1 className="user-name">{casting.name}</h1>
+                                <div className="user-meta">
+                                    <span className="user-type">{casting.castingType}</span>
+                                    <span className="user-gender">{casting.gender}</span>
                                     <span className={`status-badge ${getStatusClass(casting.status)}`}>
+                                        {getStatusIcon(casting.status)}
                                         {getStatusText(casting.status)}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="casting-card">
-                            <h2 className="section-title">Jismoniy tavsif</h2>
-                            <div className="info-grid">
-                                <div className="info-item"><b>Yosh:</b> {casting.age}</div>
-                                <div className="info-item"><b>Bo'y (sm):</b> {casting.height}</div>
-                                <div className="info-item"><b>Soch rangi:</b> {casting.hairColor}</div>
-                                <div className="info-item"><b>Ko'z rangi:</b> {casting.eyeColor}</div>
-                                <div className="info-item"><b>Kiyim o'lchami:</b> {casting.clothSize}</div>
-                                <div className="info-item"><b>Oyoq o'lchami:</b> {casting.shoeSize}</div>
-                                <div className="info-item"><b>Ko'krak (sm):</b> {casting.bust}</div>
-                                <div className="info-item"><b>Bel (sm):</b> {casting.waist}</div>
-                                <div className="info-item"><b>Son (sm):</b> {casting.son}</div>
-                            </div>
-                        </div>
-
-                        <div className="casting-card">
-                            <h2 className="section-title">Aloqa ma'lumotlari</h2>
-                            <div className="info-grid">
-                                <div className="info-item"><b>Email:</b> {casting.email}</div>
-                                <div className="info-item"><b>Telefon:</b> {casting.phone}</div>
-                                <div className="info-item"><b>Telegram:</b> {casting.telegram}</div>
-                                <div className="info-item"><b>Facebook:</b> {casting.facebook}</div>
-                                <div className="info-item"><b>Instagram:</b> {casting.instagram}</div>
-                                <div className="info-item"><b>Narx ($):</b> {casting.price || "Belgilanmagan"}</div>
-                            </div>
-                        </div>
-
-                        {casting.photos && casting.photos.length > 0 && (
-                            <div className="casting-card">
-                                <h2 className="section-title">Galereya</h2>
-                                <div className="gallery-grid">
-                                    {casting.photos.map((photo, index) => (
-                                        <div key={index} className="gallery-item">
-                                            <img
-                                                src={`${baseUrl}/api/v1/file/getFile/${photo.id}`}
-                                                alt={`Gallery ${index + 1}`}
-                                                onClick={() => openImageModal(`${baseUrl}/api/v1/file/getFile/${photo.id}`)}
-                                            />
+                        <div className="info-cards-container">
+                            <div className="info-card">
+                                <h2 className="section-title">
+                                    <FaUser className="section-icon" />
+                                    Asosiy ma'lumotlar
+                                </h2>
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaMapMarkerAlt /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Hudud</span>
+                                            <span className="info-value">{casting.region}</span>
                                         </div>
-                                    ))}
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaGlobe /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Millat</span>
+                                            <span className="info-value">{casting.nationality}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaBirthdayCake /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Tug'ilgan sana</span>
+                                            <span className="info-value">{formatDate(casting.birthday)}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        )}
-                        {
-                            (casting.status === 1 && casting.secondChan == 0) &&
-                            <button
-                                className="action-btn accept-btn my-1"
-                                onClick={hasPayment}
-                                disabled={loading}
-                            >
-                                <FaCheck /> To'lov qildi
-                            </button>
-                        }
-                        {
-                            casting.status === 0 &&
-                            <div className="action-buttons">
-                                <button
-                                    className="action-btn accept-btn"
-                                    onClick={() => setIsPriceModalOpen(true)}
-                                    disabled={loading}
-                                >
-                                    <FaCheck /> Qabul qilish
-                                </button>
 
-                                <button
-                                    className="action-btn reject-btn"
-                                    onClick={handleReject}
-                                    disabled={loading}
-                                >
-                                    <FaTimes /> Rad qilish
-                                </button>
-
-                                <button
-                                    className="action-btn price-btn"
-                                    onClick={() => setIsPriceModalOpen(true)}
-                                    disabled={loading}
-                                >
-                                    <FaDollarSign /> Narx belgilash
-                                </button>
+                            <div className="info-card">
+                                <h2 className="section-title">
+                                    <FaRulerVertical className="section-icon" />
+                                    Jismoniy tavsif
+                                </h2>
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <div className="info-icon">🎂</div>
+                                        <div className="info-content">
+                                            <span className="info-label">Yosh</span>
+                                            <span className="info-value">{casting.age}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon">📏</div>
+                                        <div className="info-content">
+                                            <span className="info-label">Bo'y</span>
+                                            <span className="info-value">{casting.height} sm</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaPalette /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Soch rangi</span>
+                                            <span className="info-value">{casting.hairColor}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaEye /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Ko'z rangi</span>
+                                            <span className="info-value">{casting.eyeColor}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaTshirt /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Kiyim o'lchami</span>
+                                            <span className="info-value">{casting.clothSize}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaShoePrints /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Oyoq o'lchami</span>
+                                            <span className="info-value">{casting.shoeSize}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon">📐</div>
+                                        <div className="info-content">
+                                            <span className="info-label">Ko'krak</span>
+                                            <span className="info-value">{casting.bust} sm</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon">📐</div>
+                                        <div className="info-content">
+                                            <span className="info-label">Bel</span>
+                                            <span className="info-value">{casting.waist} sm</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon">📐</div>
+                                        <div className="info-content">
+                                            <span className="info-label">Son</span>
+                                            <span className="info-value">{casting.son} sm</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                        }
-                        <button
-                            className="action-btn delete-btn"
-                            onClick={handleDelete}
-                            disabled={loading}
-                        >
-                            <FaTimes /> O'chirish
-                        </button>
+                            <div className="info-card">
+                                <h2 className="section-title">
+                                    <FaPaperPlane className="section-icon" />
+                                    Aloqa ma'lumotlari
+                                </h2>
+                                <div className="info-grid">
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaEnvelope /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Email</span>
+                                            <span className="info-value">{casting.email || "Ko'rsatilmagan"}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaPhone /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Telefon</span>
+                                            <span className="info-value">{casting.phone}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaPaperPlane /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Telegram</span>
+                                            <span className="info-value">{casting.telegram || "Ko'rsatilmagan"}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaFacebook /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Facebook</span>
+                                            <span className="info-value">{casting.facebook || "Ko'rsatilmagan"}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaInstagram /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Instagram</span>
+                                            <span className="info-value">{casting.instagram || "Ko'rsatilmagan"}</span>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <div className="info-icon"><FaDollarSign /></div>
+                                        <div className="info-content">
+                                            <span className="info-label">Narx</span>
+                                            <span className="info-value price-value">
+                                                {casting.price ? `$${casting.price}` : "Belgilanmagan"}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            {casting.photos && casting.photos.length > 0 && (
+                                <div className="info-card">
+                                    <h2 className="section-title">
+                                        <FaImages className="section-icon" />
+                                        Galereya
+                                    </h2>
+                                    <div className="gallery-grid">
+                                        {casting.photos.map((photo, index) => (
+                                            <div key={index} className="gallery-item">
+                                                <img
+                                                    src={`${baseUrl}/api/v1/file/getFile/${photo.id}`}
+                                                    alt={`Gallery ${index + 1}`}
+                                                    onClick={() => openImageModal(`${baseUrl}/api/v1/file/getFile/${photo.id}`)}
+                                                />
+                                                <div className="gallery-overlay">
+                                                    <span>Ko'rish</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="action-buttons-container">
+                            {(casting.status === 1 && casting.secondChan == 0) && (
+                                <button
+                                    className="action-btn payment-btn"
+                                    onClick={hasPayment}
+                                    disabled={loading}
+                                >
+                                    <FaMoneyBillWave className="button-icon" />
+                                    To'lov qildi
+                                </button>
+                            )}
+
+                            {casting.status === 0 && (
+                                <>
+                                    <button
+                                        className="action-btn accept-btn"
+                                        onClick={() => setIsPriceModalOpen(true)}
+                                        disabled={loading}
+                                    >
+                                        <FaCheck className="button-icon" />
+                                        Qabul qilish
+                                    </button>
+
+                                    <button
+                                        className="action-btn price-btn"
+                                        onClick={() => setIsPriceModalOpen(true)}
+                                        disabled={loading}
+                                    >
+                                        <FaDollarSign className="button-icon" />
+                                        Narx belgilash
+                                    </button>
+
+                                    <button
+                                        className="action-btn reject-btn"
+                                        onClick={handleReject}
+                                        disabled={loading}
+                                    >
+                                        <FaTimes className="button-icon" />
+                                        Rad qilish
+                                    </button>
+                                </>
+                            )}
+
+                            <button
+                                className="action-btn delete-btn"
+                                onClick={handleDelete}
+                                disabled={loading}
+                            >
+                                <FaTrash className="button-icon" />
+                                O'chirish
+                            </button>
+                        </div>
                     </>
                 )}
 
                 {/* Rasm modal oynasi */}
-                <Modal open={isModalOpen} onClose={closeImageModal} center>
+                <Modal
+                    open={isModalOpen}
+                    onClose={closeImageModal}
+                    center
+                    classNames={{
+                        overlay: 'modal-overlay',
+                        modal: 'image-modal'
+                    }}
+                >
                     {selectedImage && (
-                        <img
-                            src={selectedImage}
-                            alt="To'liq rasm"
-                            style={{
-                                maxWidth: '100%',
-                                maxHeight: '80vh',
-                                objectFit: 'contain',
-                                borderRadius: '8px'
-                            }}
-                        />
+                        <div className="image-modal-content">
+                            <img
+                                src={selectedImage}
+                                alt="To'liq rasm"
+                            />
+                            <button className="modal-close-btn" onClick={closeImageModal}>
+                                <FaTimes />
+                            </button>
+                        </div>
                     )}
                 </Modal>
 
                 {/* Narx modal oynasi */}
-                <Modal open={isPriceModalOpen} onClose={() => setIsPriceModalOpen(false)} center>
-                    <h2 className="section-title">Narx belgilash ($)</h2>
-                    <input
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        className="price-input"
-                        placeholder="Narxni kiriting"
-                    />
-                    <div className="action-buttons">
-                        <button
-                            className="action-btn accept-btn"
-                            onClick={handleAccept}
-                            disabled={loading}
-                        >
-                            {loading ? 'Saqlanmoqda...' : 'Saqlash va Qabul qilish'}
-                        </button>
-                        <button
-                            className="action-btn reject-btn"
-                            onClick={() => setIsPriceModalOpen(false)}
-                            disabled={loading}
-                        >
-                            Bekor qilish
-                        </button>
+                <Modal
+                    open={isPriceModalOpen}
+                    onClose={() => setIsPriceModalOpen(false)}
+                    center
+                    classNames={{
+                        overlay: 'modal-overlay',
+                        modal: 'price-modal'
+                    }}
+                >
+                    <div className="price-modal-content">
+                        <h2 className="modal-title">
+                            <FaDollarSign className="modal-title-icon" />
+                            Narx belgilash
+                        </h2>
+                        <p className="modal-description">Foydalanuvchi uchun narxni dollar ($) da kiriting</p>
+                        <div className="price-input-container">
+                            <span className="currency-symbol">$</span>
+                            <input
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                className="price-input"
+                                placeholder="Narxni kiriting"
+                                min="0"
+                            />
+                        </div>
+                        <div className="modal-action-buttons">
+                            <button
+                                className="modal-btn confirm-btn"
+                                onClick={handleAccept}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <div className="button-spinner"></div>
+                                        Saqlanmoqda...
+                                    </>
+                                ) : (
+                                    <>
+                                        <FaCheck className="button-icon" />
+                                        Saqlash va Qabul qilish
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                className="modal-btn cancel-btn"
+                                onClick={() => setIsPriceModalOpen(false)}
+                                disabled={loading}
+                            >
+                                <FaTimes className="button-icon" />
+                                Bekor qilish
+                            </button>
+                        </div>
                     </div>
                 </Modal>
             </div>
@@ -338,4 +562,3 @@ function CastingUserDetail() {
 }
 
 export default CastingUserDetail;
-
