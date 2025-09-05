@@ -59,7 +59,7 @@ function HeaderAdmin() {
                     <path d="M17 3.13C17.8604 3.3503 18.623 3.8507 19.1676 4.55231C19.7122 5.25392 20.0078 6.11683 20.0078 7.005C20.0078 7.89317 19.7122 8.75608 19.1676 9.45769C18.623 10.1593 17.8604 10.6597 17 10.88" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             ),
-            text: 'Casting'
+            text: 'Kelib tushgan arizalar'
         },
         {
             path: '/admin/accepted',
