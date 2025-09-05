@@ -15,13 +15,14 @@ function Models() {
 
     // --- Фильтры ---
     const [query, setQuery] = useState('');
-    const [gender, setGender] = useState('all'); // all | male | female
+    const [gender, setGender] = useState('all');        // all | male | female
+    const [ctype, setCtype] = useState('all');          // <-- новый фильтр по castingType
     const [minAge, setMinAge] = useState(0);
-    const [maxAge, setMaxAge] = useState(100); // <-- фикс: максимум всегда 100
+    const [maxAge, setMaxAge] = useState(100);
     const [heightFrom, setHeightFrom] = useState('');
 
     // Telegram username получателя (без @)
-    const TELEGRAM_USERNAME = 'diyorceek_15'; // <-- замени при необходимости
+    const TELEGRAM_USERNAME = 'diyorceek_15';
 
     const calcAge = (birthday) => {
         if (!birthday) return null;
@@ -57,22 +58,19 @@ function Models() {
                         .filter(Boolean)
                         .map((id) => `${baseUrl}/api/v1/file/getFile/${id}`);
 
-                    // <-- фикс: кэпим возраст в диапазон 0..100
+                    // Кэпим возраст 0..100
                     const ageRaw = u.age ?? calcAge(u.birthday);
                     const ageNum = Number(ageRaw);
                     const age =
-                        Number.isFinite(ageNum)
-                            ? Math.max(0, Math.min(100, ageNum))
-                            : null;
+                        Number.isFinite(ageNum) ? Math.max(0, Math.min(100, ageNum)) : null;
 
-                    return { ...u, photoUrls, age };
+                    // нормализуем castingType в lowerCase для фильтра
+                    const castingTypeNorm = (u.castingType || '').toLowerCase();
+
+                    return { ...u, photoUrls, age, castingType: castingTypeNorm };
                 });
 
                 setItems(mapped);
-
-                // <-- УДАЛЕНО: больше не подстраиваем maxAge по данным
-                // const maxAgeInData = Math.max(...(mapped.map(i => i.age || 0)), 60);
-                // setMaxAge(isFinite(maxAgeInData) ? maxAgeInData : 60);
             } catch (e) {
                 console.error('Failed to load cards', e);
             } finally {
@@ -93,6 +91,7 @@ function Models() {
         setCurrent(null);
     };
 
+
     const fmt = (v) => (v === null || v === undefined || v === '' ? '—' : v);
 
     // список роста (145–220) шагом 5
@@ -107,10 +106,18 @@ function Models() {
         const q = query.trim().toLowerCase();
         return items.filter((i) => {
             if (q && !(i.name || '').toLowerCase().includes(q)) return false;
+
             if (gender !== 'all') {
                 const g = String(i.gender || '').toLowerCase();
                 if (g !== gender) return false;
             }
+
+            // Фильтр по кastingType
+            if (ctype !== 'all') {
+                const ct = String(i.castingType || '').toLowerCase();
+                if (ct !== ctype) return false;
+            }
+
             const a = Number(i.age);
             if (Number.isFinite(a)) {
                 if (a < Number(minAge)) return false;
@@ -122,16 +129,14 @@ function Models() {
             }
             return true;
         });
-    }, [items, query, gender, minAge, maxAge, heightFrom]);
+    }, [items, query, gender, ctype, minAge, maxAge, heightFrom]);
 
-    // helpers for dual slider visuals
+    // Dual-range helpers
     const rangeMin = 0;
     const rangeMax = 100;
-    const clampAge = (v) => Math.max(rangeMin, Math.min(rangeMax, Number(v) || 0)); // <-- кэпер
-
+    const clampAge = (v) => Math.max(rangeMin, Math.min(rangeMax, Number(v) || 0));
     const pct = (val) => ((val - rangeMin) * 100) / (rangeMax - rangeMin);
 
-    // ensure minAge <= maxAge + кэпим в 0..100 на случай внешних апдейтов
     useEffect(() => {
         const minC = clampAge(minAge);
         const maxC = clampAge(maxAge);
@@ -140,7 +145,7 @@ function Models() {
         if (minC > maxC) setMinAge(maxC);
     }, [maxAge, minAge]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // Текст для Telegram
+    // Сообщение в Telegram
     const buildContactMessage = (m) => {
         const lblRequest = t('models.contact.requestTitle', 'Заявка на модель');
         const lblId = t('models.contact.id', 'ID');
@@ -160,6 +165,18 @@ function Models() {
         const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encoded}`;
         window.open(tgUrl, '_blank', 'noopener,noreferrer');
     };
+
+    // варианты для селекта кастинг-типа: value — код из бэка, label — как на скрине
+    const castingTypeOptions = [
+        { value: 'all', label: t('filters.castingType.options.all') },
+        { value: 'model', label: t('filters.castingType.options.model') },
+        { value: 'euromodel', label: t('filters.castingType.options.euromodel') },
+        { value: 'bloger', label: t('filters.castingType.options.bloger') },
+        { value: 'actor', label: t('filters.castingType.options.actor') },
+        { value: 'extra', label: t('filters.castingType.options.extra') },
+        { value: 'influencer', label: t('filters.castingType.options.influencer') },
+    ];
+
 
     return (
         <div className="models-page">
@@ -190,6 +207,17 @@ function Models() {
                                 <option value="female">{t('filters.genderFemale', 'Женский')}</option>
                             </select>
                         </div>
+
+                        {/* НОВЫЙ СЕЛЕКТ: Kasting turi */}
+                        <div className="filter-item">
+                            <label>{t('filters.castingType.label')}</label>
+                            <select value={ctype} onChange={(e) => setCtype(e.target.value)}>
+                                {castingTypeOptions.map(o => (
+                                    <option key={o.value} value={o.value}>{o.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
 
                         {/* Двуручный слайдер возраста */}
                         <div className="filter-item age-block">
@@ -264,6 +292,7 @@ function Models() {
                                 onClick={() => {
                                     setQuery('');
                                     setGender('all');
+                                    setCtype('all');                // сбрасываем и кастинг-тип
                                     setMinAge(rangeMin);
                                     setMaxAge(rangeMax);
                                     setHeightFrom('');
@@ -340,7 +369,10 @@ function Models() {
                                     <dd>{fmt(current.height)} {t('units.cm', 'см')}</dd>
 
                                     <dt>{t('modal.appearanceType', 'Тип внешности')}</dt>
-                                    <dd>{fmt(current.castingType)}</dd>
+                                    <dd>
+                                        {t(`filters.castingType.options.${current.castingType}`, current.castingType || '—')}
+                                    </dd>
+
 
                                     <dt>{t('modal.bodyType', 'Телосложение')}</dt>
                                     <dd>{fmt(current.bodyType) || '—'}</dd>
