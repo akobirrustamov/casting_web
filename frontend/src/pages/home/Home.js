@@ -46,10 +46,14 @@ function Home() {
     return (
         <div className="home-container">
             <Header />
+            <ImageWithLightAnimation
+                src={bg}
+                alt="Tog' manzarasi"
+            />
 
             {/* <ImageWithLightAnimation src={bg} alt="Background image"
                 className="w-full h-1/2" enableAutoAnimation={true} /> */}
-            <img src={bg} className="h-1/2 w-full" />
+            {/* <img src={bg} className="h-1/2 w-full" /> */}
             {/* ===== HERO / FULL-WIDTH ===== */}
             <section className="hero">
                 <div className="hero-content">

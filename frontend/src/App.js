@@ -15,6 +15,7 @@ import CastingUser from "./admin/admin/CastingUser";
 import CastingUserDetail from "./admin/admin/CastingUserDetail";
 import CastingUserAccepted from "./admin/admin/CastingUserAccepted";
 import Models from "./pages/models/Models";
+import LoginPage from "./admin/LoginAdmin"
 
 
 
@@ -53,16 +54,13 @@ function App() {
     <div>
       <Routes>
         {/*  app admin */}
-        <Route path={"/admin"} element={<AdminHome />} />
+        <Route path={"/admin/login"} element={<LoginPage />} />
+        <Route path={"/admin/home"} element={<AdminHome />} />
         <Route path={"/admin/news"} element={<AdminNews />} />
         <Route path={"/admin/casting-users"} element={<CastingUser />} />
         <Route path={"/admin/accepted"} element={<CastingUserAccepted />} />
         <Route path={"/admin/casting-users/:castingUserId"} element={<CastingUserDetail />} />
         <Route path={"/*"} element={<PageNotFound />} />
-
-
-
-
         {/*  app user */}
         <Route path={"/"} element={<Home />} />
         {/* <Route path={"/"} element={<Home />} /> */}
@@ -70,14 +68,8 @@ function App() {
         <Route path={"/history/"} element={<History />} />
         <Route path={"/appeal/"} element={<Appeal />} />
         <Route path={"/models/"} element={<Models />} />
-
-
-
-
-
-
       </Routes>
-    </div>
+    </div >
   );
 }
 

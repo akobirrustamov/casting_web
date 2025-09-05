@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import ApiCall from "../../config";
-import Header from "./Header";
+import Header from "./HeaderAdmin";
 import './AdminHome.css';
+import { useNavigate } from 'react-router-dom';
 
 const AdminHome = () => {
+    const navigate = useNavigate()
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const accessToken = localStorage.getItem("access_token");
+    const checkSecurity = () => {
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!accessToken) {
+            navigate("/admin/login");
+        }
+    };
+    useEffect(() => {
+        checkSecurity()
+    }, []);
 
     useEffect(() => {
         fetchStatistics();

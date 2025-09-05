@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ApiCall, {baseUrl} from "../../config";
+import ApiCall, { baseUrl } from "../../config";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header";
+import Header from "./HeaderAdmin";
 import { FaPlus, FaTrash, FaTimes, FaSpinner, FaEdit } from 'react-icons/fa';
 import './AdminNews.css';
 
@@ -14,6 +14,17 @@ const AdminNews = () => {
     const [currentNews, setCurrentNews] = useState(null);
     const [mode, setMode] = useState('create'); // 'create' or 'edit'
     const navigate = useNavigate();
+    const accessToken = localStorage.getItem("access_token");
+    const checkSecurity = () => {
+        const accessToken = localStorage.getItem("access_token");
+
+        if (!accessToken) {
+            navigate("/admin/login");
+        }
+    };
+    useEffect(() => {
+        checkSecurity()
+    }, []);
 
     const [formData, setFormData] = useState({
         titleUz: '',
