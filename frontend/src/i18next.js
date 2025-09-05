@@ -14,6 +14,8 @@ const resources = {
             },
             common: {
                 loading: "Yuklanmoqda...",
+                emptyTitle: "Mos keladigan model topilmadi",
+                emptySubtitle: "Filtrlarni o‘zgartiring yoki boshqa so‘rov kiriting",
                 error: "Yangiliklar yuklanmadi",
                 gallery: "Galereya",
                 loadMore: "Ko'proq ko'rish",
@@ -84,7 +86,19 @@ const resources = {
                 genderFemale: "Ayol",
                 age: "Yosh",
                 heightFrom: "Bo‘y",
-                any: "Har qanday"
+                any: "Har qanday",
+                castingType: {
+                    label: 'Casting turi',
+                    options: {
+                        all: 'Barchasi',
+                        model: 'Modelyer',
+                        euromodel: 'Yevro Modelyer',
+                        bloger: 'Bloger',
+                        actor: 'Aktyor',
+                        extra: 'Aktrisa',
+                        influencer: 'Reklama'
+                    }
+                }
             },
             modal: {
                 age: "Yosh",
@@ -116,6 +130,8 @@ const resources = {
                 register: 'Подать заявку'
             },
             common: {
+                emptySubtitle: "Измените фильтры или попробуйте другой запрос",
+                emptyTitle: "Подходящих моделей не найдено",
                 loading: "Загрузка...",
                 error: "Новости не загружены",
                 gallery: "Галерея",
@@ -187,7 +203,19 @@ const resources = {
                 genderFemale: 'Женский',
                 age: 'Возраст',
                 heightFrom: 'Рост от',
-                any: 'Любой'
+                any: 'Любой',
+                castingType: {
+                    label: 'Тип кастинга',
+                    options: {
+                        all: 'Любой',
+                        model: 'Модель',
+                        euromodel: 'Евро-модель',
+                        bloger: 'Блогер',
+                        actor: 'Актёр',
+                        extra: 'Актриса / массовка',
+                        influencer: 'Реклама'
+                    }
+                }
             },
             modal: {
                 age: 'Возраст',
@@ -225,6 +253,8 @@ const resources = {
                 error: "Failed to load news",
                 gallery: "Gallery",
                 loadMore: "Load more",
+                emptyTitle: "No matching models found",
+                emptySubtitle: "Adjust filters or try a different query",
             },
             hero: {
                 title: "Uzcasting — where talent meets opportunity",
@@ -295,7 +325,19 @@ During his professional journey, he has produced over 20–30 music videos, whic
                 genderFemale: "Female",
                 age: "Age",
                 heightFrom: "Height from",
-                any: "Any"
+                any: "Any",
+                castingType: {
+                    label: 'Casting type',
+                    options: {
+                        all: 'Any',
+                        model: 'Model',
+                        euromodel: 'Euro model',
+                        bloger: 'Blogger',
+                        actor: 'Actor',
+                        extra: 'Actress / extra',
+                        influencer: 'Advertising'
+                    }
+                }
             },
             modal: {
                 age: "Age",
