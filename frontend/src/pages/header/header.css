@@ -181,7 +181,7 @@ body.dark-mode .mobile-language-selector button.active {
   display: flex;
   justify-content: center;
   background: rgba(15, 15, 15, 0.95);
-  border-bottom: 1px solid #334155;
+  /* border-bottom: 1px solid #334155; */
 }
 
 .header.scrolled {

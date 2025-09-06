@@ -11,6 +11,9 @@ import bg from "../../images/bg.jpg"
 import ImageWithLightAnimation from "./ImageWithLightAnimation"
 import face from "../../images/bashara.png"
 import banner from "../../images/banner.jpg"
+import one from "../../images/1.jpg"
+import two from "../../images/2.jpg"
+import three from "../../images/3.jpg"
 
 function Home() {
     const navigate = useNavigate();
@@ -142,6 +145,12 @@ function Home() {
                                 referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                             ></iframe>
+                        </div>
+
+                        <div className="three-images">
+                            <img className="w-1/3" src={one} />
+                            <img className="w-1/3" src={two} />
+                            <img className="w-1/3" src={three} />
                         </div>
                     </div>
 
@@ -277,8 +286,8 @@ function Home() {
             {/* ===== NEWS (опционально; показывает новости, если есть) ===== */}
 
             {/* Floating button */}
-            <button
-                onClick={() => navigate(`/data-form`)}
+            <a
+                href="https://t.me/uzcastingbot"
                 className="fixed-navigate-btn circle-marquee"
                 aria-label="Ro'yhatdan o'tish"
             >
@@ -301,7 +310,7 @@ function Home() {
                 <span className="circle-center">
                     <FaArrowDown className="arrow-bounce" aria-hidden="true" />
                 </span>
-            </button>
+            </a>
 
 
         </div>
