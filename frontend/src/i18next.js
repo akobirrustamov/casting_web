@@ -3,6 +3,13 @@ import { initReactI18next } from 'react-i18next';
 
 const savedLng = localStorage.getItem('selectedLanguage') || 'uz';
 
+
+i18n.on('languageChanged', (lng) => {
+    localStorage.setItem('selectedLanguage', lng);
+});
+
+
+
 const resources = {
     uz: {
         translation: {
@@ -363,11 +370,13 @@ During his professional journey, he has produced over 20–30 music videos, whic
     },
 };
 
-i18n.use(initReactI18next).init({
-    resources,
-    lng: savedLng,
-    fallbackLng: "ru",
-    interpolation: { escapeValue: false },
-});
+i18n
+    .use(initReactI18next)
+    .init({
+        resources,
+        lng: savedLng,
+        fallbackLng: 'ru',
+        interpolation: { escapeValue: false },
+    });
 
 export default i18n;

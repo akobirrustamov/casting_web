@@ -12,7 +12,16 @@ function Header() {
     const { t, i18n } = useTranslation();
 
     // Joriy til
-    const currentLanguage = i18n.language;
+    const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
+
+    useEffect(() => {
+        // LocalStorage dan tilni olish
+        const savedLang = localStorage.getItem("appLanguage");
+        if (savedLang && savedLang !== i18n.language) {
+            i18n.changeLanguage(savedLang);
+            setCurrentLanguage(savedLang);
+        }
+    }, [i18n]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -42,6 +51,8 @@ function Header() {
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
+        setCurrentLanguage(lng);
+        localStorage.setItem("appLanguage", lng); // 👉 LocalStorage ga yozish
         setIsLanguageOpen(false);
     };
 
@@ -78,7 +89,6 @@ function Header() {
                                         {t('header.register')}
                                     </Link>
                                 </li>
-
                             </ul>
                         </nav>
 
