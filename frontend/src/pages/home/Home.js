@@ -14,6 +14,7 @@ import banner from "../../images/banner.jpg"
 import one from "../../images/1.jpg"
 import two from "../../images/2.jpg"
 import three from "../../images/3.jpg"
+import Footer from "../footer/Footer"
 
 function Home() {
     const navigate = useNavigate();
@@ -312,8 +313,9 @@ function Home() {
                 </span>
             </a>
 
-
+            <Footer />
         </div>
+
     );
 }
 

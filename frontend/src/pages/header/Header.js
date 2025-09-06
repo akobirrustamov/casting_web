@@ -58,7 +58,11 @@ function Header() {
 
     return (
         <>
-            <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+            <header
+                style={{ backgroundColor: "#111827" }}
+                className={`header ${isScrolled ? "scrolled" : ""}`}
+            >
+
                 <div className="header-container">
                     <div className="logo">
                         <Link to="/">
@@ -108,9 +112,9 @@ function Header() {
 
                                 {isLanguageOpen && (
                                     <div className="language-menu">
-                                        <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
-                                        <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
-                                        <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
+                                        <button style={{ color: "white" }} className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
+                                        <button style={{ color: "white" }} className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
+                                        <button style={{ color: "white" }} className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
                                     </div>
                                 )}
                             </div>
@@ -136,9 +140,9 @@ function Header() {
 
                                 {isLanguageOpen && (
                                     <div className="language-menu">
-                                        <button className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
-                                        <button className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
-                                        <button className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
+                                        <button style={{ color: "white" }} className={currentLanguage === 'uz' ? 'active' : ''} onClick={() => changeLanguage('uz')}>O'Z</button>
+                                        <button style={{ color: "white" }} className={currentLanguage === 'ru' ? 'active' : ''} onClick={() => changeLanguage('ru')}>RU</button>
+                                        <button style={{ color: "white" }} className={currentLanguage === 'en' ? 'active' : ''} onClick={() => changeLanguage('en')}>EN</button>
                                     </div>
                                 )}
                             </div>
@@ -154,7 +158,7 @@ function Header() {
                     </div>
 
                 </div>
-            </header>
+            </header >
             <div className="header-spacer"></div>
         </>
     );

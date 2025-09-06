@@ -378,5 +378,4 @@ i18n
         fallbackLng: 'ru',
         interpolation: { escapeValue: false },
     });
-
 export default i18n;
