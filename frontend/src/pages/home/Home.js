@@ -256,8 +256,8 @@ function Home() {
             </section>
 
             {/* Floating button */}
-            <button
-                onClick={() => navigate(`/data-form`)}
+            <a
+                href="https://t.me/uzcastingbot"
                 className="fixed-navigate-btn circle-marquee"
                 aria-label="Ro'yhatdan o'tish"
             >
