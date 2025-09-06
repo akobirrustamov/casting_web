@@ -313,7 +313,7 @@ function Home() {
                 </span>
             </a>
 
-            <Footer />
+            <Footer  />
         </div>
 
     );

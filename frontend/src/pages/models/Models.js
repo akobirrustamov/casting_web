@@ -5,6 +5,7 @@ import './Models.css';
 import Header from '../header/Header';
 import Loader from './Loader';
 import EmptyState from './EmptyState';
+import Footer from "../footer/Footer"
 
 function Models() {
     const { t } = useTranslation();
@@ -359,6 +360,8 @@ function Models() {
                     <img src={zoomPhoto} alt="zoom" />
                 </div>
             )}
+
+            <Footer />
         </div>
     );
 }
