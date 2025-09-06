@@ -7,21 +7,22 @@ import "./home.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import bg from "../../images/bg.jpg"
-import ImageWithLightAnimation from "./ImageWithLightAnimation"
-import face from "../../images/bashara.png"
-import banner from "../../images/banner.jpg"
+import { TypeAnimation } from "react-type-animation"; // <-- добавлено
+import bg from "../../images/bg.jpg";
+import ImageWithLightAnimation from "./ImageWithLightAnimation";
+import face from "../../images/bashara.png";
+import banner from "../../images/banner.jpg";
 
 function Home() {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const [isMobile, setIsMobile] = useState(false);
+
     useEffect(() => {
         const savedLanguage = localStorage.getItem("selectedLanguage") || "uz";
         if (savedLanguage !== i18n.language) i18n.changeLanguage(savedLanguage);
 
         checkMobile();
-
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,7 +32,7 @@ function Home() {
     const goApplicant = () => navigate(`/data-form`);
     const goClient = () => navigate(`/models`);
 
-    // безопасный выбор заголовка/описания по текущему языку
+    // безопасный выбор заголовка/описания по текущему языку (на будущее для новостей)
     const getNewsTitle = (n) => {
         const lng = i18n.language;
         if (lng === "ru" && n.titleRu) return n.titleRu;
@@ -48,19 +49,40 @@ function Home() {
     return (
         <div className="home-container">
             <Header />
-            <ImageWithLightAnimation
-                src={bg}
-                alt="Tog' manzarasi"
-            />
+            <ImageWithLightAnimation src={bg} alt="Tog' manzarasi" />
 
-            {/* <ImageWithLightAnimation src={bg} alt="Background image"
-                className="w-full h-1/2" enableAutoAnimation={true} /> */}
-            {/* <img src={bg} className="h-1/2 w-full" /> */}
             {/* ===== HERO / FULL-WIDTH ===== */}
             <section className="hero">
                 <div className="hero-content">
-                    <h1 className="hero-title">{t("hero.title")}</h1>
-                    <p className="hero-subtitle">{t("hero.subtitle")}</p>
+                    <div className="hero-text">
+                        <TypeAnimation
+                            key={`hero-${i18n.language}`}
+                            sequence={[
+                                t("hero.title"),         // сначала печатаем заголовок
+                                1000,                    // ждём 1с
+                                () => {
+                                    const el = document.querySelector(".hero-subtitle");
+                                    if (el) el.style.display = "block"; // показать подзаголовок
+                                },
+                                t("hero.subtitle"),      // печатаем подзаголовок
+                                2000                     // ждём 2с и останавливаемся
+                            ]}
+                            wrapper="div"
+                            cursor={false}             // курсор исчезает после завершения
+                            speed={50}
+                            repeat={0}                 // только один раз
+                        >
+                            {(text) => (
+                                <>
+                                    <h1 className="hero-title">{text.includes(t("hero.title")) ? t("hero.title") : ""}</h1>
+                                    <p className="hero-subtitle" style={{ display: "none" }}>
+                                        {text.includes(t("hero.subtitle")) ? text : ""}
+                                    </p>
+                                </>
+                            )}
+                        </TypeAnimation>
+                    </div>
+
 
                     <div className="hero-features">
                         <div className="hf-card">
@@ -101,11 +123,7 @@ function Home() {
             <section className="director">
                 <div className="director-card">
                     <div className="director-media">
-                        {/* заменишь src на свой backend-URL при необходимости */}
-                        <img
-                            src={face}
-                            alt="Sattorov Jasur — Producer / Director"
-                        />
+                        <img src={face} alt="Sattorov Jasur — Producer / Director" />
                     </div>
                     <div className="director-info">
                         <h2>{t("director.heading")}</h2>
@@ -121,13 +139,10 @@ function Home() {
                 </div>
 
                 <div className="showcase-grid">
-                    {/* Левая колонка: постер + трейлер друг под другом */}
+                    {/* Левая колонка: постер + трейлер */}
                     <div className="showcase-media">
                         <div className="showcase-img">
-                            <img
-                                src={banner}
-                                alt="Maxsus Bo‘lim — poster"
-                            />
+                            <img src={banner} alt="Maxsus Bo‘lim — poster" />
                             <figcaption>{t("showcase.films.posterCaption")}</figcaption>
                         </div>
 
@@ -274,8 +289,6 @@ function Home() {
                 <p className="clips-note">{t("showcase.clips.more")}</p>
             </section>
 
-            {/* ===== NEWS (опционально; показывает новости, если есть) ===== */}
-
             {/* Floating button */}
             <button
                 onClick={() => navigate(`/data-form`)}
@@ -297,13 +310,11 @@ function Home() {
                     </text>
                 </svg>
 
-                {/* Центральная стрелка без фона — строго по центру */}
+                {/* Центральная стрелка */}
                 <span className="circle-center">
                     <FaArrowDown className="arrow-bounce" aria-hidden="true" />
                 </span>
             </button>
-
-
         </div>
     );
 }
