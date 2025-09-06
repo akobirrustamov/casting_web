@@ -32,7 +32,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-14 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -41,7 +41,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-14 left-1/2 transform -translate-x-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -50,7 +50,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-14 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -59,7 +59,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-1/4 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -68,7 +68,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-1/2 right-14 transform -translate-y-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -77,7 +77,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute bottom-1/4 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -86,7 +86,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute bottom-14 right-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -95,7 +95,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute bottom-14 left-1/2 transform -translate-x-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -104,7 +104,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute bottom-14 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -113,7 +113,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute bottom-1/4 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -122,7 +122,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-1/2 left-14 transform -translate-y-1/2 w-28 h-28 bg-white/20 transition-all duration-1000 ${animationPhase === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />
@@ -131,7 +131,7 @@ const ImageWithLightAnimation = ({
                 <div
                     className={`absolute top-1/4 left-14 w-24 h-24 bg-white/20 transition-all duration-1000 ${animationPhase === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
                     style={{
-                        filter: 'blur(30px)',
+                        filter: 'blur(15px)',
                         borderRadius: '50%'
                     }}
                 />

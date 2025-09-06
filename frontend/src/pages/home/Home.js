@@ -6,10 +6,14 @@ import "./home.css";
 import { useNavigate } from "react-router-dom";
 import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import bg from "../../images/bg.jpg";
-import ImageWithLightAnimation from "./ImageWithLightAnimation";
-import face from "../../images/bashara.png";
-import banner from "../../images/banner.jpg";
+import bg from "../../images/bg.jpg"
+import ImageWithLightAnimation from "./ImageWithLightAnimation"
+import face from "../../images/bashara.png"
+import banner from "../../images/banner.jpg"
+import one from "../../images/1.jpg"
+import two from "../../images/2.jpg"
+import three from "../../images/3.jpg"
+import Footer from "../footer/Footer"
 
 function Home() {
     const navigate = useNavigate();
@@ -274,8 +278,11 @@ function Home() {
                 <span className="circle-center">
                     <FaArrowDown className="arrow-bounce" aria-hidden="true" />
                 </span>
-            </button>
+            </a>
+
+            <Footer />
         </div>
+
     );
 }
 
