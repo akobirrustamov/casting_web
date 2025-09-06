@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../header/Header";
 import "react-responsive-modal/styles.css";
-import ApiCall, { baseUrl } from "../../config";
 import "./home.css";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import bg from "../../images/bg.jpg"
@@ -19,52 +18,37 @@ import Footer from "../footer/Footer"
 function Home() {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
+
     const [isMobile, setIsMobile] = useState(false);
+
     useEffect(() => {
         const savedLanguage = localStorage.getItem("selectedLanguage") || "uz";
         if (savedLanguage !== i18n.language) i18n.changeLanguage(savedLanguage);
 
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
-
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     const goApplicant = () => navigate(`/data-form`);
     const goClient = () => navigate(`/models`);
 
-    // безопасный выбор заголовка/описания по текущему языку
-    const getNewsTitle = (n) => {
-        const lng = i18n.language;
-        if (lng === "ru" && n.titleRu) return n.titleRu;
-        if (lng === "en" && n.titleEn) return n.titleEn;
-        return n.titleUz || n.titleRu || n.titleEn || "";
-    };
-    const getNewsDesc = (n) => {
-        const lng = i18n.language;
-        if (lng === "ru" && n.descriptionRu) return n.descriptionRu;
-        if (lng === "en" && n.descriptionEn) return n.descriptionEn;
-        return n.descriptionUz || n.descriptionRu || n.descriptionEn || "";
-    };
+    // Берём строки из i18n; подстраховка от undefined/null
+    const heroTitle = t("hero.title") ?? "";
+    const heroSubtitle = t("hero.subtitle") ?? "";
 
     return (
         <div className="home-container">
             <Header />
-            <ImageWithLightAnimation
-                src={bg}
-                alt="Tog' manzarasi"
-            />
+            <ImageWithLightAnimation src={bg} alt="Tog' manzarasi" />
 
-            {/* <ImageWithLightAnimation src={bg} alt="Background image"
-                className="w-full h-1/2" enableAutoAnimation={true} /> */}
-            {/* <img src={bg} className="h-1/2 w-full" /> */}
-            {/* ===== HERO / FULL-WIDTH ===== */}
+            {/* ===== HERO ===== */}
             <section className="hero">
                 <div className="hero-content">
-                    <h1 className="hero-title">{t("hero.title")}</h1>
-                    <p className="hero-subtitle">{t("hero.subtitle")}</p>
+                    <h1 className="hero-title">{heroTitle}</h1>
+                    <p className="hero-subtitle">{heroSubtitle}</p>
 
                     <div className="hero-features">
                         <div className="hf-card">
@@ -101,15 +85,11 @@ function Home() {
                 </div>
             </section>
 
-            {/* ===== DIRECTOR (ниже hero) ===== */}
+            {/* ===== DIRECTOR ===== */}
             <section className="director">
                 <div className="director-card">
                     <div className="director-media">
-                        {/* заменишь src на свой backend-URL при необходимости */}
-                        <img
-                            src={face}
-                            alt="Sattorov Jasur — Producer / Director"
-                        />
+                        <img src={face} alt="Sattorov Jasur — Producer / Director" />
                     </div>
                     <div className="director-info">
                         <h2>{t("director.heading")}</h2>
@@ -125,13 +105,10 @@ function Home() {
                 </div>
 
                 <div className="showcase-grid">
-                    {/* Левая колонка: постер + трейлер друг под другом */}
+                    {/* Левая колонка: постер + трейлер */}
                     <div className="showcase-media">
                         <div className="showcase-img">
-                            <img
-                                src={banner}
-                                alt="Maxsus Bo‘lim — poster"
-                            />
+                            <img src={banner} alt="Maxsus Bo‘lim — poster" />
                             <figcaption>{t("showcase.films.posterCaption")}</figcaption>
                         </div>
 
@@ -146,12 +123,6 @@ function Home() {
                                 referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                             ></iframe>
-                        </div>
-
-                        <div className="three-images">
-                            <img className="w-1/3" src={one} />
-                            <img className="w-1/3" src={two} />
-                            <img className="w-1/3" src={three} />
                         </div>
                     </div>
 
@@ -284,15 +255,12 @@ function Home() {
                 <p className="clips-note">{t("showcase.clips.more")}</p>
             </section>
 
-            {/* ===== NEWS (опционально; показывает новости, если есть) ===== */}
-
             {/* Floating button */}
             <a
                 href="https://t.me/uzcastingbot"
                 className="fixed-navigate-btn circle-marquee"
                 aria-label="Ro'yhatdan o'tish"
             >
-                {/* Кольцевая бегущая строка */}
                 <svg className="marquee-svg" viewBox="0 0 100 100" aria-hidden="true">
                     <defs>
                         <path
@@ -307,7 +275,6 @@ function Home() {
                     </text>
                 </svg>
 
-                {/* Центральная стрелка без фона — строго по центру */}
                 <span className="circle-center">
                     <FaArrowDown className="arrow-bounce" aria-hidden="true" />
                 </span>
