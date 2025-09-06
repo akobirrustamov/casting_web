@@ -210,6 +210,7 @@
 .quick-action {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
   gap: 12px;
   padding: 12px 14px;
   border-radius: 999px;
