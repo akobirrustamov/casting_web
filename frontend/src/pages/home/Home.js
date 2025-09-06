@@ -1,5 +1,5 @@
 // src/pages/home/Home.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../header/Header";
 import "react-responsive-modal/styles.css";
 import "./home.css";
@@ -17,16 +17,6 @@ function Home() {
 
     const [isMobile, setIsMobile] = useState(false);
 
-    // Текст в заголовке/подзаголовке, который мы показываем
-    const [titleOut, setTitleOut] = useState("");
-    const [subtitleOut, setSubtitleOut] = useState("");
-
-    // Флаг: анимация уже была (только на первом монтировании)
-    const typedOnceRef = useRef(false);
-
-    // Таймеры для очистки
-    const timersRef = useRef([]);
-
     useEffect(() => {
         const savedLanguage = localStorage.getItem("selectedLanguage") || "uz";
         if (savedLanguage !== i18n.language) i18n.changeLanguage(savedLanguage);
@@ -38,71 +28,23 @@ function Home() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Печать только при ПЕРВОМ рендере, дальше — мгновенная подстановка текста при смене языка
-    useEffect(() => {
-        // Безопасные строки (исключаем undefined/null)
-        const title = t("hero.title") || "";
-        const subtitle = t("hero.subtitle") || "";
-
-        // Очистить все прошлые таймеры перед новым запуском
-        timersRef.current.forEach(clearTimeout);
-        timersRef.current = [];
-
-        if (typedOnceRef.current) {
-            // После первой загрузки — без анимации
-            setTitleOut(title);
-            setSubtitleOut(subtitle);
-            return;
-        }
-
-        // === Первая загрузка: анимируем ===
-        setTitleOut("");
-        setSubtitleOut("");
-
-        const typeText = (full, setter, speed = 45, onDone) => {
-            let i = 0;
-            const step = () => {
-                if (i < full.length) {
-                    setter((prev) => prev + full[i]);
-                    i += 1;
-                    timersRef.current.push(setTimeout(step, speed));
-                } else {
-                    onDone && onDone();
-                }
-            };
-            step();
-        };
-
-        // Сначала печатаем заголовок, потом, спустя 300мс, подзаголовок
-        typeText(title, setTitleOut, 45, () => {
-            timersRef.current.push(
-                setTimeout(() => typeText(subtitle, setSubtitleOut, 35), 300)
-            );
-            // Ставим флаг: дальше анимации не будет
-            typedOnceRef.current = true;
-        });
-
-        return () => {
-            timersRef.current.forEach(clearTimeout);
-            timersRef.current = [];
-        };
-        // Перезапускаем только при смене языка — чтобы показать новый текст,
-        // но анимация будет только если typedOnceRef.current === false.
-    }, [i18n.language, t]);
-
     const goApplicant = () => navigate(`/data-form`);
     const goClient = () => navigate(`/models`);
+
+    // Берём строки из i18n; подстраховка от undefined/null
+    const heroTitle = t("hero.title") ?? "";
+    const heroSubtitle = t("hero.subtitle") ?? "";
 
     return (
         <div className="home-container">
             <Header />
             <ImageWithLightAnimation src={bg} alt="Tog' manzarasi" />
 
-            {/* ===== HERO / FULL-WIDTH ===== */}
+            {/* ===== HERO ===== */}
             <section className="hero">
                 <div className="hero-content">
-                    <h1 className="hero-title">{titleOut}</h1>
-                    <p className="hero-subtitle">{subtitleOut}</p>
+                    <h1 className="hero-title">{heroTitle}</h1>
+                    <p className="hero-subtitle">{heroSubtitle}</p>
 
                     <div className="hero-features">
                         <div className="hf-card">
@@ -139,7 +81,7 @@ function Home() {
                 </div>
             </section>
 
-            {/* ===== DIRECTOR (ниже hero) ===== */}
+            {/* ===== DIRECTOR ===== */}
             <section className="director">
                 <div className="director-card">
                     <div className="director-media">
