@@ -1,13 +1,11 @@
 // src/pages/home/Home.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../header/Header";
 import "react-responsive-modal/styles.css";
-import ApiCall, { baseUrl } from "../../config";
 import "./home.css";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaArrowDown, FaCheckCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { TypeAnimation } from "react-type-animation"; // <-- добавлено
 import bg from "../../images/bg.jpg";
 import ImageWithLightAnimation from "./ImageWithLightAnimation";
 import face from "../../images/bashara.png";
@@ -16,35 +14,84 @@ import banner from "../../images/banner.jpg";
 function Home() {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
+
     const [isMobile, setIsMobile] = useState(false);
+
+    // Текст в заголовке/подзаголовке, который мы показываем
+    const [titleOut, setTitleOut] = useState("");
+    const [subtitleOut, setSubtitleOut] = useState("");
+
+    // Флаг: анимация уже была (только на первом монтировании)
+    const typedOnceRef = useRef(false);
+
+    // Таймеры для очистки
+    const timersRef = useRef([]);
 
     useEffect(() => {
         const savedLanguage = localStorage.getItem("selectedLanguage") || "uz";
         if (savedLanguage !== i18n.language) i18n.changeLanguage(savedLanguage);
 
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    // Печать только при ПЕРВОМ рендере, дальше — мгновенная подстановка текста при смене языка
+    useEffect(() => {
+        // Безопасные строки (исключаем undefined/null)
+        const title = t("hero.title") || "";
+        const subtitle = t("hero.subtitle") || "";
+
+        // Очистить все прошлые таймеры перед новым запуском
+        timersRef.current.forEach(clearTimeout);
+        timersRef.current = [];
+
+        if (typedOnceRef.current) {
+            // После первой загрузки — без анимации
+            setTitleOut(title);
+            setSubtitleOut(subtitle);
+            return;
+        }
+
+        // === Первая загрузка: анимируем ===
+        setTitleOut("");
+        setSubtitleOut("");
+
+        const typeText = (full, setter, speed = 45, onDone) => {
+            let i = 0;
+            const step = () => {
+                if (i < full.length) {
+                    setter((prev) => prev + full[i]);
+                    i += 1;
+                    timersRef.current.push(setTimeout(step, speed));
+                } else {
+                    onDone && onDone();
+                }
+            };
+            step();
+        };
+
+        // Сначала печатаем заголовок, потом, спустя 300мс, подзаголовок
+        typeText(title, setTitleOut, 45, () => {
+            timersRef.current.push(
+                setTimeout(() => typeText(subtitle, setSubtitleOut, 35), 300)
+            );
+            // Ставим флаг: дальше анимации не будет
+            typedOnceRef.current = true;
+        });
+
+        return () => {
+            timersRef.current.forEach(clearTimeout);
+            timersRef.current = [];
+        };
+        // Перезапускаем только при смене языка — чтобы показать новый текст,
+        // но анимация будет только если typedOnceRef.current === false.
+    }, [i18n.language, t]);
+
     const goApplicant = () => navigate(`/data-form`);
     const goClient = () => navigate(`/models`);
-
-    // безопасный выбор заголовка/описания по текущему языку (на будущее для новостей)
-    const getNewsTitle = (n) => {
-        const lng = i18n.language;
-        if (lng === "ru" && n.titleRu) return n.titleRu;
-        if (lng === "en" && n.titleEn) return n.titleEn;
-        return n.titleUz || n.titleRu || n.titleEn || "";
-    };
-    const getNewsDesc = (n) => {
-        const lng = i18n.language;
-        if (lng === "ru" && n.descriptionRu) return n.descriptionRu;
-        if (lng === "en" && n.descriptionEn) return n.descriptionEn;
-        return n.descriptionUz || n.descriptionRu || n.descriptionEn || "";
-    };
 
     return (
         <div className="home-container">
@@ -54,35 +101,8 @@ function Home() {
             {/* ===== HERO / FULL-WIDTH ===== */}
             <section className="hero">
                 <div className="hero-content">
-                    <div className="hero-text">
-                        <TypeAnimation
-                            key={`hero-${i18n.language}`}
-                            sequence={[
-                                t("hero.title"),         // сначала печатаем заголовок
-                                1000,                    // ждём 1с
-                                () => {
-                                    const el = document.querySelector(".hero-subtitle");
-                                    if (el) el.style.display = "block"; // показать подзаголовок
-                                },
-                                t("hero.subtitle"),      // печатаем подзаголовок
-                                2000                     // ждём 2с и останавливаемся
-                            ]}
-                            wrapper="div"
-                            cursor={false}             // курсор исчезает после завершения
-                            speed={50}
-                            repeat={0}                 // только один раз
-                        >
-                            {(text) => (
-                                <>
-                                    <h1 className="hero-title">{text.includes(t("hero.title")) ? t("hero.title") : ""}</h1>
-                                    <p className="hero-subtitle" style={{ display: "none" }}>
-                                        {text.includes(t("hero.subtitle")) ? text : ""}
-                                    </p>
-                                </>
-                            )}
-                        </TypeAnimation>
-                    </div>
-
+                    <h1 className="hero-title">{titleOut}</h1>
+                    <p className="hero-subtitle">{subtitleOut}</p>
 
                     <div className="hero-features">
                         <div className="hf-card">
@@ -295,7 +315,6 @@ function Home() {
                 className="fixed-navigate-btn circle-marquee"
                 aria-label="Ro'yhatdan o'tish"
             >
-                {/* Кольцевая бегущая строка */}
                 <svg className="marquee-svg" viewBox="0 0 100 100" aria-hidden="true">
                     <defs>
                         <path
@@ -310,7 +329,6 @@ function Home() {
                     </text>
                 </svg>
 
-                {/* Центральная стрелка */}
                 <span className="circle-center">
                     <FaArrowDown className="arrow-bounce" aria-hidden="true" />
                 </span>

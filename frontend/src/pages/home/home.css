@@ -1026,3 +1026,9 @@ body.dark-mode .register-btn:hover {
   color: #cfd6e6;
   font-size: 15px;
 }
+
+.three-images {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
