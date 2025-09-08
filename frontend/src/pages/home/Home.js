@@ -14,6 +14,8 @@ import one from "../../images/1.jpg"
 import two from "../../images/2.jpg"
 import three from "../../images/3.jpg"
 import Footer from "../footer/Footer"
+import { motion } from "framer-motion";
+import { fadeIn } from "../framerMotion/variants";
 
 import useTypingEffect from "./useTypingEffect";
 
@@ -47,37 +49,33 @@ function Home() {
             <ImageWithLightAnimation src={bg} alt="Tog' manzarasi" />
 
             {/* ===== HERO ===== */}
-            <section className="hero">
+            <section
+
+                className="hero">
                 <div className="hero-content">
 
-                    <h1 className="hero-title">
+                    <motion.h1
+                        variants={fadeIn("top", 0.5)}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: false, amount: 0 }}
+                        className="hero-title">
+                        {t("hero.title")}
+                    </motion.h1>
+                    <motion.p
+                        variants={fadeIn("left", 0.7)}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: false, amount: 0 }}
 
+                        className="hero-subtitle">{heroSubtitle}</motion.p>
 
-
-                        {useTypingEffect(t("hero.title"), 80)}
-                        <span
-                            style={{
-                                display: "inline-block",
-                                marginLeft: "4px",
-                                animation: "blink 0.7s step-start infinite",
-                            }}
-                        >
-                            |
-                    </span>
-
-                        <style>
-                            {`
-                          @keyframes blink {
-                            0%, 100% { opacity: 1; }
-                            50% { opacity: 0; }
-                          }
-                        `}
-                        </style>
-
-                    </h1>
-                    <p className="hero-subtitle">{heroSubtitle}</p>
-
-                    <div className="hero-features">
+                    <motion.div
+                        variants={fadeIn("bottom", 0.9)}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: false, amount: 0 }}
+                        className="hero-features">
                         <div className="hf-card">
                             <FaCheckCircle className="hf-icon" />
                             <div>
@@ -99,7 +97,7 @@ function Home() {
                                 <p>{t("hero.feature3Text")}</p>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     <div className="cta-buttons" role="group" aria-label="Casting choices">
                         <button className="register-btn" onClick={goApplicant}>
@@ -113,7 +111,12 @@ function Home() {
             </section>
 
             {/* ===== DIRECTOR ===== */}
-            <section className="director">
+            <motion.section
+                variants={fadeIn("right", 0.5)}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: false, amount: 0 }}
+                className="director">
                 <div className="director-card">
                     <div className="director-media">
                         <img src={face} alt="Sattorov Jasur — Producer / Director" />
@@ -123,17 +126,22 @@ function Home() {
                         <p>{t("director.about")}</p>
                     </div>
                 </div>
-            </section>
+            </motion.section>
 
             {/* ===== SHOWCASE: Films ===== */}
             <section className="showcase">
                 <div className="showcase-head">
                     <h2>{t("showcase.films.title")}</h2>
                 </div>
-
                 <div className="showcase-grid">
                     {/* Левая колонка: постер + трейлер */}
-                    <div className="showcase-media">
+                    <motion.div
+                        variants={fadeIn("left", 0.5)}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: false, amount: 0 }}
+                        className="showcase-media"
+                    >
                         <div className="showcase-img">
                             <img src={banner} alt="Maxsus Bo‘lim — poster" />
                             <figcaption>{t("showcase.films.posterCaption")}</figcaption>
@@ -151,15 +159,22 @@ function Home() {
                                 allowFullScreen
                             ></iframe>
                         </div>
-                        <div className={"flex w-full"}>
-                            <img className={"w-1/3"} src={one}/>
-                            <img className={"w-1/3"} src={two}/>
-                            <img className={"w-1/3"} src={three}/>
+
+                        <div className="flex w-full">
+                            <img className="w-1/3" src={one} alt="one" />
+                            <img className="w-1/3" src={two} alt="two" />
+                            <img className="w-1/3" src={three} alt="three" />
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Правая колонка: текст */}
-                    <div className="showcase-body">
+                    <motion.div
+                        variants={fadeIn("right", 0.5)}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: false, amount: 0 }}
+                        className="showcase-body"
+                    >
                         <ul className="showcase-list">
                             <li>
                                 <strong>{t("showcase.films.ftitle")}</strong>
@@ -203,7 +218,7 @@ function Home() {
                                 </span>
                             </li>
                         </ul>
-                    </div>
+                    </motion.div>
                 </div>
 
                 <br />
@@ -217,71 +232,32 @@ function Home() {
                 </div>
 
                 <div className="clips-grid">
-                    <div className="clip-item">
-                        <iframe
-                            src="https://www.youtube.com/embed/G650mrCmNWM?si=BEXo0vfEoU93_n3K"
-                            title="YouTube video player 1"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-
-                    <div className="clip-item">
-                        <iframe
-                            src="https://www.youtube.com/embed/w_ZOD_y68w0?si=ETVpry5UL02ocOJJ"
-                            title="YouTube video player 2"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-
-                    <div className="clip-item">
-                        <iframe
-                            src="https://www.youtube.com/embed/6chd2yev_Ug?si=KFRsU4NaMZ4eKq-d"
-                            title="YouTube video player 3"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-
-                    <div className="clip-item">
-                        <iframe
-                            src="https://www.youtube.com/embed/jGnlnNCW_WA?si=7z0xUgPCqe1uTInb"
-                            title="YouTube video player 4"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-
-                    <div className="clip-item">
-                        <iframe
-                            src="https://www.youtube.com/embed/_Ns_0M_1F3g?si=2yU5ZJN3Y32QhuwO"
-                            title="YouTube video player 5"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-
-                    <div className="clip-item">
-                        <iframe
-                            src="https://www.youtube.com/embed/npTIpW3IFHI?si=rSYmZ00uXQ_LTjS_"
-                            title="YouTube video player 6"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
+                    {[
+                        "https://www.youtube.com/embed/G650mrCmNWM?si=BEXo0vfEoU93_n3K",
+                        "https://www.youtube.com/embed/w_ZOD_y68w0?si=ETVpry5UL02ocOJJ",
+                        "https://www.youtube.com/embed/6chd2yev_Ug?si=KFRsU4NaMZ4eKq-d",
+                        "https://www.youtube.com/embed/jGnlnNCW_WA?si=7z0xUgPCqe1uTInb",
+                        "https://www.youtube.com/embed/_Ns_0M_1F3g?si=2yU5ZJN3Y32QhuwO",
+                        "https://www.youtube.com/embed/npTIpW3IFHI?si=rSYmZ00uXQ_LTjS_",
+                    ].map((src, index) => (
+                        <motion.div
+                            key={index}
+                            variants={fadeIn("up", 0.2 * index)}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: false, amount: 0.2 }}
+                            className="clip-item"
+                        >
+                            <iframe
+                                src={src}
+                                title={`YouTube video player ${index + 1}`}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                            ></iframe>
+                        </motion.div>
+                    ))}
                 </div>
 
                 <p className="clips-note">{t("showcase.clips.more")}</p>
@@ -312,7 +288,7 @@ function Home() {
                 </span>
             </a>
 
-            <Footer  />
+            <Footer />
         </div>
 
     );
