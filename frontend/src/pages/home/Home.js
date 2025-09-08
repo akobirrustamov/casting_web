@@ -15,6 +15,8 @@ import two from "../../images/2.jpg"
 import three from "../../images/3.jpg"
 import Footer from "../footer/Footer"
 
+import useTypingEffect from "./useTypingEffect";
+
 function Home() {
     const navigate = useNavigate();
     const { t, i18n } = useTranslation();
@@ -47,7 +49,32 @@ function Home() {
             {/* ===== HERO ===== */}
             <section className="hero">
                 <div className="hero-content">
-                    <h1 className="hero-title">{heroTitle}</h1>
+
+                    <h1 className="hero-title">
+
+
+
+                        {useTypingEffect(t("hero.title"), 80)}
+                        <span
+                            style={{
+                                display: "inline-block",
+                                marginLeft: "4px",
+                                animation: "blink 0.7s step-start infinite",
+                            }}
+                        >
+                            |
+                    </span>
+
+                        <style>
+                            {`
+                          @keyframes blink {
+                            0%, 100% { opacity: 1; }
+                            50% { opacity: 0; }
+                          }
+                        `}
+                        </style>
+
+                    </h1>
                     <p className="hero-subtitle">{heroSubtitle}</p>
 
                     <div className="hero-features">
@@ -123,6 +150,11 @@ function Home() {
                                 referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                             ></iframe>
+                        </div>
+                        <div className={"flex w-full"}>
+                            <img className={"w-1/3"} src={one}/>
+                            <img className={"w-1/3"} src={two}/>
+                            <img className={"w-1/3"} src={three}/>
                         </div>
                     </div>
 

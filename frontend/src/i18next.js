@@ -28,7 +28,7 @@ const resources = {
                 loadMore: "Ko'proq ko'rish",
             },
             hero: {
-                title: "Uzcasting — iste’dod va imkon uchrashadigan joy",
+                title: "Uzcasting — iste'dod va imkon uchrashadigan joy",
                 subtitle:
                     "Kastingni keyingi bosqichga olib chiqamiz: murabbiylik, tayyorgarlik va halol hamkorlik. 80+ klip va reklama, 14 ta davlatda suratga olish tajribasi.",
                 feature1Title: "Karyera starti",
