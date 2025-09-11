@@ -24,7 +24,7 @@ function Models() {
     const [maxAge, setMaxAge] = useState(100);
     const [heightFrom, setHeightFrom] = useState('');
 
-    const TELEGRAM_USERNAME = 'Lazurith2';
+    const TELEGRAM_USERNAME = 'kobir_rustamov';
 
     const calcAge = (birthday) => {
         if (!birthday) return null;
@@ -49,6 +49,8 @@ function Models() {
             try {
                 const res = await ApiCall('/api/v1/casting-user', 'GET');
                 const list = Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [];
+                console.log(list);
+
                 const mapped = list.map((u) => {
                     const photos = Array.isArray(u.photos) ? u.photos : [];
                     const photoUrls = photos.map(p => p?.id).filter(Boolean).map(id => `${baseUrl}/api/v1/file/getFile/${id}`);
@@ -324,7 +326,14 @@ function Models() {
                                     <dt>{t('modal.eyeColor', 'Цвет глаз')}</dt>
                                     <dd>{fmt(current.eyeColor) || '—'}</dd>
                                     <dt>{t('modal.gender', 'Пол')}</dt>
-                                    <dd>{fmt(current.gender)}</dd>
+                                    <dd>
+                                        {fmt(
+                                            current.gender === "female"
+                                                ? t("modal.gender_female")
+                                                : t("modal.gender_male")
+                                        )}
+                                    </dd>
+
                                 </dl>
                             </div>
                         </div>

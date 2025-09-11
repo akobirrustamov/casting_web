@@ -13,6 +13,37 @@ i18n.on('languageChanged', (lng) => {
 const resources = {
     uz: {
         translation: {
+
+            footer: {
+                brand: {
+                    description: "O'zbekistondagi eng yirik kasting platformasi. Aktyorlar, modellar va ijodkorlarni topishning eng zamonaviy usuli.",
+                    online: "Online 24/7"
+                },
+                contact: {
+                    title: "Bog'lanish",
+                    address: "Toshkent shahri, Yashnobod tumani",
+                    phone: "+998916407314",
+                    email: "uzcasting.org@gmail.com"
+                },
+                social: {
+                    title: "Ijtimoiy tarmoqlar",
+                    telegram: "Telegram",
+                    instagram: "Instagram",
+                    youtube: "YouTube",
+                    tiktok: "TikTok"
+                },
+                quick: {
+                    title: "Tezkor havolalar",
+                    admin: "Admin bilan bog'lanish",
+                    adminUser: "@JasMaxStar",
+                    register: "Ro'yxatdan o'tish",
+                    registerSub: "Telegram bot orqali"
+                },
+                copyright: {
+                    text: "Barcha huquqlar himoyalangan.",
+                    partners: "Biz bilan hamkorlikda:"
+                }
+            },
             header: {
                 siteTitle: 'Jasmaxstar',
                 home: 'Bosh sahifa',
@@ -116,7 +147,9 @@ const resources = {
                 bodyType: "Tana tuzilishi",
                 hairColor: "Soch rangi",
                 eyeColor: "Ko‘z rangi",
-                gender: "Jins"
+                gender: "Jins",
+                gender_female: "Ayol",
+                gender_male: "Erkak",
             },
             actions: {
                 reset: "Tozalash",
@@ -130,6 +163,37 @@ const resources = {
     },
     ru: {
         translation: {
+
+            footer: {
+                brand: {
+                    description: "Крупнейшая кастинг-платформа в Узбекистане. Современный способ найти актёров, моделей и творческих людей.",
+                    online: "Онлайн 24/7"
+                },
+                contact: {
+                    title: "Контакты",
+                    address: "г. Ташкент, Яшнабадский район",
+                    phone: "+998916407314",
+                    email: "uzcasting.org@gmail.com"
+                },
+                social: {
+                    title: "Социальные сети",
+                    telegram: "Телеграм",
+                    instagram: "Инстаграм",
+                    youtube: "Ютуб",
+                    tiktok: "ТикТок"
+                },
+                quick: {
+                    title: "Быстрые ссылки",
+                    admin: "Связаться с админом",
+                    adminUser: "@JasMaxStar",
+                    register: "Регистрация",
+                    registerSub: "Через Телеграм-бота"
+                },
+                copyright: {
+                    text: "Все права защищены.",
+                    partners: "Сотрудничаем с:"
+                }
+            },
             header: {
                 siteTitle: 'Jasmaxstar',
                 home: 'Главная',
@@ -233,7 +297,9 @@ const resources = {
                 bodyType: 'Телосложение',
                 hairColor: 'Цвет волос',
                 eyeColor: 'Цвет глаз',
-                gender: 'Пол'
+                gender: 'Пол',
+                gender_female: "Женщина", // Russian
+                gender_male: "Мужчина",
             },
             actions: { reset: 'Сбросить', contact: 'Связаться' },
             units: {
@@ -249,6 +315,36 @@ const resources = {
     },
     en: {
         translation: {
+            footer: {
+                brand: {
+                    description: "The largest casting platform in Uzbekistan. The most modern way to find actors, models, and creators.",
+                    online: "Online 24/7"
+                },
+                contact: {
+                    title: "Contact",
+                    address: "Tashkent city, Yashnabad district",
+                    phone: "+998916407314",
+                    email: "uzcasting.org@gmail.com"
+                },
+                social: {
+                    title: "Social Media",
+                    telegram: "Telegram",
+                    instagram: "Instagram",
+                    youtube: "YouTube",
+                    tiktok: "TikTok"
+                },
+                quick: {
+                    title: "Quick Links",
+                    admin: "Contact Admin",
+                    adminUser: "@JasMaxStar",
+                    register: "Register",
+                    registerSub: "Via Telegram bot"
+                },
+                copyright: {
+                    text: "All rights reserved.",
+                    partners: "In partnership with:"
+                }
+            },
             header: {
                 siteTitle: 'Jasmaxstar',
                 home: 'Home',
@@ -355,7 +451,9 @@ During his professional journey, he has produced over 20–30 music videos, whic
                 bodyType: "Body type",
                 hairColor: "Hair color",
                 eyeColor: "Eye color",
-                gender: "Gender"
+                gender: "Gender",
+                gender_female: "Female",  // English
+                gender_male: "Male",
             },
             actions: {
                 reset: "Reset",
@@ -367,6 +465,36 @@ During his professional journey, he has produced over 20–30 music videos, whic
                 cm: "cm"
             }
         },
+        footer: {
+            brand: {
+                description: "O'zbekistondagi eng yirik kasting platformasi. Aktyorlar, modellar va ijodkorlarni topishning eng zamonaviy usuli.",
+                online: "Online 24/7"
+            },
+            contact: {
+                title: "Bog'lanish",
+                address: "Toshkent shahri, Yashnobod tumani",
+                phone: "+998916407314",
+                email: "uzcasting.org@gmail.com"
+            },
+            social: {
+                title: "Ijtimoiy tarmoqlar",
+                telegram: "Telegram",
+                instagram: "Instagram",
+                youtube: "YouTube",
+                tiktok: "TikTok"
+            },
+            quick: {
+                title: "Tezkor havolalar",
+                admin: "Admin bilan bog'lanish",
+                adminUser: "@JasMaxStar",
+                register: "Ro'yxatdan o'tish",
+                registerSub: "Telegram bot orqali"
+            },
+            copyright: {
+                text: "Barcha huquqlar himoyalangan.",
+                partners: "Biz bilan hamkorlikda:"
+            }
+        }
     },
 };
 
