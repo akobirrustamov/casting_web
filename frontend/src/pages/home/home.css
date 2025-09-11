@@ -13,6 +13,9 @@
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-border: rgba(255, 255, 255, 0.08);
 }
+*{
+  font-family: 'Lora', serif !important;
+}
 
 .register-btn {
   background: linear-gradient(135deg, #2563eb, #3b82f6);
