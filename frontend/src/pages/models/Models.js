@@ -48,6 +48,8 @@ function Models() {
         const fetchData = async () => {
             try {
                 const res = await ApiCall('/api/v1/casting-user', 'GET');
+                console.log(res.data);
+
                 const list = Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [];
                 console.log(list);
 
@@ -68,6 +70,35 @@ function Models() {
         };
         fetchData();
     }, []);
+    const getFirstName = (fullName = "") => {
+        if (!fullName) return "";
+
+        const parts = fullName.trim().split(/\s+/);
+        if (parts.length === 1) return parts[0]; // только имя
+
+        // Список типичных окончаний фамилий и отчеств
+        const lastNameEndings = [
+            "ov", "ova", "ev", "eva", "yev", "yeva",
+            "ovich", "ovna", "ovna", "ovna", "ovna",
+            "qizi", "bekqizi", "ов", "ова", "ев", "ева", "овна", "қызы"
+        ];
+
+        // Проверка по окончаниям (латиница/кириллица)
+        const looksLikeLastName = (word) => {
+            const w = word.toLowerCase();
+            return lastNameEndings.some(end => w.endsWith(end));
+        };
+
+        // Найти первое слово, которое НЕ похоже на фамилию/отчество
+        for (let p of parts) {
+            if (!looksLikeLastName(p)) return p;
+        }
+
+        // fallback → если все слова выглядят как фамилия, возвращаем второе
+        return parts[1] || parts[0];
+    };
+
+
 
     const openModal = (item) => { setCurrent(item); setOpen(true); };
     const closeModal = () => { setOpen(false); setCurrent(null); };
@@ -285,11 +316,18 @@ function Models() {
                                 <div key={m.id} className="card" role="button" onClick={() => openModal(m)}>
                                     <div className="card-photo">
                                         <img src={avatar} alt={m.name} loading="lazy" />
+
                                     </div>
                                     <div className="card-body">
-                                        <div className="card-name">{(m.name || '').trim()}</div>
-                                        <div className="card-sub">{t('units.years', { count: m.age ?? 0 })}</div>
+                                        <div className="card-center">
+                                            <div className="card-name">{getFirstName(m.name)}</div>
+                                            <div className="card-age">{t('units.years', { count: m.age ?? 0 })}</div>
+                                        </div>
+                                        <div className="card-id">ID: {m.id}</div>
                                     </div>
+
+
+
                                 </div>
                             );
                         })}
@@ -307,7 +345,13 @@ function Models() {
                                 <img src={current.photoUrls?.[0] || 'https://via.placeholder.com/400x500?text=No+Photo'} alt={current.name} />
                             </div>
                             <div className="profile-info">
-                                <h2 className="profile-name">{fmt(current.name)}</h2>
+                                <div className="profile-head">
+                                    <div className="profile-center">
+                                        <h2 className="profile-name">{getFirstName(current.name)}</h2>
+                                    </div>
+                                    <div className="profile-id">ID: {current.id}</div>
+                                </div>
+
                                 <dl>
                                     <dt>{t('modal.age', 'Возраст')}</dt>
                                     <dd>{t('units.years', { count: current.age ?? 0 })}</dd>
