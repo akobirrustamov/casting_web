@@ -160,7 +160,7 @@ function Home() {
                             ></iframe>
                         </div>
 
-                        <div className="flex w-full">
+                        <div className="flex gap-1 w-full">
                             <img className="w-1/3" src={one} alt="one" />
                             <img className="w-1/3" src={two} alt="two" />
                             <img className="w-1/3" src={three} alt="three" />
@@ -220,7 +220,6 @@ function Home() {
                         </ul>
                     </motion.div>
                 </div>
-
                 <br />
                 <hr />
             </section>
@@ -245,7 +244,7 @@ function Home() {
                             variants={fadeIn("up", 0.2 * index)}
                             initial="hidden"
                             whileInView="show"
-                            viewport={{ once: false, amount: 0.2 }}
+                            viewport={{ once: false, amount: 0 }}
                             className="clip-item"
                         >
                             <iframe
