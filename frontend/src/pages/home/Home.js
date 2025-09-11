@@ -55,7 +55,7 @@ function Home() {
                 <div className="hero-content">
 
                     <motion.h1
-                        variants={fadeIn("top", 0.5)}
+                        variants={fadeIn("up", 0.5)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0 }}
@@ -63,7 +63,7 @@ function Home() {
                         {t("hero.title")}
                     </motion.h1>
                     <motion.p
-                        variants={fadeIn("left", 0.7)}
+                        variants={fadeIn("up", 0.7)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0 }}
@@ -71,7 +71,7 @@ function Home() {
                         className="hero-subtitle">{heroSubtitle}</motion.p>
 
                     <motion.div
-                        variants={fadeIn("bottom", 0.9)}
+                        variants={fadeIn("up", 0.9)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0 }}
@@ -112,7 +112,7 @@ function Home() {
 
             {/* ===== DIRECTOR ===== */}
             <motion.section
-                variants={fadeIn("right", 0.5)}
+                variants={fadeIn("up", 0.5)}
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: false, amount: 0 }}
@@ -136,7 +136,7 @@ function Home() {
                 <div className="showcase-grid">
                     {/* Левая колонка: постер + трейлер */}
                     <motion.div
-                        variants={fadeIn("left", 0.5)}
+                        variants={fadeIn("down", 0.5)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0 }}
@@ -169,7 +169,7 @@ function Home() {
 
                     {/* Правая колонка: текст */}
                     <motion.div
-                        variants={fadeIn("right", 0.5)}
+                        variants={fadeIn("down", 0.5)}
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: false, amount: 0 }}
