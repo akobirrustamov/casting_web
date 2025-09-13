@@ -47,11 +47,24 @@ public class CastingUserController {
         System.out.println(attachments);
 
         CastingUser castingUser1 = new CastingUser(castingUser.getTelegramId(), castingUser.getCastingType(), castingUser.getGender(), castingUser.getName(), castingUser.getRegion(), castingUser.getNationality(), castingUser.getBirthday(), castingUser.getAge(), castingUser.getHeight(), castingUser.getHairColor(), castingUser.getEyeColor(), castingUser.getClothSize(), castingUser.getShoeSize(), castingUser.getBust(), castingUser.getWaist(),castingUser.getSon(), castingUser.getEmail(), castingUser.getPhone(), castingUser.getTelegram(), castingUser.getFacebook(), castingUser.getInstagram(), castingUser.getPrice(), 0, attachments ,LocalDateTime.now());
+        castingUser1.setIsWebShow(Boolean.FALSE);
         castingUser1.setFirstChan(0);
         castingUser1.setSecondChan(0);
         castingUserRepo.save(castingUser1);
         return new ResponseEntity<>(castingUser1, HttpStatus.CREATED);
     }
+    @PutMapping("/web-show/{userId}")
+    public HttpEntity<?> changeBoolean(@PathVariable Integer userId){
+        Optional<CastingUser> byId = castingUserRepo.findById(userId);
+        if (byId.isPresent()){
+            CastingUser castingUser = byId.get();
+            castingUser.setIsWebShow(!castingUser.getIsWebShow());
+            castingUserRepo.save(castingUser);
+            return new ResponseEntity<>(castingUser, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/payed/{castingUserId}")
     public HttpEntity<?> getPayedCastingUser(@PathVariable Integer castingUserId){
         Optional<CastingUser> byId = castingUserRepo.findById(castingUserId);

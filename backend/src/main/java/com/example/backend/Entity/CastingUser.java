@@ -46,6 +46,7 @@ public class CastingUser {
     private Integer status;
     private Integer firstChan;
     private Integer secondChan;
+    private Boolean isWebShow;
 
     @OneToMany
     private List<Attachment> photos = new ArrayList<>();

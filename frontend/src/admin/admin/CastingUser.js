@@ -86,9 +86,9 @@ const CastingUser = () => {
             <Header props='admin/casting-users' />
 
             <div className="casting-content">
-                <h1 className="casting-title">Foydalanuvchilar</h1>
+                <h1 className="casting-title mb-4">Foydalanuvchilar</h1>
 
-                {/* Status Filter */}
+                {/* Status Filter
                 <div className="filter-container">
                     <label className="filter-label">Holat bo'yicha filter:</label>
                     <select
@@ -101,7 +101,7 @@ const CastingUser = () => {
                         <option value="1">Qabul qilindi</option>
                         <option value="2">Rad etildi</option>
                     </select>
-                </div>
+                </div> */}
 
                 {error && (
                     <div className="error-message">
