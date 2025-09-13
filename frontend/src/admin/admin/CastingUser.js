@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ApiCall from "../../config";
+import ApiCall from "../../config/index";
 import { useNavigate } from "react-router-dom";
 import Header from "./HeaderAdmin";
 import { FaUser, FaPhone, FaEnvelope, FaTelegram } from 'react-icons/fa';
@@ -11,6 +11,7 @@ const CastingUser = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [statusFilter, setStatusFilter] = useState("all");
+    const [showAppeal, setShowAppeal] = useState(false)
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
     const checkSecurity = () => {
@@ -36,6 +37,7 @@ const CastingUser = () => {
         setLoading(true);
         try {
             const response = await ApiCall('/api/v1/casting-user', 'GET');
+            console.log(response);
             if (response.error) {
                 setError(response.data);
             } else {

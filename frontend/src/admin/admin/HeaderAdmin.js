@@ -46,19 +46,25 @@ function Header() {
                         <ul>
                             <li>
                                 <Link to="/admin/home" className="nav-link">
-                                    <span>Bosh Sahifa</span>
+                                    <span>🏠Bosh Sahifa</span>
+                                    <div className="link-underline"></div>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/admin/news" className="nav-link">
+                                    <span>📰Yangiliklar</span>
                                     <div className="link-underline"></div>
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/admin/casting-users" className="nav-link">
-                                    <span>Kelib tushgan arizalar</span>
+                                    <span>🎭Kelib tushgan arizalar</span>
                                     <div className="link-underline"></div>
                                 </Link>
                             </li>
                             <li>
                                 <Link to="/admin/accepted" className="nav-link">
-                                    <span>Kelib tushgan arizalar</span>
+                                    <span>✔️Qabul qilingan arizalar</span>
                                     <div className="link-underline"></div>
                                 </Link>
                             </li>
