@@ -52,6 +52,34 @@ function CastingUserDetail() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
     const [price, setPrice] = useState('');
+    const [confirmPhotoModal, setConfirmPhotoModal] = useState({ show: false, attachment: null });
+    const confirmTogglePhoto = (attachment) => {
+        setConfirmPhotoModal({ show: true, attachment });
+    };
+
+
+    const handleTogglePhoto = async () => {
+        if (!confirmPhotoModal) return;
+        console.log(confirmPhotoModal.attachment.id);
+
+        try {
+            await ApiCall(`/api/v1/file/${confirmPhotoModal.attachment.id}`, "PUT");
+            // Frontend state yangilash
+            setCasting(prev => ({
+                ...prev,
+                photos: prev.photos.map(p =>
+                    p.id === confirmPhotoModal.attachment.id
+                        ? { ...p, isWebShow: !p.isWebShow }
+                        : p
+                )
+            }));
+        } catch (error) {
+            console.error("Rasmni yangilashda xatolik:", error);
+            setError("Rasmni yangilashda xatolik yuz berdi");
+        } finally {
+            setConfirmPhotoModal({ show: false, attachment: null });
+        }
+    };
 
     useEffect(() => {
         fetchCasting();
@@ -61,6 +89,8 @@ function CastingUserDetail() {
         setLoading(true);
         try {
             const response = await ApiCall('/api/v1/casting-user/appeal/' + castingUserId, 'GET');
+            console.log(response.data);
+
             if (response.error) {
                 setError(response.data);
             } else {
@@ -406,18 +436,43 @@ function CastingUserDetail() {
                                     </h2>
                                     <div className="gallery-grid">
                                         {casting.photos.map((photo, index) => (
-                                            <div key={index} className="gallery-item">
-                                                <img
-                                                    src={`${baseUrl}/api/v1/file/getFile/${photo.id}`}
-                                                    alt={`Gallery ${index + 1}`}
-                                                    onClick={() => openImageModal(`${baseUrl}/api/v1/file/getFile/${photo.id}`)}
-                                                />
-                                                <div className="gallery-overlay">
-                                                    <span>Ko'rish</span>
+                                            <div>
+                                                <div key={index} className="gallery-item">
+                                                    <div className="gallery-image-container">
+                                                        <img
+                                                            src={`${baseUrl}/api/v1/file/getFile/${photo.id}`}
+                                                            alt={`Gallery ${index + 1}`}
+                                                            onClick={() =>
+                                                                openImageModal(`${baseUrl}/api/v1/file/getFile/${photo.id}`)
+                                                            }
+                                                        />
+                                                    </div>
+
+
+                                                </div>
+                                                {/* Pastdagi tugmalar */}
+                                                <div className="gallery-actions">
+                                                    {/* <button
+                                                        className="view-btn"
+                                                        onClick={() =>
+                                                            openImageModal(`${baseUrl}/api/v1/file/getFile/${photo.id}`)
+                                                        }
+                                                    >
+                                                        👁 Ko‘rish
+                                                    </button> */}
+
+                                                    <button
+                                                        className={`photo-toggle-btn ${photo.isWebShow ? "active-btn" : "inactive-btn"
+                                                            }`}
+                                                        onClick={() => confirmTogglePhoto(photo)}
+                                                    >
+                                                        {photo.isWebShow ? "Faol" : "Nofaol"}
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
+
                                 </div>
                             )}
                         </div>
@@ -476,17 +531,49 @@ function CastingUserDetail() {
                         </div>
                     </>
                 )}
+                {/* Active/Inactive tasdiqlash modal */}
+                <Modal
+                    open={confirmPhotoModal.show}
+                    onClose={() => setConfirmPhotoModal({ show: false, attachment: null })}
+                    center
+                    classNames={{
+                        overlay: "confirm-overlay", // faqat confirm uchun
+                        modal: "confirm-modal"
+                    }}
+                >
+
+
+                    <div className="confirm-modal-content">
+                        <h3>Rasmni yangilash</h3>
+                        <p>
+                            Ushbu rasmni {confirmPhotoModal.attachment?.isWebShow ? "Nofaol" : "Faol"} qilishni tasdiqlaysizmi?
+                        </p>
+                        <div className="modal-action-buttons">
+                            <button className="modal-btn confirm-btn" onClick={handleTogglePhoto}>
+                                Ha
+                            </button>
+                            <button
+                                className="modal-btn cancel-btn"
+                                onClick={() => setConfirmPhotoModal({ show: false, attachment: null })}
+                            >
+                                Yo‘q
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+
 
                 {/* Rasm modal oynasi */}
                 <Modal
                     open={isModalOpen}
-                    onClose={closeImageModal}
+                    onClose={() => setIsModalOpen(false)}
                     center
                     classNames={{
-                        overlay: 'modal-overlay',
-                        modal: 'image-modal'
+                        overlay: "image-overlay",   // faqat rasm uchun
+                        modal: "image-modal"
                     }}
                 >
+
                     {selectedImage && (
                         <div className="image-modal-content">
                             <img

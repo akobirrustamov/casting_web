@@ -24,8 +24,12 @@ public class Attachment {
     @Id
     private UUID id;
     private String prefix;
+
+
     private String name;
-    public static Attachment createAttachment(MultipartFile photo, String prefix) throws IOException {
+
+    private Boolean isWebShow;
+    public static Attachment createAttachment(MultipartFile photo, String prefix, Boolean isWebShow) throws IOException {
         Attachment attachment = null;
         if (photo != null && !photo.isEmpty()) {
             UUID id = UUID.randomUUID();
@@ -36,7 +40,8 @@ public class Attachment {
             try (OutputStream outputStream = new FileOutputStream(file)) {
                 FileCopyUtils.copy(photo.getInputStream(), outputStream);
             }
-            attachment = new Attachment(id, prefix, fileName);
+            attachment = new Attachment(id, prefix, fileName, isWebShow);
+
         }
         return attachment;
     }

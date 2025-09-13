@@ -31,7 +31,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         try (OutputStream outputStream = new FileOutputStream(file)) {
             FileCopyUtils.copy(photo.getInputStream(), outputStream);
         }
-        Attachment attachment = new Attachment(id, prefix, fileName);
+        Attachment attachment = new Attachment(id, prefix, fileName, true);
         attachmentRepo.save(attachment);
         return ResponseEntity.ok(id);
     }

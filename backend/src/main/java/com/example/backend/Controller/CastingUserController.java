@@ -55,16 +55,29 @@ public class CastingUserController {
         return new ResponseEntity<>(castingUser1, HttpStatus.CREATED);
     }
     @PutMapping("/web-show/{userId}")
-    public HttpEntity<?> changeBoolean(@PathVariable Integer userId){
-        Optional<CastingUser> byId = castingUserRepo.findById(userId);
-        if (byId.isPresent()){
-            CastingUser castingUser = byId.get();
-            castingUser.setIsWebShow(!castingUser.getIsWebShow());
-            castingUserRepo.save(castingUser);
-            return new ResponseEntity<>(castingUser, HttpStatus.OK);
+    public HttpEntity<?> changeBoolean(@PathVariable Integer userId) {
+        if (userId == null) {
+            return ResponseEntity.badRequest().body("userId bo'sh bo'lishi mumkin emas");
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        Optional<CastingUser> byId = castingUserRepo.findById(userId);
+        if (byId.isPresent()) {
+            CastingUser castingUser = byId.get();
+
+            Boolean current = castingUser.getIsWebShow();
+            if (current == null) {
+                current = false; // default qiymat
+            }
+
+            castingUser.setIsWebShow(!current);
+            castingUserRepo.save(castingUser);
+
+            return ResponseEntity.ok(castingUser);
+        }
+        return ResponseEntity.notFound().build();
     }
+
+
 
     @GetMapping("/payed/{castingUserId}")
     public HttpEntity<?> getPayedCastingUser(@PathVariable Integer castingUserId){

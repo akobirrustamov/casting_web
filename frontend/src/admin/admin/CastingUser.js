@@ -10,34 +10,25 @@ const CastingUser = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [statusFilter, setStatusFilter] = useState("all");
-    const [showAppeal, setShowAppeal] = useState(false)
+    const [confirmModal, setConfirmModal] = useState({ show: false, userId: null });
     const navigate = useNavigate();
-    const accessToken = localStorage.getItem("access_token");
-    const checkSecurity = () => {
+
+    useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
-
-        if (!accessToken) {
-            navigate("/admin/login");
-        }
-    };
-    useEffect(() => {
-        checkSecurity()
-    }, []);
-
-    useEffect(() => {
+        if (!accessToken) navigate("/admin/login");
         fetchCastingUsers();
     }, []);
 
     useEffect(() => {
         filterUsers();
-    }, [statusFilter, castingUsers]);
+    }, [castingUsers]);
 
     const fetchCastingUsers = async () => {
         setLoading(true);
         try {
             const response = await ApiCall('/api/v1/casting-user', 'GET');
-            console.log(response);
+            console.log(response.data);
+
             if (response.error) {
                 setError(response.data);
             } else {
@@ -55,6 +46,33 @@ const CastingUser = () => {
         setFilteredUsers(castingUsers.filter(user => String(user.status) !== "1"));
     };
 
+    const confirmToggleWebShow = (userId) => {
+        setConfirmModal({ show: true, userId });
+    };
+
+    const handleConfirm = async () => {
+        if (!confirmModal.userId) return;
+        try {
+            await ApiCall(`/api/v1/casting-user/web-show/${confirmModal.userId}`, "PUT");
+            setCastingUsers(prev =>
+                prev.map(user =>
+                    user.id === confirmModal.userId ? { ...user, isWebShow: !user.isWebShow } : user
+                )
+            );
+        } catch (error) {
+            console.error("isWebShow yangilashda xatolik:", error);
+        } finally {
+            setConfirmModal({ show: false, userId: null });
+        }
+    };
+
+    const handleCancel = () => {
+        setConfirmModal({ show: false, userId: null });
+    };
+
+    const handleViewDetails = (castingUserId) => {
+        navigate(`/admin/casting-users/${castingUserId}`);
+    };
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -79,10 +97,6 @@ const CastingUser = () => {
         return statusClasses[status] || "";
     };
 
-    const handleViewDetails = (castingUserId) => {
-        navigate(`/admin/casting-users/${castingUserId}`);
-    };
-
     return (
         <div className="casting-dark">
             <Header props='admin/casting-users' />
@@ -90,26 +104,7 @@ const CastingUser = () => {
             <div className="casting-content">
                 <h1 className="casting-title mb-4">Foydalanuvchilar</h1>
 
-                {/* Status Filter
-                <div className="filter-container">
-                    <label className="filter-label">Holat bo'yicha filter:</label>
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value)}
-                        className="filter-select"
-                    >
-                        <option value="all">Barcha</option>
-                        <option value="0">Ko'rib chiqilmoqda</option>
-                        <option value="1">Qabul qilindi</option>
-                        <option value="2">Rad etildi</option>
-                    </select>
-                </div> */}
-
-                {error && (
-                    <div className="error-message">
-                        {error}
-                    </div>
-                )}
+                {error && <div className="error-message">{error}</div>}
 
                 {loading && !castingUsers.length ? (
                     <div className="loading-container">
@@ -119,11 +114,7 @@ const CastingUser = () => {
                 ) : (
                     <div className="users-grid">
                         {filteredUsers.map((user) => (
-                            <div
-                                key={user.id}
-                                onClick={() => handleViewDetails(user.id)}
-                                className="user-card"
-                            >
+                            <div key={user.id} className="user-card">
                                 <div className="user-header">
                                     <div>
                                         <h3 className="user-name">
@@ -158,13 +149,38 @@ const CastingUser = () => {
 
                                 <div className="user-footer">
                                     <span>{formatDate(user.createdAt)}</span>
-                                    <span className="details-link">Batafsil</span>
+                                    <div className="footer-buttons">
+                                        <button
+                                            onClick={() => handleViewDetails(user.id)}
+                                            className="btn-details"
+                                        >
+                                            Batafsil
+                                        </button>
+                                        <button
+                                            onClick={() => confirmToggleWebShow(user.id)}
+                                            className={`toggle-btn ${user.isWebShow ? "active-btn" : "inactive-btn"}`}
+                                        >
+                                            {user.isWebShow ? "Faol" : "Nofaol"}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 )}
             </div>
+
+            {confirmModal.show && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Tasdiqlaysizmi?</h3>
+                        <div className="modal-actions">
+                            <button onClick={handleConfirm} className="btn-confirm">Ha</button>
+                            <button onClick={handleCancel} className="btn-cancel">Yo‘q</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

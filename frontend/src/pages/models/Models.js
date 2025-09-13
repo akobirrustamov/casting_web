@@ -113,18 +113,24 @@ function Models() {
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
         return items.filter((i) => {
+            // faqat isWebShow = true bo‘lsin
+            if (!i.isWebShow) return false;
+
             if (q && !(i.name || '').toLowerCase().includes(q)) return false;
             if (gender !== 'all' && String(i.gender || '').toLowerCase() !== gender) return false;
             if (ctype !== 'all' && String(i.castingType || '').toLowerCase() !== ctype) return false;
+
             const a = Number(i.age);
             if (Number.isFinite(a)) {
                 if (a < Number(minAge)) return false;
                 if (a > Number(maxAge)) return false;
             }
+
             if (heightFrom !== '') {
                 const h = Number(i.height);
                 if (!Number.isFinite(h) || h < Number(heightFrom)) return false;
             }
+
             return true;
         });
     }, [items, query, gender, ctype, minAge, maxAge, heightFrom]);
@@ -383,12 +389,26 @@ function Models() {
                         </div>
 
                         <div className="profile-gallery">
-                            <h3>{t('models.photos', 'ФОТО')} ({current.photoUrls?.length || 0})</h3>
+                            <h3>
+                                {t('models.photos', 'ФОТО')} (
+                                {(current.photos || []).filter(p => p.isWebShow).length}
+                                )
+                            </h3>
                             <div className="gallery-row">
-                                {(current.photoUrls || []).map((url, idx) => (
-                                    <img key={idx} src={url} alt={`${current.name}-${idx}`} onClick={() => setZoomPhoto(url)} />
-                                ))}
+                                {(current.photos || [])
+                                    .filter(p => p.isWebShow) // faqat true bo‘lganlari chiqadi
+                                    .map((p, idx) => (
+                                        <img
+                                            key={idx}
+                                            src={`${baseUrl}/api/v1/file/getFile/${p.id}`}
+                                            alt={`${current.name}-${idx}`}
+                                            onClick={() =>
+                                                setZoomPhoto(`${baseUrl}/api/v1/file/getFile/${p.id}`)
+                                            }
+                                        />
+                                    ))}
                             </div>
+
                             <div className="contact-row">
                                 <button
                                     type="button"
@@ -400,10 +420,9 @@ function Models() {
                                 >
                                     {t('actions.contact', 'Связаться')}
                                 </button>
-                                {/* можно оставить небольшой подсказочный текст на десктопе */}
-                                {/* <small className="muted">{t('common.willOpenTelegram', 'Откроется Telegram. Текст уже скопирован — вставьте и отправьте.')}</small> */}
                             </div>
                         </div>
+
                     </div>
                 </div>
             )}
