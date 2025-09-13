@@ -23,7 +23,7 @@ const AdminNews = () => {
         }
     };
     useEffect(() => {
-        
+
         checkSecurity()
     }, []);
 
@@ -42,12 +42,12 @@ const AdminNews = () => {
     });
 
     useEffect(() => {
-        
-         
+
+
         fetchNews();
     }, []);
 
-     
+
     const fetchNews = async () => {
         setLoading(true);
         try {
@@ -65,8 +65,8 @@ const AdminNews = () => {
         }
     };
 
-     
-    
+
+
 
     const uploadImage = async (image, prefix) => {
         const formData = new FormData();
