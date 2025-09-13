@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/casting-user")
 @RequiredArgsConstructor

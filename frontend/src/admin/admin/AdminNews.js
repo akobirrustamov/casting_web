@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import ApiCall, { baseUrl } from "../../config";
 import { useNavigate } from "react-router-dom";
 import Header from "./HeaderAdmin";
 import { FaPlus, FaTrash, FaTimes, FaSpinner, FaEdit } from 'react-icons/fa';
 import './AdminNews.css';
+
+const baseUrl = "http://localhost:8080"; // поменяй на свой бэкенд адрес
 
 const AdminNews = () => {
     const [newsList, setNewsList] = useState([]);
@@ -15,16 +16,15 @@ const AdminNews = () => {
     const [mode, setMode] = useState('create'); // 'create' or 'edit'
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
-    const checkSecurity = () => {
-        const accessToken = localStorage.getItem("access_token");
 
+    const checkSecurity = () => {
         if (!accessToken) {
             navigate("/admin/login");
         }
     };
+
     useEffect(() => {
-        
-        checkSecurity()
+        checkSecurity();
     }, []);
 
     const [formData, setFormData] = useState({
@@ -41,47 +41,66 @@ const AdminNews = () => {
         existingAdditionalPhotos: []
     });
 
-    useEffect(() => {
-        
-         
-        fetchNews();
-    }, []);
+    // ============== ФУНКЦИИ API ==============
+    const apiRequest = async (url, method = "GET", body = null, isJson = true) => {
+        try {
+            const headers = {};
+            if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
+            if (isJson && body) headers["Content-Type"] = "application/json";
 
-     
+            const response = await fetch(`${baseUrl}${url}`, {
+                method,
+                headers,
+                body: body ? (isJson ? JSON.stringify(body) : body) : null,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Ошибка ${response.status}`);
+            }
+            return await response.json();
+        } catch (err) {
+            console.error("API Error:", err);
+            throw err;
+        }
+    };
+
     const fetchNews = async () => {
         setLoading(true);
         try {
-            const response = await ApiCall('/api/v1/news', 'GET');
-            if (response.error) {
-                setError(response.data);
-            } else {
-                setNewsList(response.data);
-            }
-        } catch (error) {
-            console.error("Yangiliklarni yuklashda xatolik:", error);
+            const data = await apiRequest("/api/v1/news", "GET");
+            setNewsList(data);
+        } catch (err) {
             setError("Yangiliklarni yuklab bo'lmadi");
         } finally {
             setLoading(false);
         }
     };
 
-     
-    
-
     const uploadImage = async (image, prefix) => {
         const formData = new FormData();
-        formData.append('photo', image);
-        formData.append('prefix', prefix);
+        formData.append("photo", image);
+        formData.append("prefix", prefix);
 
         try {
-            const response = await ApiCall('/api/v1/file/upload', 'POST', formData, null, true);
-            return response.data;
-        } catch (error) {
-            console.error("Rasm yuklashda xatolik:", error);
-            throw error;
+            const response = await fetch(`${baseUrl}/api/v1/file/upload`, {
+                method: "POST",
+                headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error("Rasm yuklashda xatolik");
+            return await response.json();
+        } catch (err) {
+            console.error(err);
+            throw err;
         }
     };
 
+    useEffect(() => {
+        fetchNews();
+    }, []);
+
+    // ============== ОБРАБОТЧИКИ ФОРМЫ ==============
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -97,7 +116,7 @@ const AdminNews = () => {
                 ...prev,
                 mainImage: file,
                 mainPhotoPreview: URL.createObjectURL(file),
-                existingMainPhoto: null // Clear existing photo when new one is selected
+                existingMainPhoto: null
             }));
         }
     };
@@ -119,7 +138,6 @@ const AdminNews = () => {
         const newPreviews = [...formData.additionalImagesPreviews];
         const newExisting = [...formData.existingAdditionalPhotos];
 
-        // Check if we're removing an existing image or a newly added one
         if (index < newExisting.length) {
             newExisting.splice(index, 1);
         } else {
@@ -159,8 +177,6 @@ const AdminNews = () => {
         setMode('create');
         setModalVisible(true);
     };
-
-
 
     const openEditModal = (news) => {
         setCurrentNews(news);
@@ -202,12 +218,10 @@ const AdminNews = () => {
             let mainPhotoUuid = formData.existingMainPhoto?.id || null;
             const additionalImagesUuids = [...formData.existingAdditionalPhotos.map(p => p.id)];
 
-            // Upload new main image if selected
             if (formData.mainImage) {
                 mainPhotoUuid = await uploadImage(formData.mainImage, '/main');
             }
 
-            // Upload new additional images
             for (const image of formData.additionalImages) {
                 const uuid = await uploadImage(image, '/additional');
                 additionalImagesUuids.push(uuid);
@@ -223,22 +237,16 @@ const AdminNews = () => {
                 photos: additionalImagesUuids
             };
 
-            let response;
             if (mode === 'create') {
-                response = await ApiCall('/api/v1/news', 'POST', newsData, null, true);
+                await apiRequest('/api/v1/news', 'POST', newsData, true);
             } else {
-                response = await ApiCall(`/api/v1/news/${currentNews.id}`, 'PUT', newsData, null, true);
+                await apiRequest(`/api/v1/news/${currentNews.id}`, 'PUT', newsData, true);
             }
 
-            if (response.error) {
-                setError(response.data);
-            } else {
-                fetchNews();
-                closeModal();
-            }
-        } catch (error) {
-            console.error("Yangilikni saqlashda xatolik:", error);
-            setError(mode === 'create' ? "Yangilikni saqlab bo'lmadi" : "Yangilikni yangilab bo'lmadi");
+            fetchNews();
+            closeModal();
+        } catch (err) {
+            setError("Yangilikni saqlashda xatolik");
         } finally {
             setLoading(false);
         }
@@ -247,40 +255,29 @@ const AdminNews = () => {
     const handleDelete = async () => {
         setLoading(true);
         try {
-            const response = await ApiCall(`/api/v1/news/${currentNews.id}`, 'DELETE');
-            if (response.error) {
-                setError(response.data);
-            } else {
-                fetchNews();
-                closeModal();
-            }
-        } catch (error) {
-            console.error("Yangilikni o'chirishda xatolik:", error);
+            await apiRequest(`/api/v1/news/${currentNews.id}`, 'DELETE');
+            fetchNews();
+            closeModal();
+        } catch (err) {
             setError("Yangilikni o'chirib bo'lmadi");
         } finally {
             setLoading(false);
         }
     };
 
+    // ============== РЕНДЕР ==============
     return (
         <div className="mobile-news-dark">
             <Header props='admin/news' />
 
             <div className="mobile-news-header">
                 <h1 className="mobile-news-title">Yangiliklar</h1>
-                <button
-                    onClick={openCreateModal}
-                    className="add-news-btn"
-                >
+                <button onClick={openCreateModal} className="add-news-btn">
                     <FaPlus /> Qo'shish
                 </button>
             </div>
 
-            {error && (
-                <div className="error-message">
-                    {error}
-                </div>
-            )}
+            {error && <div className="error-message">{error}</div>}
 
             {loading && !newsList.length ? (
                 <div className="loading-spinner">
@@ -300,16 +297,10 @@ const AdminNews = () => {
                                 <p>{news.descriptionUz.substring(0, 100)}...</p>
                             </div>
                             <div className="news-card-actions">
-                                <button
-                                    onClick={() => openEditModal(news)}
-                                    className="edit-btn"
-                                >
+                                <button onClick={() => openEditModal(news)} className="edit-btn">
                                     <FaEdit /> Tahrirlash
                                 </button>
-                                <button
-                                    onClick={() => openDeleteModal(news)}
-                                    className="delete-btn"
-                                >
+                                <button onClick={() => openDeleteModal(news)} className="delete-btn">
                                     <FaTrash /> O'chirish
                                 </button>
                             </div>
@@ -318,7 +309,7 @@ const AdminNews = () => {
                 </div>
             )}
 
-            {/* Yangilik qo'shish/tahrirlash modali */}
+            {/* Модал создания/редактирования */}
             {modalVisible && (
                 <div className="modal-overlay">
                     <div className="modal-content">
@@ -362,7 +353,6 @@ const AdminNews = () => {
                                     value={formData.descriptionUz}
                                     onChange={handleInputChange}
                                     className="form-input form-textarea"
-                                    placeholder="Yangilik tavsifini kiriting..."
                                     rows={5}
                                     required
                                 ></textarea>
@@ -375,7 +365,6 @@ const AdminNews = () => {
                                     value={formData.descriptionRu}
                                     onChange={handleInputChange}
                                     className="form-input form-textarea"
-                                    placeholder="Описание новости..."
                                     rows={5}
                                     required
                                 ></textarea>
@@ -407,14 +396,7 @@ const AdminNews = () => {
                                 {formData.mainPhotoPreview && (
                                     <div className="image-preview-container">
                                         <div className="image-preview">
-                                            <img
-                                                src={formData.mainPhotoPreview}
-                                                alt="Asosiy rasm"
-                                                className="preview-image"
-                                                onError={(e) => {
-                                                    e.target.src = 'path/to/default/image.jpg'; // Add fallback image
-                                                }}
-                                            />
+                                            <img src={formData.mainPhotoPreview} alt="Asosiy rasm" className="preview-image" />
                                         </div>
                                     </div>
                                 )}
@@ -435,14 +417,7 @@ const AdminNews = () => {
                                 <div className="image-preview-container">
                                     {formData.additionalImagesPreviews.map((preview, index) => (
                                         <div key={index} className="image-preview">
-                                            <img
-                                                src={preview}
-                                                alt={`Qo'shimcha ${index + 1}`}
-                                                className="preview-image"
-                                                onError={(e) => {
-                                                    e.target.src = 'path/to/default/image.jpg'; // Add fallback image
-                                                }}
-                                            />
+                                            <img src={preview} alt={`Qo'shimcha ${index + 1}`} className="preview-image" />
                                             <button
                                                 type="button"
                                                 onClick={() => removeAdditionalImage(index)}
@@ -456,18 +431,10 @@ const AdminNews = () => {
                             </div>
 
                             <div className="form-actions">
-                                <button
-                                    type="button"
-                                    onClick={closeModal}
-                                    className="cancel-btn"
-                                >
+                                <button type="button" onClick={closeModal} className="cancel-btn">
                                     Bekor qilish
                                 </button>
-                                <button
-                                    type="submit"
-                                    className="submit-btn"
-                                    disabled={loading}
-                                >
+                                <button type="submit" className="submit-btn" disabled={loading}>
                                     {loading ? <FaSpinner className="animate-spin" /> :
                                         (mode === 'create' ? "Saqlash" : "Yangilash")}
                                 </button>
@@ -477,7 +444,7 @@ const AdminNews = () => {
                 </div>
             )}
 
-            {/* O'chirish tasdiq modali */}
+            {/* Модал удаления */}
             {deleteModalVisible && (
                 <div className="modal-overlay">
                     <div className="delete-modal-content">
@@ -486,17 +453,10 @@ const AdminNews = () => {
                             "{currentNews?.titleUz}" yangilikni rostdan ham o'chirmoqchimisiz?
                         </p>
                         <div className="delete-modal-actions">
-                            <button
-                                onClick={closeModal}
-                                className="cancel-btn"
-                            >
+                            <button onClick={closeModal} className="cancel-btn">
                                 Bekor qilish
                             </button>
-                            <button
-                                onClick={handleDelete}
-                                className="confirm-delete-btn"
-                                disabled={loading}
-                            >
+                            <button onClick={handleDelete} className="confirm-delete-btn" disabled={loading}>
                                 {loading ? <FaSpinner className="animate-spin" /> : "O'chirish"}
                             </button>
                         </div>
