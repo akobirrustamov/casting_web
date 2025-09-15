@@ -37,6 +37,8 @@ const CastingUser = () => {
         setLoading(true);
         try {
             const response = await ApiCall('/api/v1/casting-user', 'GET');
+            console.log(response.data);
+
             if (response.error) {
                 setError(response.data);
             } else {
@@ -57,8 +59,9 @@ const CastingUser = () => {
             return;
         }
         setFilteredUsers(
-            castingUsers.filter(user => String(user.status) !== "1")
+            castingUsers.filter(user => String(user.status) === "1")
         );
+
     };
 
 

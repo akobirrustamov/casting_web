@@ -184,6 +184,32 @@ function CastingUserDetail() {
             setLoading(false);
         }
     };
+    const [confirmModal, setConfirmModal] = useState({ show: false, userId: null });
+
+    const confirmToggleWebShow = (userId) => {
+        setConfirmModal({ show: true, userId });
+    };
+
+    const handleConfirm = async () => {
+        if (!confirmModal.userId) return;
+        try {
+            await ApiCall(`/api/v1/casting-user/web-show/${confirmModal.userId}`, "PUT");
+            setCasting(prev =>
+                prev.id === confirmModal.userId
+                    ? { ...prev, isWebShow: !prev.isWebShow }
+                    : prev
+            );
+        } catch (error) {
+            console.error("isWebShow yangilashda xatolik:", error);
+        } finally {
+            setConfirmModal({ show: false, userId: null });
+        }
+    };
+
+    const handleCancel = () => {
+        setConfirmModal({ show: false, userId: null });
+    };
+
 
     const handleDelete = async () => {
         if (!window.confirm("Ushbu foydalanuvchini butunlay o'chirmoqchimisiz?")) return;
@@ -269,8 +295,18 @@ function CastingUserDetail() {
                                         {getStatusText(casting.status)}
                                     </span>
                                 </div>
+
+                                {/* 🔘 isWebShow tugmasi */}
+                                <button
+                                    onClick={() => confirmToggleWebShow(casting.id)}
+                                    className={`toggle-btn ${casting.isWebShow ? "active-btn" : "inactive-btn"}`}
+                                >
+                                    {casting.isWebShow ? "Faol" : "Nofaol"}
+                                </button>
                             </div>
                         </div>
+
+
 
                         <div className="info-cards-container">
                             <div className="info-card">
@@ -643,6 +679,18 @@ function CastingUserDetail() {
                         </div>
                     </div>
                 </Modal>
+                {confirmModal.show && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h3>Tasdiqlaysizmi?</h3>
+                            <div className="modal-actions">
+                                <button onClick={handleConfirm} className="btn-confirm">Ha</button>
+                                <button onClick={handleCancel} className="btn-cancel">Yo‘q</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     );

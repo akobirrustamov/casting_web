@@ -7,6 +7,35 @@
   min-height: 100vh;
 }
 
+/* Overlay fon faqat orqani yopib turishi kerak */
+.confirm-overlay,
+.image-overlay,
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.6) !important;
+  z-index: 9998 !important; /* pastroq */
+}
+
+/* Modal oynaning o‘zi har doim yuqorida turadi */
+.confirm-modal,
+.image-modal,
+.price-modal {
+  position: relative;
+  z-index: 9999 !important; /* overlaydan yuqorida */
+  background: #1e1e1e; /* qorong'i fon */
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+}
+
+/* Modal ichidagi tugmalar bosilishi uchun */
+.confirm-modal-content button,
+.price-modal-content button,
+.image-modal-content button {
+  position: relative;
+  z-index: 10000; /* eng yuqori qatlam */
+}
+
 /* Confirm modal */
 .confirm-modal {
   background: #1a1a1a !important;
