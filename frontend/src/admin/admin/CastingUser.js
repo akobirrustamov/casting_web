@@ -27,12 +27,17 @@ const CastingUser = () => {
         setLoading(true);
         try {
             const response = await ApiCall('/api/v1/casting-user', 'GET');
-            console.log(response.data);
+            console.log("API response:", response.data);
 
             if (response.error) {
                 setError(response.data);
             } else {
-                setCastingUsers(response.data);
+                // faqat massivni state ga yozamiz
+                const users = Array.isArray(response.data)
+                    ? response.data
+                    : response.data.data || response.data.content || [];
+
+                setCastingUsers(users);
             }
         } catch (error) {
             console.error("Casting foydalanuvchilarni yuklashda xatolik:", error);
@@ -43,9 +48,18 @@ const CastingUser = () => {
     };
 
     const filterUsers = () => {
-        setFilteredUsers(castingUsers.filter(user => String(user.status) !== "1"));
+        if (!Array.isArray(castingUsers)) {
+            console.error("castingUsers is not an array:", castingUsers);
+            setFilteredUsers([]);
+            return;
+        }
+        setFilteredUsers(
+            castingUsers.filter(user => String(user.status) !== "1")
+        );
     };
 
+
+    // Rest of the component remains the same...
     const confirmToggleWebShow = (userId) => {
         setConfirmModal({ show: true, userId });
     };
@@ -176,7 +190,7 @@ const CastingUser = () => {
                         <h3>Tasdiqlaysizmi?</h3>
                         <div className="modal-actions">
                             <button onClick={handleConfirm} className="btn-confirm">Ha</button>
-                            <button onClick={handleCancel} className="btn-cancel">Yo‘q</button>
+                            <button onClick={handleCancel} className="btn-cancel">Yo'q</button>
                         </div>
                     </div>
                 </div>

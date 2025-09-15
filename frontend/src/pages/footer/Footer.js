@@ -16,7 +16,7 @@ const Footer = () => {
                             <div className="logo-footer">
                                 <img src={Logo} alt="Logo" />
                             </div>
-                            <div className="brand-text">CastingUz</div>
+                            <div className="brand-text">UzCasting</div>
                         </div>
                         <p className="description">
                             {t("footer.brand.description")}
@@ -121,7 +121,7 @@ const Footer = () => {
 
                 {/* Copyright Section */}
                 <div className="copyright">
-                    <p>© {new Date().getFullYear()} CastingUz. {t("footer.copyright.text")}</p>
+                    <p>© {new Date().getFullYear()} UzCasting. {t("footer.copyright.text")}</p>
                     <div className="partners">
                         <span className="partner-text">{t("footer.copyright.partners")}</span>
                         <div className="partner-logos">
