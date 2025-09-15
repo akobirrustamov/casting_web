@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ApiCall from '../../config/index';
 import './DataForm.css';
-import Header from "../header/Header";
+import Header from "../BotHeader/BotHeader";
 
 function DataForm() {
     const { userId } = useParams();
@@ -363,9 +363,6 @@ function DataForm() {
                     </div>
                 </div>
             )}
-
-
-
 
             <Header props={"data-form"} />
             <div className="data-form-container">

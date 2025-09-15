@@ -24,7 +24,7 @@ function Models() {
     const [maxAge, setMaxAge] = useState(100);
     const [heightFrom, setHeightFrom] = useState('');
 
-    const TELEGRAM_USERNAME = 'kobir_rustamov';
+    const TELEGRAM_USERNAME = 'JasMaxStar';
 
     const calcAge = (birthday) => {
         if (!birthday) return null;

@@ -16,6 +16,7 @@ import CastingUserDetail from "./admin/admin/CastingUserDetail";
 import CastingUserAccepted from "./admin/admin/CastingUserAccepted";
 import Models from "./pages/models/Models";
 import LoginPage from "./admin/LoginAdmin"
+import BotHome from "./pages/HomeBot/BotHome"
 
 
 
@@ -63,11 +64,11 @@ function App() {
         <Route path={"/*"} element={<PageNotFound />} />
         {/*  app user */}
         <Route path={"/"} element={<Home />} />
-        {/* <Route path={"/"} element={<Home />} /> */}
-        <Route path={"/data-form/"} element={<DataForm />} />
-        <Route path={"/history/"} element={<History />} />
-        <Route path={"/appeal/"} element={<Appeal />} />
-        <Route path={"/models/"} element={<Models />} />
+        <Route path={"/bot/:userId"} element={<BotHome />} />
+        <Route path={"/data-form/:userId"} element={<DataForm />} />
+        <Route path={"/history/:userId"} element={<History />} />
+        <Route path={"/appeal/:userId"} element={<Appeal />} />
+        <Route path={"/models"} element={<Models />} />
       </Routes>
     </div >
   );

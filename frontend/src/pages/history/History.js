@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Header from "../header/Header";
+import Header from "../BotHeader/BotHeader";
 import "react-responsive-modal/styles.css";
 import ApiCall, { baseUrl } from '../../config/index';
 import './History.css';
