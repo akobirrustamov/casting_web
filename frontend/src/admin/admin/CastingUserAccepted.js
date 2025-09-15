@@ -51,8 +51,16 @@ const CastingUser = () => {
     };
 
     const filterUsers = () => {
-        setFilteredUsers(castingUsers.filter(user => String(user.status) == 1));
+        if (!Array.isArray(castingUsers)) {
+            console.error("castingUsers is not an array:", castingUsers);
+            setFilteredUsers([]);
+            return;
+        }
+        setFilteredUsers(
+            castingUsers.filter(user => String(user.status) !== "1")
+        );
     };
+
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
