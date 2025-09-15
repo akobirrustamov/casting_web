@@ -4,6 +4,7 @@
   background-color: #000000;
   color: #ffffff;
   min-height: 100vh;
+  padding-top: 70px;
 }
 .user-card {
   cursor: pointer;
