@@ -10,15 +10,10 @@ const AdminHome = () => {
     const [error, setError] = useState(null);
     const accessToken = localStorage.getItem("access_token");
 
-    const checkSecurity = () => {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-            navigate("/admin/login");
-        }
-    };
+
 
     useEffect(() => {
-        checkSecurity()
+
     }, []);
 
     useEffect(() => {

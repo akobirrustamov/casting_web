@@ -14,8 +14,7 @@ const CastingUser = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) navigate("/admin/login");
+
         fetchCastingUsers();
     }, []);
 
@@ -170,12 +169,7 @@ const CastingUser = () => {
                                         >
                                             Batafsil
                                         </button>
-                                        <button
-                                            onClick={() => confirmToggleWebShow(user.id)}
-                                            className={`toggle-btn ${user.isWebShow ? "active-btn" : "inactive-btn"}`}
-                                        >
-                                            {user.isWebShow ? "Faol" : "Nofaol"}
-                                        </button>
+
                                     </div>
                                 </div>
                             </div>

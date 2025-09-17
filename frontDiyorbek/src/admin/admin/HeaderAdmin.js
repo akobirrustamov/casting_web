@@ -42,35 +42,41 @@ function Header() {
                         </Link>
                     </div>
 
-                    <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>
-                        <ul>
-                            <li>
-                                <Link to="/admin/home" className="nav-link">
-                                    <span>🏠Bosh Sahifa</span>
-                                    <div className="link-underline"></div>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/admin/news" className="nav-link">
-                                    <span>📰Yangiliklar</span>
-                                    <div className="link-underline"></div>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/admin/casting-users" className="nav-link">
-                                    <span>🎭Kelib tushgan arizalar</span>
-                                    <div className="link-underline"></div>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/admin/accepted" className="nav-link">
-                                    <span>✔️Qabul qilingan arizalar</span>
-                                    <div className="link-underline"></div>
-                                </Link>
-                            </li>
+                    {/*<nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>*/}
+                    {/*    <ul>*/}
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <Link to="/admin/home" className="nav-link">*!/*/}
+                    {/*        /!*        <span>🏠Bosh Sahifa</span>*!/*/}
+                    {/*        /!*        <div className="link-underline"></div>*!/*/}
+                    {/*        /!*    </Link>*!/*/}
+                    {/*        /!*</li>*!/*/}
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <Link to="/admin/news" className="nav-link">*!/*/}
+                    {/*        /!*        <span>📰Yangiliklar</span>*!/*/}
+                    {/*        /!*        <div className="link-underline"></div>*!/*/}
+                    {/*        /!*    </Link>*!/*/}
+                    {/*        /!*</li>*!/*/}
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <Link to="/admin/casting-users" className="nav-link">*!/*/}
+                    {/*        /!*        <span>🎭Kelib tushgan arizalar</span>*!/*/}
+                    {/*        /!*        <div className="link-underline"></div>*!/*/}
+                    {/*        /!*    </Link>*!/*/}
+                    {/*        /!*</li>*!/*/}
+                    {/*        /!*<li>*!/*/}
+                    {/*        /!*    <Link to="/admin/accepted" className="nav-link">*!/*/}
+                    {/*        /!*        <span>✔️Qabul qilingan arizalar</span>*!/*/}
+                    {/*        /!*        <div className="link-underline"></div>*!/*/}
+                    {/*        /!*    </Link>*!/*/}
+                    {/*        /!*</li>*!/*/}
+                    {/*        <li>*/}
+                    {/*            <Link to="/admin/accepted" className="nav-link">*/}
+                    {/*                <span>Chiqish</span>*/}
+                    {/*                <div className="link-underline"></div>*/}
+                    {/*            </Link>*/}
+                    {/*        </li>*/}
 
-                        </ul>
-                    </nav>
+                    {/*    </ul>*/}
+                    {/*</nav>*/}
                     {/* мобильный блок */}
                     <div className="mobile-actions">
                         <button

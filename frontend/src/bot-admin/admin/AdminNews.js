@@ -17,15 +17,7 @@ const AdminNews = () => {
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
 
-    const checkSecurity = () => {
-        if (!accessToken) {
-            navigate("/admin/login");
-        }
-    };
 
-    useEffect(() => {
-        checkSecurity();
-    }, []);
 
     const [formData, setFormData] = useState({
         titleUz: '',

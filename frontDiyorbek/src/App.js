@@ -18,7 +18,11 @@ import Models from "./pages/models/Models";
 import LoginPage from "./admin/LoginAdmin"
 import BotHome from "./pages/HomeBot/BotHome"
 
-
+import BotAdminHome from "./bot-admin/admin/AdminHome";
+import BotAdminNews from "./bot-admin/admin/AdminNews";
+import BotCastingUser from "./bot-admin/admin/CastingUser";
+import BotCastingUserDetail from "./bot-admin/admin/CastingUserDetail";
+import BotCastingUserAccepted from "./bot-admin/admin/CastingUserAccepted";
 
 function App() {
 
@@ -37,7 +41,7 @@ function App() {
       let accessToken = localStorage.getItem("access_token");
       const res = await ApiCall("/api/v1/security", "GET")
       if (res?.data == 401) {
-        navigate("/admin/login");
+        navigate("/aadmin/login");
       }
       if (accessToken !== null) {
         if (res?.data !== 401 && res?.error) {
@@ -46,7 +50,7 @@ function App() {
           }
         }
       } else {
-        navigate("/admin/login");
+        navigate("/aadmin/login");
       }
     }
   }
@@ -55,13 +59,18 @@ function App() {
     <div>
       <Routes>
         {/*  app admin */}
-        <Route path={"/admin/login"} element={<LoginPage />} />
-        <Route path={"/admin/home"} element={<AdminHome />} />
-        <Route path={"/admin/news"} element={<AdminNews />} />
-        <Route path={"/admin/casting-users"} element={<CastingUser />} />
-        <Route path={"/admin/accepted"} element={<CastingUserAccepted />} />
-        <Route path={"/admin/casting-users/:castingUserId"} element={<CastingUserDetail />} />
+        <Route path={"/aadmin/login"} element={<LoginPage />} />
+        <Route path={"/aadmin/casting-users/web"} element={<CastingUser />} />
         <Route path={"/*"} element={<PageNotFound />} />
+
+        {/*bot admin*/}
+        <Route path={"/admin/home"} element={<BotAdminHome />} />
+        <Route path={"/admin/news"} element={<BotAdminNews />} />
+        <Route path={"/admin/casting-users"} element={<BotCastingUser />} />
+        <Route path={"/admin/accepted"} element={<BotCastingUserAccepted />} />
+        <Route path={"/admin/casting-users/:castingUserId"} element={<BotCastingUserDetail />} />
+
+
         {/*  app user */}
         <Route path={"/"} element={<Home />} />
         <Route path={"/bot/:userId"} element={<BotHome />} />

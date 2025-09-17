@@ -14,16 +14,7 @@ const CastingUser = () => {
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
 
-    const checkSecurity = () => {
-        const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) {
-            navigate("/admin/login");
-        }
-    };
 
-    useEffect(() => {
-        checkSecurity()
-    }, []);
 
     useEffect(() => {
         fetchCastingUsers();

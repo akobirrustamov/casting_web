@@ -15,7 +15,7 @@ const CastingUser = () => {
 
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
-        if (!accessToken) navigate("/admin/login");
+        if (!accessToken) navigate("/aadmin/login");
         fetchCastingUsers();
     }, []);
 
@@ -53,9 +53,7 @@ const CastingUser = () => {
             setFilteredUsers([]);
             return;
         }
-        setFilteredUsers(
-            castingUsers.filter(user => String(user.status) !== "1")
-        );
+        setFilteredUsers(castingUsers);
     };
 
 
@@ -139,9 +137,9 @@ const CastingUser = () => {
                                             {user.castingType} • {user.gender}
                                         </p>
                                     </div>
-                                    <span className={`status-badge ${getStatusClass(user.status)}`}>
-                                        {getStatusText(user.status)}
-                                    </span>
+                                    {/*<span className={`status-badge ${getStatusClass(user.status)}`}>*/}
+                                    {/*    {getStatusText(user.status)}*/}
+                                    {/*</span>*/}
                                 </div>
 
                                 <div className="user-info">

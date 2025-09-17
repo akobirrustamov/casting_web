@@ -513,58 +513,58 @@ function CastingUserDetail() {
                             )}
                         </div>
 
-                        <div className="action-buttons-container">
-                            {(casting.status === 1 && casting.secondChan == 0) && (
-                                <button
-                                    className="action-btn payment-btn"
-                                    onClick={hasPayment}
-                                    disabled={loading}
-                                >
-                                    <FaMoneyBillWave className="button-icon" />
-                                    To'lov qildi
-                                </button>
-                            )}
+                        {/*<div className="action-buttons-container">*/}
+                        {/*    {(casting.status === 1 && casting.secondChan == 0) && (*/}
+                        {/*        <button*/}
+                        {/*            className="action-btn payment-btn"*/}
+                        {/*            onClick={hasPayment}*/}
+                        {/*            disabled={loading}*/}
+                        {/*        >*/}
+                        {/*            <FaMoneyBillWave className="button-icon" />*/}
+                        {/*            To'lov qildi*/}
+                        {/*        </button>*/}
+                        {/*    )}*/}
 
-                            {casting.status === 0 && (
-                                <>
-                                    <button
-                                        className="action-btn accept-btn"
-                                        onClick={() => setIsPriceModalOpen(true)}
-                                        disabled={loading}
-                                    >
-                                        <FaCheck className="button-icon" />
-                                        Qabul qilish
-                                    </button>
+                        {/*    {casting.status === 0 && (*/}
+                        {/*        <>*/}
+                        {/*            <button*/}
+                        {/*                className="action-btn accept-btn"*/}
+                        {/*                onClick={() => setIsPriceModalOpen(true)}*/}
+                        {/*                disabled={loading}*/}
+                        {/*            >*/}
+                        {/*                <FaCheck className="button-icon" />*/}
+                        {/*                Qabul qilish*/}
+                        {/*            </button>*/}
 
-                                    <button
-                                        className="action-btn price-btn"
-                                        onClick={() => setIsPriceModalOpen(true)}
-                                        disabled={loading}
-                                    >
-                                        <FaDollarSign className="button-icon" />
-                                        Narx belgilash
-                                    </button>
+                        {/*            <button*/}
+                        {/*                className="action-btn price-btn"*/}
+                        {/*                onClick={() => setIsPriceModalOpen(true)}*/}
+                        {/*                disabled={loading}*/}
+                        {/*            >*/}
+                        {/*                <FaDollarSign className="button-icon" />*/}
+                        {/*                Narx belgilash*/}
+                        {/*            </button>*/}
 
-                                    <button
-                                        className="action-btn reject-btn"
-                                        onClick={handleReject}
-                                        disabled={loading}
-                                    >
-                                        <FaTimes className="button-icon" />
-                                        Rad qilish
-                                    </button>
-                                </>
-                            )}
+                        {/*            <button*/}
+                        {/*                className="action-btn reject-btn"*/}
+                        {/*                onClick={handleReject}*/}
+                        {/*                disabled={loading}*/}
+                        {/*            >*/}
+                        {/*                <FaTimes className="button-icon" />*/}
+                        {/*                Rad qilish*/}
+                        {/*            </button>*/}
+                        {/*        </>*/}
+                        {/*    )}*/}
 
-                            <button
-                                className="action-btn delete-btn"
-                                onClick={handleDelete}
-                                disabled={loading}
-                            >
-                                <FaTrash className="button-icon" />
-                                O'chirish
-                            </button>
-                        </div>
+                        {/*    <button*/}
+                        {/*        className="action-btn delete-btn"*/}
+                        {/*        onClick={handleDelete}*/}
+                        {/*        disabled={loading}*/}
+                        {/*    >*/}
+                        {/*        <FaTrash className="button-icon" />*/}
+                        {/*        O'chirish*/}
+                        {/*    </button>*/}
+                        {/*</div>*/}
                     </>
                 )}
                 {/* Active/Inactive tasdiqlash modal */}

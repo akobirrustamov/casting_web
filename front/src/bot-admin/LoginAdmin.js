@@ -31,7 +31,7 @@ const LoginStudent = () => {
                 navigate("/dashboard");
             }
             if (roles[0].name === "ROLE_ADMIN" && response.error === false) {
-                navigate("/admin/home")
+                navigate("/aadmin/casting-users/web")
             }
 
             if (roles[0].name === "ROLE_AGENT" && response.error === false) {

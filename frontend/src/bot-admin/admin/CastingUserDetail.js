@@ -34,16 +34,6 @@ function CastingUserDetail() {
     const { castingUserId } = useParams();
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
-    const checkSecurity = () => {
-        const accessToken = localStorage.getItem("access_token");
-
-        if (!accessToken) {
-            navigate("/admin/login");
-        }
-    };
-    useEffect(() => {
-        checkSecurity()
-    }, []);
 
     const [casting, setCasting] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -461,13 +451,13 @@ function CastingUserDetail() {
                                                         👁 Ko‘rish
                                                     </button> */}
 
-                                                    <button
-                                                        className={`photo-toggle-btn ${photo.isWebShow ? "active-btn" : "inactive-btn"
-                                                            }`}
-                                                        onClick={() => confirmTogglePhoto(photo)}
-                                                    >
-                                                        {photo.isWebShow ? "Faol" : "Nofaol"}
-                                                    </button>
+                                                    {/*<button*/}
+                                                    {/*    className={`photo-toggle-btn ${photo.isWebShow ? "active-btn" : "inactive-btn"*/}
+                                                    {/*        }`}*/}
+                                                    {/*    onClick={() => confirmTogglePhoto(photo)}*/}
+                                                    {/*>*/}
+                                                    {/*    {photo.isWebShow ? "Faol" : "Nofaol"}*/}
+                                                    {/*</button>*/}
                                                 </div>
                                             </div>
                                         ))}
