@@ -38,7 +38,7 @@ function Header() {
                     <div className="logo">
                         <Link to="/admin/home">
                             <img src={logo} alt="Logo" />
-                            <span>Jasmaxstar</span>
+                            <span>Uzcasting</span>
                         </Link>
                     </div>
 
