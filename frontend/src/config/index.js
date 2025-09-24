@@ -1,7 +1,7 @@
 import axios from "axios";
 export let baseUrl;
-baseUrl ="http://localhost:8080";
-// baseUrl ="https://castinguz.site";
+// baseUrl ="http://localhost:8080";
+baseUrl ="https://castinguz.site";
 // baseUrl ="";
 export default function (url, method, data, param) {
    

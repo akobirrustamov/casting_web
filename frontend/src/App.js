@@ -64,7 +64,7 @@ function App() {
         {/*  app user */}
         <Route path={"/"} element={<Home />} />
         {/* <Route path={"/"} element={<Home />} /> */}
-        <Route path={"/data-form/"} element={<DataForm />} />
+        <Route path={"/data-form/:userId"} element={<DataForm />} />
         <Route path={"/history/"} element={<History />} />
         <Route path={"/appeal/"} element={<Appeal />} />
         <Route path={"/models/"} element={<Models />} />
