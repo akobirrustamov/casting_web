@@ -168,7 +168,57 @@
   aspect-ratio: 3 / 4;
   background: #0f1722;
   overflow: hidden;
+  position: relative;
+  /* важно для стрелок/индикаторов */
 }
+
+/* Карусель в карточках и модалке */
+.card-carousel,
+.model-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Картинка всегда вписывается */
+.card-carousel .card-carousel-image,
+.model-carousel .carousel-image-container {
+  width: 100%;
+  height: 100%;
+}
+
+.card-carousel img,
+.model-carousel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Стрелки по центру */
+.card-carousel .carousel-control-prev,
+.card-carousel .carousel-control-next,
+.model-carousel .carousel-control-prev,
+.model-carousel .carousel-control-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10%;
+  height: 40px;
+}
+
+/* Индикаторы зафиксированы снизу */
+.card-carousel .carousel-indicators,
+.model-carousel .carousel-indicators {
+  bottom: 8px;
+}
+
+.card-carousel .carousel-indicators [data-bs-target],
+.model-carousel .carousel-indicators [data-bs-target] {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
 
 .card-body {
   position: relative;
@@ -210,7 +260,8 @@
   /* центрируем имя и возраст */
   align-items: center;
   text-align: center;
-  margin-bottom: 16px;
+  gap: 10px;
+  /* margin-bottom: 16px; */
 }
 
 .profile-center {
@@ -226,14 +277,14 @@
 }
 
 .profile-id {
-  position: absolute;
-  top: 0;
-  right: 0;
+  /* position: absolute; */
+
   font-size: 14px;
   color: #838282;
   background: rgba(0, 0, 0, 0.05);
   padding: 2px 8px;
   border-radius: 4px;
+  margin-bottom: 5px;
 }
 
 .card-photo img {
@@ -321,6 +372,7 @@
 
 .cast-modal-close {
   position: absolute;
+  z-index: 100;
   top: 10px;
   right: 10px;
   border: 1px solid var(--border);
@@ -687,6 +739,7 @@
 
 /* reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
+
   .card:hover,
   .gallery-row img:hover,
   .cast-modal {
@@ -792,6 +845,7 @@
 }
 
 @keyframes bbl {
+
   0%,
   80%,
   100% {

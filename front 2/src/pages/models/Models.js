@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import ApiCall, { baseUrl } from '../../config';
 import './Models.css';
@@ -8,6 +8,8 @@ import EmptyState from './EmptyState';
 import Footer from "../footer/Footer";
 import "bootstrap/dist/css/bootstrap.css";
 import Carousel from "react-bootstrap/Carousel";
+import ModelCard from "./ModelCard";
+
 
 function Models() {
     const { t } = useTranslation();
@@ -62,8 +64,15 @@ function Models() {
                     const ageRaw = u.age ?? calcAge(u.birthday);
                     const ageNum = Number(ageRaw);
                     const age = Number.isFinite(ageNum) ? Math.max(0, Math.min(100, ageNum)) : null;
-                    return { ...u, photoUrls, age, castingType: (u.castingType || '').toLowerCase() };
+                    return {
+                        ...u,
+                        photoUrls,
+                        age,
+                        castingType: (u.castingType || '').toLowerCase(),
+                        isWebShow: u.isWebShow ?? true   // 🔑 добавь это
+                    };
                 });
+
                 setItems(mapped);
             } catch (e) {
                 console.error('Failed to load cards', e);
@@ -111,6 +120,31 @@ function Models() {
         setOpen(false);
         setCurrent(null);
     };
+    const SmartImage = ({ src, alt, className }) => {
+        const [style, setStyle] = useState({});
+
+        const handleLoad = (e) => {
+            const { naturalWidth, naturalHeight } = e.target;
+            if (naturalWidth >= naturalHeight) {
+                setStyle({ width: "133%" }); // квадратное или горизонтальное фото
+            } else {
+                setStyle({ width: "105%" }); // вертикальное фото
+            }
+        };
+
+        return (
+            <div className="card-carousel-image" style={style}>
+                <img
+                    src={src}
+                    alt={alt}
+                    loading="lazy"
+                    className={className}
+                    onLoad={handleLoad}
+                />
+            </div>
+        );
+    };
+
 
     const fmt = (v) => (v === null || v === undefined || v === '' ? '—' : v);
 
@@ -124,7 +158,7 @@ function Models() {
         const q = query.trim().toLowerCase();
         return items.filter((i) => {
             // faqat isWebShow = true bo‘lsin
-            if (!i.isWebShow) return false;
+            // if (!i.isWebShow) return false;
 
             if (q && !(i.name || '').toLowerCase().includes(q)) return false;
             if (gender !== 'all' && String(i.gender || '').toLowerCase() !== gender) return false;
@@ -323,48 +357,22 @@ function Models() {
                         subtitle={t('common.emptySubtitle', 'Измените фильтры или попробуйте другой запрос')}
                     />
                 ) : (
-                    <div className="grid">
-                        {filtered.map((m) => (
-                            <div key={m.id} className="card" role="button" onClick={() => openModal(m)}>
-                                <div className="card-photo">
-                                    {(m.photoUrls && m.photoUrls.length > 0) ? (
-                                        <Carousel
-                                            indicators={m.photoUrls.length > 1}
-                                            controls={m.photoUrls.length > 1}
-                                            interval={null}
-                                            className="card-carousel"
-                                        >
-                                            {m.photoUrls.map((photoUrl, index) => (
-                                                <Carousel.Item key={index}>
-                                                    <div className="card-carousel-image">
-                                                        <img
-                                                            src={photoUrl}
-                                                            alt={`${m.name} ${index + 1}`}
-                                                            loading="lazy"
-                                                        />
-                                                    </div>
-                                                </Carousel.Item>
-                                            ))}
-                                        </Carousel>
-                                    ) : (
-                                        <img
-                                            src="https://via.placeholder.com/600x800?text=No+Photo"
-                                            alt={m.name}
-                                            loading="lazy"
-                                            className="card-placeholder"
-                                        />
-                                    )}
-                                </div>
-                                <div className="card-body">
-                                    <div className="card-center">
-                                        <div className="card-name">{getFirstName(m.name)}</div>
-                                        <div className="card-age">{t('units.years', { count: m.age ?? 0 })}</div>
-                                    </div>
-                                    <div className="card-id">ID: {m.id}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    
+                        <div className="grid">
+                            {filtered.map((m) => (
+                                <ModelCard
+                                    key={m.id}
+                                    model={m}
+                                    openModal={openModal}
+                                    t={t}
+                                    getFirstName={getFirstName}
+                                    SmartImage={SmartImage}
+                                    open={open}
+                                />
+                            ))}
+                        </div>
+
+                    
                 )}
             </section>
 
@@ -436,24 +444,21 @@ function Models() {
 
                         <div className="profile-gallery">
                             <h3>
-                                {t('models.photos', 'ФОТО')} (
-                                {(current.photos || []).filter(p => p.isWebShow).length}
-                                )
+                                {t('models.photos', 'ФОТО')} ({(current.photos || []).length})
                             </h3>
                             <div className="gallery-row">
-                                {(current.photos || [])
-                                    .filter(p => p.isWebShow)
-                                    .map((p, idx) => (
-                                        <img
-                                            key={idx}
-                                            src={`${baseUrl}/api/v1/file/getFile/${p.id}`}
-                                            alt={`${current.name}-${idx}`}
-                                            onClick={() =>
-                                                setZoomPhoto(`${baseUrl}/api/v1/file/getFile/${p.id}`)
-                                            }
-                                        />
-                                    ))}
+                                {(current.photos || []).map((p, idx) => (
+                                    <img
+                                        key={idx}
+                                        src={`${baseUrl}/api/v1/file/getFile/${p.id}`}
+                                        alt={`${current.name}-${idx}`}
+                                        onClick={() =>
+                                            setZoomPhoto(`${baseUrl}/api/v1/file/getFile/${p.id}`)
+                                        }
+                                    />
+                                ))}
                             </div>
+
 
                             <div className="contact-row">
                                 <button
