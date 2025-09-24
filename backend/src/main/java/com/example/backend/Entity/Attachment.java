@@ -24,10 +24,7 @@ public class Attachment {
     @Id
     private UUID id;
     private String prefix;
-
-
     private String name;
-
     private Boolean isWebShow;
     public static Attachment createAttachment(MultipartFile photo, String prefix, Boolean isWebShow) throws IOException {
         Attachment attachment = null;
