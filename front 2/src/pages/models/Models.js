@@ -52,7 +52,7 @@ function Models() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await ApiCall('/api/v1/casting-user', 'GET');
+                const res = await ApiCall('/api/v1/casting-user/web', 'GET');
                 console.log(res.data);
 
                 const list = Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [];
@@ -357,22 +357,22 @@ function Models() {
                         subtitle={t('common.emptySubtitle', 'Измените фильтры или попробуйте другой запрос')}
                     />
                 ) : (
-                    
-                        <div className="grid">
-                            {filtered.map((m) => (
-                                <ModelCard
-                                    key={m.id}
-                                    model={m}
-                                    openModal={openModal}
-                                    t={t}
-                                    getFirstName={getFirstName}
-                                    SmartImage={SmartImage}
-                                    open={open}
-                                />
-                            ))}
-                        </div>
 
-                    
+                    <div className="grid">
+                        {filtered.map((m) => (
+                            <ModelCard
+                                key={m.id}
+                                model={m}
+                                openModal={openModal}
+                                t={t}
+                                getFirstName={getFirstName}
+                                SmartImage={SmartImage}
+                                open={open}
+                            />
+                        ))}
+                    </div>
+
+
                 )}
             </section>
 
@@ -393,11 +393,13 @@ function Models() {
                                         {current.photoUrls.map((photoUrl, index) => (
                                             <Carousel.Item key={index}>
                                                 <div className="carousel-image-container">
-                                                    <img
-                                                        className="d-block w-100"
-                                                        src={photoUrl}
-                                                        alt={`${current.name} ${index + 1}`}
-                                                    />
+                                                    {photoUrl.isWebShow && (
+                                                        <img
+                                                            className="d-block w-100"
+                                                            src={photoUrl}
+                                                            alt={`${current.name} ${index + 1}`}
+                                                        />
+                                                    )}
                                                 </div>
                                             </Carousel.Item>
                                         ))}
@@ -448,14 +450,18 @@ function Models() {
                             </h3>
                             <div className="gallery-row">
                                 {(current.photos || []).map((p, idx) => (
-                                    <img
-                                        key={idx}
-                                        src={`${baseUrl}/api/v1/file/getFile/${p.id}`}
-                                        alt={`${current.name}-${idx}`}
-                                        onClick={() =>
-                                            setZoomPhoto(`${baseUrl}/api/v1/file/getFile/${p.id}`)
-                                        }
-                                    />
+                                    p.isWebShow && (
+
+
+                                        <img
+                                            key={idx}
+                                            src={`${baseUrl}/api/v1/file/getFile/${p.id}`}
+                                            alt={`${current.name}-${idx}`}
+                                            onClick={() =>
+                                                setZoomPhoto(`${baseUrl}/api/v1/file/getFile/${p.id}`)
+                                            }
+                                        />
+                                    )
                                 ))}
                             </div>
 

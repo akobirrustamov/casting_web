@@ -30,6 +30,11 @@ public class CastingUserController {
         List<CastingUser> all = castingUserRepo.findAllByOrderByCreatedAtDesc();
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
+    @GetMapping("/web")
+    public HttpEntity<?> getAllCastingUserWeb(){
+        List<CastingUser> all = castingUserRepo.findAllByIsWebShow(true);
+        return new ResponseEntity<>(all, HttpStatus.OK);
+    }
 
 
     @PostMapping

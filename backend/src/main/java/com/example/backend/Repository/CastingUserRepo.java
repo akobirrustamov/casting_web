@@ -23,4 +23,6 @@ public interface CastingUserRepo extends JpaRepository<CastingUser,Integer> {
     List<CastingUser> findAllByOrderByCreatedAtAsc();
 
     List<CastingUser> findAllByOrderByCreatedAtDesc();
+
+    List<CastingUser> findAllByIsWebShow(boolean b);
 }

@@ -1,18 +1,16 @@
 import axios from "axios";
 export let baseUrl;
-// baseUrl ="http://localhost:8080";
-// baseUrl ="https://castinguz.site";
-// baseUrl ="http://83.147.246.81:8090";
-// baseUrl ="http://83.147.246.81:8090"
-baseUrl ="";
+// baseUrl = "http://localhost:8080";
+// baseUrl ="https://uzcasting.site";
+baseUrl = "";
 export default function (url, method, data, param) {
-   
-    
+
+
 
     let token = localStorage.getItem("access_token");
     // console.log(param)
     return axios({
-        url:  baseUrl+ url,
+        url: baseUrl + url,
         method: method,
         data: data,
         headers: {
