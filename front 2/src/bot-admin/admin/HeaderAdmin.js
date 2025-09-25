@@ -42,7 +42,7 @@ function Header() {
                         </Link>
                     </div>
 
-                    {/* <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>
+                     <nav className={`nav ${isMobileMenuOpen ? 'nav-open' : ''} pt-3`}>
                         <ul>
                             <li>
                                 <Link to="/admin/home" className="nav-link">
@@ -70,9 +70,9 @@ function Header() {
                             </li>
 
                         </ul>
-                    </nav> */}
+                    </nav>
                     {/* мобильный блок */}
-                    {/* <div className="mobile-actions">
+                    <div className="mobile-actions">
                         <button
                             className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`}
                             onClick={toggleMobileMenu}
@@ -80,10 +80,10 @@ function Header() {
                         >
                             <span></span><span></span><span></span>
                         </button>
-                    </div> */}
+                    </div>
                 </div>
             </header >
-            {/* <div className="header-spacer"></div> */}
+             <div className="header-spacer"></div>
         </>
     );
 }

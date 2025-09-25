@@ -64,6 +64,7 @@ function App() {
         <Route path={"/aadmin/casting-users/:castingUserId"} element={<CastingUserDetail />} />
 
         <Route path={"/*"} element={<PageNotFound />} />
+        <Route path={"/"} element={<Home />} />b
 
         {/*bot admin*/}
         <Route path={"/admin/home"} element={<BotAdminHome />} />
@@ -74,7 +75,7 @@ function App() {
 
 
         {/*  app user */}
-        <Route path={"/"} element={<Home />} />
+
         <Route path={"/bot/:userId"} element={<BotHome />} />
         <Route path={"/data-form/:userId"} element={<DataForm />} />
         <Route path={"/history/:userId"} element={<History />} />
