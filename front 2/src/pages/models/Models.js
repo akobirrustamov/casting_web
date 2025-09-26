@@ -60,18 +60,25 @@ function Models() {
 
                 const mapped = list.map((u) => {
                     const photos = Array.isArray(u.photos) ? u.photos : [];
-                    const photoUrls = photos.map(p => p?.id).filter(Boolean).map(id => `${baseUrl}/api/v1/file/getFile/${id}`);
+                    const photoUrls = photos
+                        .filter(p => p?.id) // faqat id bo‘lsa
+                        .map(p => ({
+                            url: `${baseUrl}/api/v1/file/getFile/${p.id}`,
+                            isWebShow: p.isWebShow ?? true
+                        }));
+
                     const ageRaw = u.age ?? calcAge(u.birthday);
                     const ageNum = Number(ageRaw);
                     const age = Number.isFinite(ageNum) ? Math.max(0, Math.min(100, ageNum)) : null;
+
                     return {
                         ...u,
                         photoUrls,
                         age,
                         castingType: (u.castingType || '').toLowerCase(),
-                        isWebShow: u.isWebShow ?? true   // 🔑 добавь это
                     };
                 });
+
 
                 setItems(mapped);
             } catch (e) {
@@ -383,26 +390,26 @@ function Models() {
 
                         <div className="cast-modal-body">
                             <div className="profile-photo">
-                                {(current.photoUrls && current.photoUrls.length > 0) ? (
+                                {current.photoUrls && current.photoUrls.length > 0 ? (
                                     <Carousel
-                                        indicators={current.photoUrls.length > 1}
-                                        controls={current.photoUrls.length > 1}
+                                        indicators={current.photoUrls.filter(p => p.isWebShow).length > 1}
+                                        controls={current.photoUrls.filter(p => p.isWebShow).length > 1}
                                         interval={null}
                                         className="model-carousel"
                                     >
-                                        {current.photoUrls.map((photoUrl, index) => (
-                                            <Carousel.Item key={index}>
-                                                <div className="carousel-image-container">
-                                                    {photoUrl.isWebShow && (
+                                        {current.photoUrls
+                                            .filter(p => p.isWebShow)
+                                            .map((p, index) => (
+                                                <Carousel.Item key={index}>
+                                                    <div className="carousel-image-container">
                                                         <img
                                                             className="d-block w-100"
-                                                            src={photoUrl}
+                                                            src={p.url}
                                                             alt={`${current.name} ${index + 1}`}
                                                         />
-                                                    )}
-                                                </div>
-                                            </Carousel.Item>
-                                        ))}
+                                                    </div>
+                                                </Carousel.Item>
+                                            ))}
                                     </Carousel>
                                 ) : (
                                     <img
@@ -446,13 +453,15 @@ function Models() {
 
                         <div className="profile-gallery">
                             <h3>
-                                {t('models.photos', 'ФОТО')} ({(current.photos || []).length})
+                                {t('models.photos', 'ФОТО')} (
+                                {(current.photos || []).filter(p => p.isWebShow).length}
+                                )
                             </h3>
+
                             <div className="gallery-row">
-                                {(current.photos || []).map((p, idx) => (
-                                    p.isWebShow && (
-
-
+                                {(current.photos || [])
+                                    .filter(p => p.isWebShow)
+                                    .map((p, idx) => (
                                         <img
                                             key={idx}
                                             src={`${baseUrl}/api/v1/file/getFile/${p.id}`}
@@ -461,9 +470,9 @@ function Models() {
                                                 setZoomPhoto(`${baseUrl}/api/v1/file/getFile/${p.id}`)
                                             }
                                         />
-                                    )
-                                ))}
+                                    ))}
                             </div>
+
 
 
                             <div className="contact-row">

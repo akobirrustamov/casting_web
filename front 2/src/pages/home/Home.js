@@ -36,7 +36,6 @@ function Home() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const goApplicant = () => navigate(`/data-form`);
     const goClient = () => navigate(`/models`);
 
     // Берём строки из i18n; подстраховка от undefined/null
@@ -100,9 +99,9 @@ function Home() {
                     </motion.div>
 
                     <div className="cta-buttons" role="group" aria-label="Casting choices">
-                        <button className="register-btn" onClick={goApplicant}>
+                        <a href="https://t.me/uzcastingbot" target="_blank" className="register-btn">
                             {t("hero.btnApplicant")}
-                        </button>
+                        </a>
                         <button className="register-btn" onClick={goClient}>
                             {t("hero.btnClient")}
                         </button>

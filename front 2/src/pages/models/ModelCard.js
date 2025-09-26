@@ -2,12 +2,13 @@
 import React, { useRef } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import useOnScreen from "./useOnScreen";
-// если хук в отдельном файле
-// или можно прямо в этом файле вставить сам хук
 
 function ModelCard({ model, openModal, t, getFirstName, SmartImage, open }) {
     const cardRef = useRef(null);
     const isVisible = useOnScreen(cardRef);
+
+    // faqat isWebShow = true bo'lgan fotolar
+    const visiblePhotos = (model.photoUrls || []).filter(p => p.isWebShow);
 
     return (
         <div
@@ -17,17 +18,17 @@ function ModelCard({ model, openModal, t, getFirstName, SmartImage, open }) {
             onClick={() => openModal(model)}
         >
             <div className="card-photo">
-                {model.photoUrls && model.photoUrls.length > 0 ? (
+                {visiblePhotos.length > 0 ? (
                     <Carousel
-                        indicators={model.photoUrls.length > 1}
-                        controls={model.photoUrls.length > 1}
+                        indicators={visiblePhotos.length > 1}
+                        controls={visiblePhotos.length > 1}
                         interval={!open && isVisible ? 2500 : null}
                         className="card-carousel"
                     >
-                        {model.photoUrls.map((photoUrl, index) => (
+                        {visiblePhotos.map((p, index) => (
                             <Carousel.Item key={index}>
                                 <SmartImage
-                                    src={photoUrl}
+                                    src={p.url}
                                     alt={`${model.name} ${index + 1}`}
                                     className="card-image"
                                 />
@@ -47,7 +48,9 @@ function ModelCard({ model, openModal, t, getFirstName, SmartImage, open }) {
             <div className="card-body">
                 <div className="card-center">
                     <div className="card-name">{getFirstName(model.name)}</div>
-                    <div className="card-age">{t("units.years", { count: model.age ?? 0 })}</div>
+                    <div className="card-age">
+                        {t("units.years", { count: model.age ?? 0 })}
+                    </div>
                 </div>
                 <div className="card-id">ID: {model.id}</div>
             </div>
