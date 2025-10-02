@@ -20,6 +20,7 @@ function Models() {
     const [loading, setLoading] = useState(true);
     const [zoomPhoto, setZoomPhoto] = useState(null);
     const [contactLock, setContactLock] = useState(false);
+    console.log("weasdrghjkhgfdsa");
 
     // --- Фильтры ---
     const [query, setQuery] = useState('');
@@ -61,11 +62,13 @@ function Models() {
                 const mapped = list.map((u) => {
                     const photos = Array.isArray(u.photos) ? u.photos : [];
                     const photoUrls = photos
-                        .filter(p => p?.id) // faqat id bo‘lsa
+                        .filter(p => p?.id && p.isWebShow === true) // faqat ID mavjud va isWebShow true bo‘lsa
                         .map(p => ({
                             url: `${baseUrl}/api/v1/file/getFile/${p.id}`,
-                            isWebShow: p.isWebShow ?? true
+                            isWebShow: true
                         }));
+
+
 
                     const ageRaw = u.age ?? calcAge(u.birthday);
                     const ageNum = Number(ageRaw);
@@ -392,25 +395,24 @@ function Models() {
                             <div className="profile-photo">
                                 {current.photoUrls && current.photoUrls.length > 0 ? (
                                     <Carousel
-                                        indicators={current.photoUrls.filter(p => p.isWebShow).length > 1}
-                                        controls={current.photoUrls.filter(p => p.isWebShow).length > 1}
+                                        indicators={current.photoUrls.length > 1}
+                                        controls={current.photoUrls.length > 1}
                                         interval={null}
                                         className="model-carousel"
                                     >
-                                        {current.photoUrls
-                                            .filter(p => p.isWebShow)
-                                            .map((p, index) => (
-                                                <Carousel.Item key={index}>
-                                                    <div className="carousel-image-container">
-                                                        <img
-                                                            className="d-block w-100"
-                                                            src={p.url}
-                                                            alt={`${current.name} ${index + 1}`}
-                                                        />
-                                                    </div>
-                                                </Carousel.Item>
-                                            ))}
+                                        {current.photoUrls.map((p, index) => (
+                                            <Carousel.Item key={index}>
+                                                <div className="carousel-image-container">
+                                                    <img
+                                                        className="d-block w-100"
+                                                        src={p.url}
+                                                        alt={`${current.name} ${index + 1}`}
+                                                    />
+                                                </div>
+                                            </Carousel.Item>
+                                        ))}
                                     </Carousel>
+
                                 ) : (
                                     <img
                                         src="https://via.placeholder.com/400x500?text=No+Photo"
@@ -460,7 +462,7 @@ function Models() {
 
                             <div className="gallery-row">
                                 {(current.photos || [])
-                                    .filter(p => p.isWebShow)
+                                    .filter(p => p.isWebShow === true)
                                     .map((p, idx) => (
                                         <img
                                             key={idx}
@@ -472,9 +474,6 @@ function Models() {
                                         />
                                     ))}
                             </div>
-
-
-
                             <div className="contact-row">
                                 <button
                                     type="button"

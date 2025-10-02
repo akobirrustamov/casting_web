@@ -8,7 +8,7 @@ function ModelCard({ model, openModal, t, getFirstName, SmartImage, open }) {
     const isVisible = useOnScreen(cardRef);
 
     // faqat isWebShow = true bo'lgan fotolar
-    const visiblePhotos = (model.photoUrls || []).filter(p => p.isWebShow);
+    const visiblePhotos = (model.photoUrls || []).filter(p => p.isWebShow === true);
 
     return (
         <div
